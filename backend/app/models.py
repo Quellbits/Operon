@@ -1,0 +1,131 @@
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, JSON, Enum
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+import enum
+from datetime import datetime
+
+Base = declarative_base()
+
+class UserRole(enum.Enum):
+    OWNER = "owner"
+    ADMIN = "admin"
+    VIEWER = "viewer"
+
+class Organization(Base):
+    __tablename__ = "organizations"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    members = relationship("OrganizationMember", back_populates="organization")
+    uploads = relationship("Upload", back_populates="organization")
+
+class User(Base):
+    __tablename__ = "users"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+    full_name = Column(String)
+    
+    memberships = relationship("OrganizationMember", back_populates="user")
+
+class OrganizationMember(Base):
+    __tablename__ = "organization_members"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    role = Column(String, default=UserRole.VIEWER.value)
+    
+    user = relationship("User", back_populates="memberships")
+    organization = relationship("Organization", back_populates="members")
+
+class UploadStatus(enum.Enum):
+    UPLOADED = "uploaded"
+    PROCESSING = "processing"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+class Upload(Base):
+    __tablename__ = "uploads"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    filename = Column(String)
+    file_type = Column(String)
+    status = Column(String, default=UploadStatus.UPLOADED.value)
+    mapping_json = Column(JSON, nullable=True)
+    uploaded_at = Column(DateTime, default=datetime.utcnow)
+    
+    organization = relationship("Organization", back_populates="uploads")
+
+# Normalized Data Tables
+class Transaction(Base):
+    __tablename__ = "transactions"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    date = Column(DateTime)
+    customer = Column(String)
+    product = Column(String)
+    revenue = Column(Float)
+    cost = Column(Float)
+    quantity = Column(Float)
+    location = Column(String)
+
+class Customer(Base):
+    __tablename__ = "customers"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    name = Column(String)
+    first_seen = Column(DateTime)
+    last_seen = Column(DateTime)
+
+class Product(Base):
+    __tablename__ = "products"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    name = Column(String)
+    category = Column(String)
+
+class Expense(Base):
+    __tablename__ = "expenses"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    date = Column(DateTime)
+    category = Column(String)
+    amount = Column(Float)
+
+class Metric(Base):
+    __tablename__ = "metrics"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    metric_name = Column(String)
+    metric_value = Column(Float)
+    period = Column(String) # e.g. "2023-Q1"
+
+class Insight(Base):
+    __tablename__ = "insights"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    severity = Column(String) # low, medium, high, critical
+    category = Column(String)
+    title = Column(String)
+    description = Column(String)
+    impact = Column(String)
+
+class Report(Base):
+    __tablename__ = "reports"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    generated_at = Column(DateTime, default=datetime.utcnow)
+    report_type = Column(String)
+    pdf_url = Column(String)
