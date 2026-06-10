@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { LayoutDashboard, FileUp, BarChart, AlertCircle, FileText, Settings, Users } from 'lucide-react';
 import Link from 'next/link';

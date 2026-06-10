@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { FileText, Download, Clock, CheckCircle2, ChevronRight, FilePieChart } from 'lucide-react';

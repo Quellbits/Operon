@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { AlertCircle, TrendingDown, Users, ShieldAlert, CheckCircle2, ArrowRight } from 'lucide-react';

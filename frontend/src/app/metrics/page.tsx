@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { BarChart, AreaChart, Bar, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
