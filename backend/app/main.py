@@ -20,6 +20,9 @@ app.add_middleware(
 def read_root():
     return {"message": "Welcome to Business Operations Copilot API"}
 
-from .routers import uploads
+from .routers import uploads, auth, organizations, reports
 
+app.include_router(auth.router)
 app.include_router(uploads.router)
+app.include_router(organizations.router)
+app.include_router(reports.router)
