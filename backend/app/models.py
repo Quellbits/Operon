@@ -137,3 +137,11 @@ class Report(Base):
     health_score = Column(Float, nullable=True)
     actions = Column(JSON, nullable=True)
     is_saved = Column(Boolean, default=False)
+
+class WaitlistEmail(Base):
+    __tablename__ = "waitlist_emails"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+

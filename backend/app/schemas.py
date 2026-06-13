@@ -40,3 +40,7 @@ class ReportResponse(BaseModel):
 
 class BatchProcessPayload(BaseModel):
     upload_ids: List[int]
+
+class WaitlistCreate(BaseModel):
+    email: str
+

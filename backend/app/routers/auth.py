@@ -93,3 +93,20 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.post("/waitlist")
+def add_to_waitlist(waitlist_data: schemas.WaitlistCreate, db: Session = Depends(database.get_db)):
+    email_clean = waitlist_data.email.strip().lower()
+    if not email_clean or "@" not in email_clean:
+        raise HTTPException(status_code=400, detail="Invalid email address")
+    
+    db_email = db.query(models.WaitlistEmail).filter(models.WaitlistEmail.email == email_clean).first()
+    if db_email:
+        return {"status": "success", "message": "You are already registered on our waiting list!"}
+    
+    new_entry = models.WaitlistEmail(email=email_clean)
+    db.add(new_entry)
+    db.commit()
+    db.refresh(new_entry)
+    return {"status": "success", "message": "Successfully added to the waiting list!"}
+
