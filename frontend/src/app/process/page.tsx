@@ -502,79 +502,64 @@ export default function ProcessPage() {
         <main className="flex-1 flex flex-col min-w-0 bg-black overflow-hidden relative">
           <div className="flex-1 overflow-y-auto">
 
-            {/* ── GENERATING ANIMATION (draftingProgress === 0) ─────────────── */}
+            {/* ── GENERATING ANIMATION (draftingProgress === 0) ─── */}
             {draftingProgress === 0 && (
-              <div className="flex flex-col items-center justify-center h-full min-h-[600px] gap-8 px-8 relative">
-                {/* Ambient glow */}
+              <div className="flex flex-col items-center justify-center h-full min-h-[600px] gap-6 px-8 relative">
+                {/* Soft ambient background glow */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-96 h-96 rounded-full opacity-10 blur-3xl" style={{ background: 'radial-gradient(circle, #f97316 0%, transparent 70%)' }} />
+                  <div className="w-80 h-80 rounded-full opacity-5 blur-3xl" style={{ background: 'radial-gradient(circle, #f97316 0%, transparent 70%)' }} />
                 </div>
 
-                {/* Central animated orb */}
-                <div className="relative flex items-center justify-center">
-                  {/* Outer rings */}
-                  <div className="absolute w-40 h-40 rounded-full border border-orange-500/10 animate-ping" style={{ animationDuration: '3s' }} />
-                  <div className="absolute w-28 h-28 rounded-full border border-orange-500/20 animate-ping" style={{ animationDuration: '2s', animationDelay: '0.5s' }} />
-                  {/* Core orb */}
-                  <div className="w-20 h-20 rounded-full flex items-center justify-center relative" style={{ background: 'radial-gradient(circle, rgba(249,115,22,0.25) 0%, rgba(234,88,12,0.08) 100%)', border: '1px solid rgba(249,115,22,0.3)', boxShadow: '0 0 40px rgba(249,115,22,0.2), inset 0 0 20px rgba(249,115,22,0.1)' }}>
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                      <path d="M16 4 L28 10 L28 22 L16 28 L4 22 L4 10 Z" stroke="#f97316" strokeWidth="1.5" fill="none" className="opacity-80" />
-                      <path d="M16 4 L16 28 M4 10 L28 22 M28 10 L4 22" stroke="#f97316" strokeWidth="0.5" strokeDasharray="2 3" className="opacity-40" />
-                      <circle cx="16" cy="16" r="3" fill="#f97316" className="opacity-90" />
-                    </svg>
-                  </div>
+                {/* Minimalist circular dashboard loader */}
+                <div className="relative flex items-center justify-center w-24 h-24">
+                  {/* Outer spinning ring */}
+                  <svg className="animate-spin w-16 h-16 text-orange-500" viewBox="0 0 50 50">
+                    <circle 
+                      className="opacity-15" 
+                      cx="25" 
+                      cy="25" 
+                      r="20" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      fill="none" 
+                    />
+                    <path 
+                      className="opacity-80" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      d="M25,5a20,20 0 0,1 20,20" 
+                    />
+                  </svg>
+                  {/* Inner breathing core */}
+                  <div className="absolute w-3 h-3 rounded-full bg-orange-500 animate-pulse shadow-[0_0_8px_#f97316]" />
                 </div>
 
-                {/* Status text */}
-                <div className="text-center space-y-3 z-10">
-                  <div className="flex items-center justify-center gap-2">
-                    <Loader2 size={14} className="animate-spin text-orange-400" />
-                    <span className="text-orange-400 font-mono font-bold text-sm tracking-widest uppercase">Compiling Report</span>
-                  </div>
-                  <p className="text-zinc-500 font-mono text-[10px] tracking-wider max-w-xs text-center">
-                    Pipeline processing your ledger data. Statistical analysis and AI narrative generation in progress.
+                {/* Title & Status */}
+                <div className="text-center space-y-2 max-w-xs z-10 font-mono">
+                  <span className="text-orange-500 text-xs font-bold tracking-widest uppercase animate-pulse">
+                    Drafting Executive Report
+                  </span>
+                  <p className="text-zinc-500 text-[9px] tracking-wider uppercase leading-relaxed">
+                    Analyzing ledger transactions & generating intelligence layers
                   </p>
                 </div>
 
-                {/* Animated data stream skeleton */}
-                <div className="w-full max-w-lg space-y-3 z-10">
-                  {[
-                    { w: 'w-3/4', label: 'EXTRACTING_FILTER_SCOPE' },
-                    { w: 'w-full', label: 'COMPUTING_PEARSON_CORRELATIONS' },
-                    { w: 'w-5/6', label: 'RUNNING_ZSCORE_ANOMALY_DETECTION' },
-                    { w: 'w-4/5', label: 'FITTING_REGRESSION_FORECAST_MODEL' },
-                    { w: 'w-2/3', label: 'GENERATING_AI_NARRATIVE_LAYER' },
-                    { w: 'w-full', label: 'COMPILING_EXECUTIVE_PDF_REPORT' },
-                  ].map((step, i) => (
-                    <div key={i} className="space-y-1" style={{ animationDelay: `${i * 0.15}s` }}>
-                      <div className="flex items-center justify-between">
-                        <span className="text-[9px] font-mono text-zinc-600 tracking-widest">{step.label}</span>
-                        <span className="text-[9px] font-mono text-zinc-700">...</span>
-                      </div>
-                      <div className="h-0.5 bg-zinc-900 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full ${step.w} rounded-full`}
-                          style={{
-                            background: 'linear-gradient(90deg, rgba(249,115,22,0.6) 0%, rgba(249,115,22,0.2) 100%)',
-                            animation: `pulse-bar ${1.5 + i * 0.3}s ease-in-out infinite alternate`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Progress indicator dots */}
-                <div className="flex items-center gap-2 z-10">
-                  {[0,1,2,3,4].map(i => (
-                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-orange-500/40 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                  ))}
+                {/* Faint Infinite Marquee Line (Sleek 1px Loader) */}
+                <div className="w-48 h-[1px] bg-zinc-800 rounded-full overflow-hidden relative z-10">
+                  <div 
+                    className="absolute top-0 bottom-0 bg-orange-500 w-1/3 rounded-full"
+                    style={{
+                      animation: 'loading-slide 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite'
+                    }}
+                  />
                 </div>
 
                 <style>{`
-                  @keyframes pulse-bar {
-                    0% { opacity: 0.3; transform: scaleX(0.7); transform-origin: left; }
-                    100% { opacity: 1; transform: scaleX(1); transform-origin: left; }
+                  @keyframes loading-slide {
+                    0% { left: -35%; }
+                    100% { left: 105%; }
                   }
                 `}</style>
               </div>
