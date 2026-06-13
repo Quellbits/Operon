@@ -213,15 +213,15 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
         
         {/* Coordinate horizontal/vertical divider grids in background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff01_1px,transparent_1px),linear-gradient(to_bottom,#ffffff01_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none z-0" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none z-0" />
         
         {/* Thin crosshairs at fixed layout bounds */}
-        <div className="absolute left-[30%] top-0 bottom-0 w-[1px] bg-zinc-900/10 pointer-events-none" />
-        <div className="absolute left-[70%] top-0 bottom-0 w-[1px] bg-zinc-900/10 pointer-events-none" />
-        <div className="absolute top-[40%] left-0 right-0 h-[1px] bg-zinc-900/10 pointer-events-none" />
+        <div className="absolute left-[30%] top-0 bottom-0 w-[1px] bg-zinc-800/20 pointer-events-none" />
+        <div className="absolute left-[70%] top-0 bottom-0 w-[1px] bg-zinc-800/20 pointer-events-none" />
+        <div className="absolute top-[40%] left-0 right-0 h-[1px] bg-zinc-800/20 pointer-events-none" />
         
-        <span className="absolute left-[30%] top-[40%] text-zinc-900 font-mono text-[10px] select-none pointer-events-none transform -translate-x-1/2 -translate-y-1/2">+</span>
-        <span className="absolute left-[70%] top-[40%] text-zinc-900 font-mono text-[10px] select-none pointer-events-none transform -translate-x-1/2 -translate-y-1/2">+</span>
+        <span className="absolute left-[30%] top-[40%] text-zinc-750 font-mono text-[10px] select-none pointer-events-none transform -translate-x-1/2 -translate-y-1/2">+</span>
+        <span className="absolute left-[70%] top-[40%] text-zinc-750 font-mono text-[10px] select-none pointer-events-none transform -translate-x-1/2 -translate-y-1/2">+</span>
 
         {/* Header */}
         <header className="h-16 bg-black border-b border-zinc-900 flex items-center justify-between px-8 shrink-0 relative z-10">

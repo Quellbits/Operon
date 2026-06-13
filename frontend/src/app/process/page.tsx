@@ -352,7 +352,7 @@ export default function ProcessPage() {
       <div className="min-h-screen bg-black text-zinc-100 font-mono flex flex-col relative overflow-hidden">
       
       {/* Background grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff01_1px,transparent_1px),linear-gradient(to_bottom,#ffffff01_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
 
       {/* Header */}
       <header className="h-16 bg-black border-b border-zinc-900 px-6 flex items-center justify-between shrink-0 relative z-10">

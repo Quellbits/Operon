@@ -464,7 +464,7 @@ function SignupForm() {
       <div className="hidden lg:flex w-1/2 bg-zinc-950 border-l border-zinc-900 items-center justify-center min-h-screen relative overflow-hidden z-10">
         
         {/* Coordinate horizontal/vertical divider grids in background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff01_1px,transparent_1px),linear-gradient(to_bottom,#ffffff01_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none z-0" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none z-0" />
         
         {/* Scanning laser line sweep */}
         <div className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-orange-500/20 to-transparent pointer-events-none z-0 laser-glow" style={{ animation: 'scan-sweep 10s linear infinite' }} />

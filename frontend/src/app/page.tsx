@@ -219,7 +219,7 @@ export default function LandingPage() {
         {vLines.map((left, idx) => (
           <div 
             key={`v-${idx}`}
-            className="absolute top-0 bottom-0 w-[1px] bg-zinc-900/40" 
+            className="absolute top-0 bottom-0 w-[1px] bg-zinc-800/30" 
             style={{ left }}
           />
         ))}
@@ -227,7 +227,7 @@ export default function LandingPage() {
         {hLines.map((top, idx) => (
           <div 
             key={`h-${idx}`}
-            className="absolute left-0 right-0 h-[1px] bg-zinc-900/40" 
+            className="absolute left-0 right-0 h-[1px] bg-zinc-800/30" 
             style={{ top }}
           />
         ))}
@@ -556,7 +556,7 @@ export default function LandingPage() {
               {/* Console / Simulator (Right 7 Cols) */}
               <div className="lg:col-span-7 bg-black border border-zinc-900 rounded p-6 shadow-2xl relative h-[380px] overflow-hidden flex flex-col font-mono text-xs">
                 {/* Visual grid inside sandbox */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff01_1px,transparent_1px),linear-gradient(to_bottom,#ffffff01_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
                 
                 {/* Header */}
                 <div className="flex items-center justify-between border-b border-zinc-900 pb-3 mb-4 shrink-0 relative z-10">
