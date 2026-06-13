@@ -3,11 +3,78 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from . import models
 from .database import engine, get_db
+import os
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
+
+def upgrade_db_columns():
+    from sqlalchemy import text
+    with engine.begin() as conn:
+        # Check and add 'plan' to organizations
+        try:
+            conn.execute(text("ALTER TABLE organizations ADD COLUMN plan VARCHAR DEFAULT 'SANDBOX_INIT';"))
+        except Exception:
+            pass
+        # Check and add 'storage_used' to organizations
+        try:
+            conn.execute(text("ALTER TABLE organizations ADD COLUMN storage_used FLOAT DEFAULT 0.0;"))
+        except Exception:
+            pass
+        # Check and add 'file_size' to uploads
+        try:
+            conn.execute(text("ALTER TABLE uploads ADD COLUMN file_size FLOAT DEFAULT 0.0;"))
+        except Exception:
+            pass
+        # Check and add 'upload_id' to transactions
+        try:
+            conn.execute(text("ALTER TABLE transactions ADD COLUMN upload_id INTEGER REFERENCES uploads(id);"))
+        except Exception:
+            pass
+        # Check and add 'is_saved' to reports
+        try:
+            conn.execute(text("ALTER TABLE reports ADD COLUMN is_saved BOOLEAN DEFAULT 0;"))
+        except Exception:
+            pass
+
+def seed_default_user():
+    from .database import SessionLocal
+    from .routers.auth import pwd_context
+    db = SessionLocal()
+    try:
+        default_email = "operon_default@example.com"
+        exists = db.query(models.User).filter(models.User.email == default_email).first()
+        if not exists:
+            # Create user
+            hashed = pwd_context.hash("defaultpassword123")
+            new_user = models.User(email=default_email, hashed_password=hashed, full_name="Default Demo User")
+            db.add(new_user)
+            db.commit()
+            db.refresh(new_user)
+            
+            # Create organization
+            new_org = models.Organization(name="Default Demo User's Org")
+            db.add(new_org)
+            db.commit()
+            db.refresh(new_org)
+            
+            # Add member
+            member = models.OrganizationMember(user_id=new_user.id, organization_id=new_org.id, role="owner")
+            db.add(member)
+            db.commit()
+            print("Successfully seeded default demo user.")
+    except Exception as e:
+        print(f"Error seeding default user: {e}")
+    finally:
+        db.close()
+
+upgrade_db_columns()
 models.Base.metadata.create_all(bind=engine)
+seed_default_user()
 
-app = FastAPI(title="Business Operations Copilot API")
-
+app = FastAPI(title="Operon Operations API")
+ 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,14 +82,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+ 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to Business Operations Copilot API"}
-
-from .routers import uploads, auth, organizations, reports
-
+    return {"message": "Welcome to Operon Operations API"}
+ 
+from .routers import uploads, auth, organizations, reports, analytics, ai_agent
+ 
 app.include_router(auth.router)
 app.include_router(uploads.router)
 app.include_router(organizations.router)
 app.include_router(reports.router)
+app.include_router(analytics.router)
+app.include_router(ai_agent.router)

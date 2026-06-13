@@ -1,0 +1,521 @@
+Transaction Date,Invoice ID,Customer,Product,Quantity,Unit Price (GBP),Revenue (GBP),Cost (GBP),Gross Profit (GBP),Gross Margin %,Location / Region,Sales Rep,Payment Terms,Order Status,Delivery Date,Lead Time (Days)
+2023-01-02,SO-11066,Orion Subsea Ltd,Maintenance Kits,30,151.45,4543.55,2872.17,1671.38,36.79,Scotland,James Whitfield,Immediate,Completed,2023-01-11,9
+2023-01-02,PO-11068,Apex Fluid Systems,Seals & Gaskets,22,62.93,1384.51,681.84,702.67,50.75,Midlands,Claire Morrison,Net 30,Completed,2023-01-06,4
+2023-01-02,PO-11737,Pacific Offshore GmbH,Industrial Pumps,12,252.14,3025.7,1887.3,1138.4,37.62,Germany,James Whitfield,Net 30,Partially Returned,2023-01-21,19
+2023-01-03,INV-12021,Apex Fluid Systems,Maintenance Kits,42,144.1,6052.04,3333.04,2719.0,44.93,Midlands,Emma Thornton,Net 30,Completed,2023-01-04,1
+2023-01-03,INV-11601,Northgate Engineering Ltd,Seals & Gaskets,62,77.46,4802.83,4606.62,196.21,4.09,North,Emma Thornton,Net 60,Completed,2023-01-09,6
+2023-01-04,SO-10377,Orion Subsea Ltd,Hydraulic Fittings,22,133.75,2942.51,1590.38,1352.13,45.95,Scotland,Sarah Okonkwo,Net 30,Completed,2023-01-07,3
+2023-01-04,PO-11136,Orion Subsea Ltd,Hydraulic Fittings,12,70.88,850.51,545.8,304.71,35.83,Scotland,James Whitfield,Net 30,Completed,2023-01-05,1
+2023-01-05,PO-10419,Northgate Engineering Ltd,Seals & Gaskets,42,119.53,5020.29,2721.75,2298.54,45.79,North,James Whitfield,Net 60,Completed,2023-01-18,13
+2023-01-09,INV-12032,Meridian Process Group,Industrial Pumps,24,361.07,8665.61,8716.01,-50.4,-0.58,Wales,David Liang,Net 60,Refunded,2023-01-28,19
+2023-01-09,INV-11994,Apex Fluid Systems,Industrial Pumps,4,280.37,1121.47,699.77,421.7,37.6,Midlands,James Whitfield,Net 45,Completed,2023-01-10,1
+2023-01-09,INV-10454,Pacific Offshore GmbH,Industrial Pumps,23,352.12,8098.75,4568.32,3530.43,43.59,Germany,Claire Morrison,Net 60,Completed,2023-01-12,3
+2023-01-10,SO-11692,Northgate Engineering Ltd,Hydraulic Fittings,119,93.99,11184.55,5950.33,5234.22,46.8,North,James Whitfield,Net 30,Completed,2023-01-18,8
+2023-01-10,SO-10465,Pacific Offshore GmbH,Valve Assemblies,9,115.07,1035.59,697.18,338.41,32.68,Germany,David Liang,Net 30,Completed,2023-01-23,13
+2023-01-11,INV-10984,Apex Fluid Systems,Compressor Units,11,1788.61,19674.72,12178.14,7496.58,38.1,Midlands,Raj Patel,Net 60,Completed,2023-01-22,11
+2023-01-11,INV-11854,Meridian Process Group,Industrial Pumps,29,390.36,11320.35,6962.84,4357.51,38.49,Sheffield,Claire Morrison,Net 45,Completed,2023-01-15,4
+2023-01-11,INV-11328,Northgate Engineering Ltd,Maintenance Kits,118,224.92,26540.12,16841.34,9698.78,36.54,North,Sarah Okonkwo,Immediate,Completed,2023-01-22,11
+2023-01-11,INV-10692,Northgate Engineering Ltd,Seals & Gaskets,116,133.35,15468.34,9216.03,6252.31,40.42,North,James Whitfield,Net 60,Completed,2023-01-13,2
+2023-01-13,PO-11764,Northgate Engineering Ltd,Industrial Pumps,43,268.91,11563.04,6460.66,5102.38,44.13,North,James Whitfield,Net 60,Completed,2023-01-15,2
+2023-01-16,INV-10561,Apex Fluid Systems,Industrial Pumps,34,303.31,10312.59,5453.26,4859.33,47.12,Midlands,Emma Thornton,Immediate,Completed,2023-01-25,9
+2023-01-16,INV-11161,Valor Industrial Partners,Seals & Gaskets,40,78.13,3125.4,1683.51,1441.89,46.13,North,Emma Thornton,Immediate,Completed,2023-01-30,14
+2023-01-16,INV-11046,Northgate Engineering Ltd,Industrial Pumps,77,349.68,26925.47,16188.7,10736.77,39.88,North,Emma Thornton,Net 30,Completed,2023-01-27,11
+2023-01-16,PO-10336,TechCore Manufacturing,Compressor Units,27,1755.39,47395.5,34111.72,13283.78,28.03,South,David Liang,Net 45,Partially Returned,2023-02-04,19
+2023-01-18,SO-10784,Northgate Engineering Ltd,Maintenance Kits,40,241.87,9674.83,10289.07,-614.24,-6.35,London,David Liang,Immediate,Completed,2023-01-26,8
+2023-01-19,SO-10150,Pacific Offshore GmbH,Maintenance Kits,7,169.58,1187.09,673.23,513.86,43.29,Germany,James Whitfield,Net 45,Completed,2023-01-24,5
+2023-01-20,INV-10268,BritOil Downstream Services,Valve Assemblies,102,303.55,30961.61,18838.36,12123.25,39.16,Scotland,James Whitfield,Immediate,Completed,2023-01-31,11
+2023-01-20,PO-10851,Pacific Offshore GmbH,Maintenance Kits,14,264.6,3704.42,2237.07,1467.35,39.61,Germany,Sarah Okonkwo,Net 60,Completed,2023-02-07,18
+2023-01-20,PO-11173,Meridian Process Group,Industrial Pumps,7,481.12,3367.81,1961.89,1405.92,41.75,Wales,Claire Morrison,Immediate,Completed,2023-01-30,10
+2023-01-20,INV-11552,Northgate Engineering Ltd,Industrial Pumps,84,472.49,39689.14,23618.95,16070.19,40.49,North,David Liang,Net 30,Completed,2023-01-22,2
+2023-01-20,INV-11726,Northgate Engineering Ltd,Compressor Units,110,781.63,85979.51,57993.26,27986.25,32.55,North,Claire Morrison,Net 60,Completed,2023-01-28,8
+2023-01-24,PO-11082,Apex Fluid Systems,Seals & Gaskets,8,47.72,381.72,199.84,181.88,47.65,Midlands,Sarah Okonkwo,Net 60,Completed,2023-02-01,8
+2023-01-24,PO-11586,TechCore Manufacturing,Industrial Pumps,36,436.58,15716.97,8263.9,7453.07,47.42,South,Sarah Okonkwo,Immediate,Partially Returned,2023-01-26,2
+2023-01-25,INV-10859,Apex Fluid Systems,Hydraulic Fittings,14,41.14,576.01,335.43,240.58,41.77,Midlands,James Whitfield,Immediate,Completed,2023-02-01,7
+2023-01-25,PO-11513,BritOil Downstream Services,Valve Assemblies,32,301.93,9661.85,5635.26,4026.59,41.68,Scotland,Sarah Okonkwo,Net 60,Completed,2023-02-01,7
+2023-01-26,SO-10144,BritOil Downstream Services,Hydraulic Fittings,25,155.31,3882.81,1959.02,1923.79,49.55,Scotland,Raj Patel,Net 60,Completed,2023-02-10,15
+2023-01-27,PO-10044,Northgate Engineering Ltd,Compressor Units,97,1858.6,180283.96,113050.4,67233.56,37.29,North,Emma Thornton,Net 45,Completed,2023-02-01,5
+2023-01-31,INV-10989,BritOil Downstream Services,Industrial Pumps,51,339.74,17326.68,10273.65,7053.03,40.71,Scotland,James Whitfield,Net 30,Completed,2023-02-10,10
+2023-01-31,SO-11258,Northgate Engineering Ltd,Seals & Gaskets,72,107.74,7757.48,4535.74,3221.74,41.53,North,Emma Thornton,Immediate,Completed,2023-02-15,15
+2023-02-01,PO-11671,Meridian Process Group,Seals & Gaskets,27,129.87,3506.43,1770.42,1736.01,49.51,Wales,Claire Morrison,Net 30,Completed,2023-02-06,5
+2023-02-02,SO-10474,Meridian Process Group,Maintenance Kits,21,193.61,4065.9,2597.64,1468.26,36.11,Wales,Raj Patel,Net 60,Partially Returned,2023-02-08,6
+2023-02-02,INV-11025,Northgate Engineering Ltd,Industrial Pumps,60,264.98,15898.93,10115.82,5783.11,36.37,North,Raj Patel,Immediate,Partially Returned,2023-02-03,1
+2023-02-06,PO-10215,Pacific Offshore GmbH,Maintenance Kits,23,118.16,2717.63,2772.21,-54.58,-2.01,Germany,Sarah Okonkwo,Net 45,Completed,2023-02-07,1
+2023-02-06,SO-11594,Meridian Process Group,Compressor Units,13,1775.42,23080.49,14769.39,8311.1,36.01,Wales,Sarah Okonkwo,Net 30,Completed,2023-02-17,11
+2023-02-06,INV-10671,TechCore Manufacturing,Compressor Units,22,1055.41,23218.99,15812.14,7406.85,31.9,South,Raj Patel,Net 30,Completed,2023-02-19,13
+2023-02-07,SO-10643,Apex Fluid Systems,Maintenance Kits,44,125.13,5505.65,3712.9,1792.75,32.56,Midlands,Emma Thornton,Net 60,Completed,2023-02-10,3
+2023-02-07,INV-11922,Northgate Engineering Ltd,Hydraulic Fittings,40,99.32,3972.61,2133.98,1838.63,46.28,Manchester,Claire Morrison,Net 30,Refunded,2023-02-25,18
+2023-02-08,INV-11359,Apex Fluid Systems,Industrial Pumps,11,437.11,4808.22,2679.66,2128.56,44.27,Midlands,David Liang,Net 60,Completed,2023-02-21,13
+2023-02-08,PO-10493,Meridian Process Group,Compressor Units,6,969.46,5816.77,4083.9,1732.87,29.79,Wales,Raj Patel,Immediate,Partially Returned,2023-02-24,16
+2023-02-09,INV-10649,Northgate Engineering Ltd,Industrial Pumps,58,271.47,15745.49,9909.81,5835.68,37.06,North,James Whitfield,Immediate,Completed,2023-02-18,9
+2023-02-09,INV-10900,Northgate Engineering Ltd,Seals & Gaskets,12,123.64,1483.73,880.81,602.92,40.64,North,Sarah Okonkwo,Net 30,Completed,2023-02-12,3
+2023-02-10,PO-11942,Northgate Engineering Ltd,Hydraulic Fittings,34,72.3,2458.34,1527.4,930.94,37.87,North,James Whitfield,Immediate,Completed,2023-03-01,19
+2023-02-10,INV-12067,Northgate Engineering Ltd,Hydraulic Fittings,16,140.42,2246.71,1459.57,787.14,35.04,North,Emma Thornton,Immediate,Completed,2023-02-16,6
+2023-02-10,INV-10696,Northgate Engineering Ltd,Industrial Pumps,99,482.78,47794.76,27084.64,20710.12,43.33,North,James Whitfield,Immediate,Partially Returned,2023-02-18,8
+2023-02-10,PO-10679,Apex Fluid Systems,Hydraulic Fittings,44,30.49,1341.45,691.66,649.79,48.44,Midlands,Sarah Okonkwo,Net 30,Completed,2023-02-24,14
+2023-02-13,INV-10812,Apex Fluid Systems,Industrial Pumps,24,429.56,10309.45,6001.52,4307.93,41.79,Midlands,Raj Patel,Net 60,Completed,2023-02-18,5
+2023-02-14,INV-10030,BritOil Downstream Services,Industrial Pumps,36,486.52,17514.64,10114.05,7400.59,42.25,Sheffield,Claire Morrison,Net 30,Completed,2023-02-23,9
+2023-02-16,SO-11689,TechCore Manufacturing,Hydraulic Fittings,7,42.23,295.59,167.38,128.21,43.37,South,Raj Patel,Net 30,Completed,2023-03-07,19
+2023-02-16,PO-10695,Pacific Offshore GmbH,Industrial Pumps,6,430.67,2584.03,1481.96,1102.07,42.65,Germany,Sarah Okonkwo,Net 30,Completed,2023-02-26,10
+2023-02-17,SO-10895,BritOil Downstream Services,Seals & Gaskets,81,52.5,4252.13,2477.27,1774.86,41.74,Scotland,Claire Morrison,Net 30,Completed,2023-02-21,4
+2023-02-17,SO-10883,Northgate Engineering Ltd,Seals & Gaskets,47,72.96,3429.3,2001.46,1427.84,41.64,North,Emma Thornton,Net 60,Completed,2023-03-09,20
+2023-02-20,SO-10968,Northgate Engineering Ltd,Maintenance Kits,93,221.11,20563.04,14365.62,6197.42,30.14,North,James Whitfield,Net 30,Completed,2023-03-09,17
+2023-02-21,SO-11633,Northgate Engineering Ltd,Industrial Pumps,74,402.52,29786.83,26440.47,3346.36,11.23,North,Sarah Okonkwo,Net 60,Completed,2023-03-06,13
+2023-02-21,INV-11286,Pacific Offshore GmbH,Compressor Units,35,1565.0,54775.12,38619.55,16155.57,29.49,Germany,Sarah Okonkwo,Net 30,Completed,2023-03-06,13
+2023-02-23,SO-11550,Northgate Engineering Ltd,Industrial Pumps,97,363.69,35278.08,21643.23,13634.85,38.65,North,Emma Thornton,Net 30,Completed,2023-03-14,19
+2023-02-23,PO-10546,Orion Subsea Ltd,Industrial Pumps,14,491.86,6886.05,3620.83,3265.22,47.42,Scotland,Sarah Okonkwo,Net 60,Completed,2023-03-14,19
+2023-02-24,SO-11720,Apex Fluid Systems,Industrial Pumps,19,407.49,7742.23,4637.09,3105.14,40.11,Hamburg,Raj Patel,Immediate,Completed,2023-03-16,20
+2023-02-24,SO-12030,Pacific Offshore GmbH,Compressor Units,27,1609.32,43451.57,28424.47,15027.1,34.58,Germany,Sarah Okonkwo,Immediate,Completed,2023-03-03,7
+2023-02-24,SO-11543,Northgate Engineering Ltd,Hydraulic Fittings,70,81.69,5718.45,3629.05,2089.4,36.54,North,David Liang,Net 30,Completed,2023-03-09,13
+2023-02-28,PO-10258,TechCore Manufacturing,Compressor Units,26,1982.85,51554.04,35807.21,15746.83,30.54,Manchester,David Liang,Net 45,Completed,2023-03-12,12
+2023-02-28,PO-10843,Apex Fluid Systems,Valve Assemblies,22,379.49,8348.87,5514.96,2833.91,33.94,Midlands,Claire Morrison,Immediate,Partially Returned,2023-03-13,13
+2023-03-01,INV-10002,Northgate Engineering Ltd,Hydraulic Fittings,51,35.99,1835.55,1925.36,-89.81,-4.89,North,David Liang,Immediate,Completed,2023-03-20,19
+2023-03-02,SO-11925,BritOil Downstream Services,Maintenance Kits,89,172.43,15346.6,8725.28,6621.32,43.15,Scotland,Sarah Okonkwo,Immediate,Refunded,2023-03-19,17
+2023-03-03,INV-11093,Valor Industrial Partners,Industrial Pumps,36,300.1,10803.52,6521.4,4282.12,39.64,North,James Whitfield,Immediate,Completed,2023-03-04,1
+2023-03-03,PO-11788,Apex Fluid Systems,Industrial Pumps,34,403.52,13719.53,11824.24,1895.29,13.81,Midlands,Claire Morrison,Net 30,Completed,2023-03-13,10
+2023-03-06,PO-11264,Northgate Engineering Ltd,Valve Assemblies,90,140.12,12610.49,6909.31,5701.18,45.21,North,Sarah Okonkwo,Net 30,Refunded,2023-03-10,4
+2023-03-08,PO-10778,Valor Industrial Partners,Hydraulic Fittings,7,41.21,288.46,145.32,143.14,49.62,North,James Whitfield,Net 45,Completed,2023-03-12,4
+2023-03-09,PO-10205,BritOil Downstream Services,Industrial Pumps,119,291.4,34676.82,29759.35,4917.47,14.18,Cardiff,Claire Morrison,Net 60,Completed,2023-03-18,9
+2023-03-09,INV-10385,BritOil Downstream Services,Compressor Units,32,1396.81,44697.8,26025.36,18672.44,41.77,Scotland,Sarah Okonkwo,Net 60,Refunded,2023-03-25,16
+2023-03-09,SO-10646,Orion Subsea Ltd,Valve Assemblies,22,386.36,8499.94,5428.54,3071.4,36.13,Scotland,Claire Morrison,Net 30,Completed,2023-03-22,13
+2023-03-10,INV-10133,BritOil Downstream Services,Valve Assemblies,57,361.92,20629.6,13068.94,7560.66,36.65,Scotland,David Liang,Net 60,Completed,2023-03-24,14
+2023-03-13,SO-10697,Apex Fluid Systems,Valve Assemblies,19,281.77,5353.62,3326.49,2027.13,37.86,Midlands,Sarah Okonkwo,Net 60,Completed,2023-04-02,20
+2023-03-15,PO-11039,Pacific Offshore GmbH,Hydraulic Fittings,35,37.99,1329.82,851.44,478.38,35.97,Germany,Sarah Okonkwo,Net 30,Completed,2023-03-28,13
+2023-03-17,INV-11289,Apex Fluid Systems,Compressor Units,44,901.3,39657.14,27437.72,12219.42,30.81,Midlands,Claire Morrison,Net 30,Completed,2023-04-05,19
+2023-03-17,SO-11120,Pacific Offshore GmbH,Industrial Pumps,26,561.71,14604.57,8114.46,6490.11,44.44,Germany,David Liang,Net 45,Completed,2023-03-24,7
+2023-03-17,PO-11283,Valor Industrial Partners,Compressor Units,18,2375.32,42755.83,28583.24,14172.59,33.15,North,Raj Patel,Net 45,Completed,2023-03-30,13
+2023-03-20,INV-11771,Northgate Engineering Ltd,Compressor Units,43,1302.68,56015.27,37042.19,18973.08,33.87,North,James Whitfield,Net 45,Completed,2023-04-03,14
+2023-03-20,INV-10959,Pacific Offshore GmbH,Seals & Gaskets,12,130.15,1561.84,801.33,760.51,48.69,Germany,David Liang,Net 45,Partially Returned,2023-04-02,13
+2023-03-21,PO-10334,Meridian Process Group,Maintenance Kits,41,234.38,9609.63,6137.41,3472.22,36.13,Wales,Emma Thornton,Net 30,Completed,2023-03-30,9
+2023-03-22,SO-11092,Apex Fluid Systems,Hydraulic Fittings,44,105.01,4620.28,2893.74,1726.54,37.37,Midlands,David Liang,Net 30,Completed,2023-04-09,18
+2023-03-23,INV-10282,Apex Fluid Systems,Industrial Pumps,12,480.4,5764.77,3235.47,2529.3,43.88,Midlands,David Liang,Immediate,Completed,2023-04-03,11
+2023-03-24,SO-11447,Apex Fluid Systems,Hydraulic Fittings,5,157.47,787.36,504.83,282.53,35.88,Midlands,David Liang,Net 60,Completed,2023-03-26,2
+2023-03-27,SO-10303,Pacific Offshore GmbH,Seals & Gaskets,12,136.15,1633.82,830.71,803.11,49.16,Birmingham,Emma Thornton,Net 30,Completed,2023-04-07,11
+2023-03-28,PO-11304,Northgate Engineering Ltd,Industrial Pumps,16,437.23,6995.61,4435.68,2559.93,36.59,North,Raj Patel,Net 30,Completed,2023-04-05,8
+2023-03-28,INV-12011,Apex Fluid Systems,Industrial Pumps,25,588.04,14700.94,8845.22,5855.72,39.83,Midlands,Sarah Okonkwo,Net 30,Completed,2023-04-13,16
+2023-03-28,PO-10743,Northgate Engineering Ltd,Industrial Pumps,75,566.14,42460.27,22120.71,20339.56,47.9,North,David Liang,Net 30,Refunded,2023-04-14,17
+2023-03-28,INV-11010,Northgate Engineering Ltd,Industrial Pumps,62,489.38,30341.43,16437.74,13903.69,45.82,North,Raj Patel,Net 60,Completed,2023-04-07,10
+2023-03-29,PO-10807,Northgate Engineering Ltd,Industrial Pumps,24,554.64,13311.25,8269.82,5041.43,37.87,North,Raj Patel,Net 30,Partially Returned,2023-04-18,20
+2023-03-31,PO-11794,Northgate Engineering Ltd,Maintenance Kits,55,150.02,8251.22,5596.31,2654.91,32.18,North,Emma Thornton,Net 60,Completed,2023-04-01,1
+2023-03-31,PO-11741,Meridian Process Group,Seals & Gaskets,27,133.47,3603.72,1767.43,1836.29,50.96,Cardiff,Claire Morrison,Net 30,Completed,2023-04-08,8
+2023-03-31,INV-10266,TechCore Manufacturing,Hydraulic Fittings,13,128.31,1668.02,928.21,739.81,44.35,South,David Liang,Net 45,Completed,2023-04-09,9
+2023-04-03,PO-10503,Apex Fluid Systems,Maintenance Kits,41,123.2,5051.26,3421.63,1629.63,32.26,Midlands,James Whitfield,Immediate,Completed,2023-04-21,18
+2023-04-03,SO-11497,BritOil Downstream Services,Maintenance Kits,100,308.65,30864.89,21258.5,9606.39,31.12,Birmingham,Claire Morrison,Net 45,Partially Returned,2023-04-12,9
+2023-04-04,PO-11292,Orion Subsea Ltd,Seals & Gaskets,10,105.97,1059.65,599.02,460.63,43.47,London,Raj Patel,Net 30,Completed,2023-04-16,12
+2023-04-04,SO-11863,Orion Subsea Ltd,Seals & Gaskets,10,135.27,1352.68,809.95,542.73,40.12,Scotland,Sarah Okonkwo,Net 30,Completed,2023-04-18,14
+2023-04-04,SO-10682,BritOil Downstream Services,Seals & Gaskets,23,114.05,2623.24,1396.82,1226.42,46.75,Scotland,Claire Morrison,Immediate,Completed,2023-04-08,4
+2023-04-05,PO-10955,Northgate Engineering Ltd,Industrial Pumps,90,329.1,29619.02,18157.66,11461.36,38.7,Sheffield,Raj Patel,Net 30,Completed,2023-04-12,7
+2023-04-07,INV-10510,Pacific Offshore GmbH,Maintenance Kits,22,255.65,5624.37,3845.69,1778.68,31.62,Germany,David Liang,Immediate,Completed,2023-04-08,1
+2023-04-10,PO-10796,Apex Fluid Systems,Seals & Gaskets,38,111.06,4220.45,2436.37,1784.08,42.27,Midlands,David Liang,Net 45,Refunded,2023-04-28,18
+2023-04-11,PO-11097,Pacific Offshore GmbH,Hydraulic Fittings,10,101.54,1015.4,623.2,392.2,38.63,Germany,Claire Morrison,Net 60,Completed,2023-04-19,8
+2023-04-12,SO-11392,Apex Fluid Systems,Industrial Pumps,7,423.13,2961.94,1755.96,1205.98,40.72,Sheffield,Sarah Okonkwo,Net 60,Completed,2023-04-17,5
+2023-04-12,SO-10365,Northgate Engineering Ltd,Compressor Units,103,2544.8,262114.62,172686.0,89428.62,34.12,Hamburg,Claire Morrison,Net 30,Partially Returned,2023-04-16,4
+2023-04-13,SO-10199,Northgate Engineering Ltd,Hydraulic Fittings,73,43.81,3198.13,1778.31,1419.82,44.4,North,Sarah Okonkwo,Immediate,Completed,2023-04-19,6
+2023-04-18,INV-10933,Apex Fluid Systems,Seals & Gaskets,6,115.54,693.25,408.53,284.72,41.07,Midlands,Claire Morrison,Net 30,Completed,2023-05-01,13
+2023-04-18,PO-11775,BritOil Downstream Services,Seals & Gaskets,41,69.56,2852.02,1651.65,1200.37,42.09,Scotland,Claire Morrison,Net 30,Completed,2023-05-04,16
+2023-04-19,SO-11088,Northgate Engineering Ltd,Maintenance Kits,103,345.94,35631.81,22995.47,12636.34,35.46,North,Sarah Okonkwo,Net 30,Completed,2023-05-08,19
+2023-04-19,INV-10083,TechCore Manufacturing,Maintenance Kits,34,251.25,8542.65,5310.7,3231.95,37.83,South,James Whitfield,Net 30,Completed,2023-04-23,4
+2023-04-20,INV-10383,Pacific Offshore GmbH,Industrial Pumps,19,728.51,13841.73,8141.77,5699.96,41.18,Germany,Raj Patel,Net 30,Completed,2023-04-25,5
+2023-04-20,SO-11593,BritOil Downstream Services,Hydraulic Fittings,67,217.11,14546.44,9013.68,5532.76,38.04,Scotland,Emma Thornton,Net 45,Completed,2023-05-03,13
+2023-04-21,INV-11298,TechCore Manufacturing,Maintenance Kits,32,262.89,8412.33,5626.39,2785.94,33.12,Birmingham,Claire Morrison,Immediate,Completed,2023-05-10,19
+2023-04-25,PO-10636,Valor Industrial Partners,Seals & Gaskets,30,212.9,6386.89,3602.79,2784.1,43.59,North,Sarah Okonkwo,Net 30,Completed,2023-04-30,5
+2023-04-25,PO-10841,Apex Fluid Systems,Maintenance Kits,31,275.79,8549.54,5792.46,2757.08,32.25,Cardiff,Emma Thornton,Net 30,Completed,2023-05-03,8
+2023-04-26,INV-11063,Apex Fluid Systems,Industrial Pumps,15,468.64,7029.55,4410.46,2619.09,37.26,Midlands,Emma Thornton,Net 30,Completed,2023-05-08,12
+2023-04-28,SO-11680,Orion Subsea Ltd,Seals & Gaskets,19,56.8,1079.16,627.94,451.22,41.81,Inverness,James Whitfield,Net 45,Completed,2023-05-16,18
+2023-04-28,INV-10289,BritOil Downstream Services,Industrial Pumps,107,593.01,63451.89,35057.37,28394.52,44.75,Scotland,Emma Thornton,Net 60,Completed,2023-05-18,20
+2023-05-01,SO-10547,Pacific Offshore GmbH,Maintenance Kits,7,276.83,1937.8,1080.42,857.38,44.25,Germany,David Liang,Net 60,Completed,2023-05-13,12
+2023-05-01,SO-11551,Meridian Process Group,Industrial Pumps,24,659.35,15824.5,9255.05,6569.45,41.51,Wales,Emma Thornton,Net 30,Partially Returned,2023-05-03,2
+2023-05-02,INV-10734,Apex Fluid Systems,Industrial Pumps,17,350.39,5956.62,3220.99,2735.63,45.93,Midlands,David Liang,Net 60,Completed,2023-05-09,7
+2023-05-02,INV-10633,Northgate Engineering Ltd,Industrial Pumps,32,509.83,16314.6,9082.01,7232.59,44.33,North,David Liang,Immediate,Completed,2023-05-12,10
+2023-05-02,SO-10134,BritOil Downstream Services,Compressor Units,92,1259.57,115880.7,71579.11,44301.59,38.23,Scotland,Raj Patel,Net 60,Completed,2023-05-12,10
+2023-05-03,INV-11900,Northgate Engineering Ltd,Compressor Units,50,1532.78,76639.23,48858.54,27780.69,36.25,North,David Liang,Net 45,Completed,2023-05-23,20
+2023-05-03,SO-11490,Northgate Engineering Ltd,Valve Assemblies,69,248.4,17139.29,10535.43,6603.86,38.53,North,David Liang,Net 30,Completed,2023-05-09,6
+2023-05-04,SO-10531,Northgate Engineering Ltd,Seals & Gaskets,119,109.23,12998.33,13125.88,-127.55,-0.98,North,Sarah Okonkwo,Immediate,Completed,2023-05-07,3
+2023-05-04,INV-10971,Northgate Engineering Ltd,Industrial Pumps,112,461.08,51640.9,27791.96,23848.94,46.18,North,James Whitfield,Net 45,Completed,2023-05-15,11
+2023-05-04,PO-11748,Orion Subsea Ltd,Industrial Pumps,14,523.43,7328.06,7715.63,-387.57,-5.29,Scotland,Sarah Okonkwo,Net 60,Completed,2023-05-16,12
+2023-05-05,PO-10222,Apex Fluid Systems,Hydraulic Fittings,25,52.1,1302.4,822.79,479.61,36.83,Midlands,Claire Morrison,Immediate,Completed,2023-05-23,18
+2023-05-08,INV-10029,Northgate Engineering Ltd,Hydraulic Fittings,57,114.31,6515.65,3322.44,3193.21,49.01,North,David Liang,Immediate,Completed,2023-05-27,19
+2023-05-10,PO-11873,BritOil Downstream Services,Valve Assemblies,102,378.62,38618.98,23421.89,15197.09,39.35,Birmingham,Claire Morrison,Net 45,Completed,2023-05-30,20
+2023-05-10,SO-10102,Apex Fluid Systems,Industrial Pumps,10,685.82,6858.17,4063.97,2794.2,40.74,Midlands,Emma Thornton,Net 45,Completed,2023-05-23,13
+2023-05-11,INV-10604,Northgate Engineering Ltd,Industrial Pumps,108,437.12,47208.66,24949.02,22259.64,47.15,Aberdeen,Sarah Okonkwo,Immediate,Completed,2023-05-19,8
+2023-05-11,PO-10703,Northgate Engineering Ltd,Compressor Units,16,1856.84,29709.45,18827.79,10881.66,36.63,North,Raj Patel,Net 60,Completed,2023-05-14,3
+2023-05-15,SO-11716,TechCore Manufacturing,Seals & Gaskets,38,198.37,7538.07,4415.03,3123.04,41.43,Aberdeen,Emma Thornton,Net 30,Completed,2023-05-27,12
+2023-05-15,INV-10345,Northgate Engineering Ltd,Seals & Gaskets,95,91.69,8710.51,4429.21,4281.3,49.15,Inverness,Emma Thornton,Net 30,Completed,2023-05-18,3
+2023-05-16,INV-10158,BritOil Downstream Services,Hydraulic Fittings,28,81.1,2270.85,1317.23,953.62,41.99,Scotland,Raj Patel,Net 60,Completed,2023-05-29,13
+2023-05-18,SO-10575,Apex Fluid Systems,Industrial Pumps,21,648.88,13626.5,7934.95,5691.55,41.77,London,Claire Morrison,Immediate,Completed,2023-05-28,10
+2023-05-18,PO-10710,Northgate Engineering Ltd,Compressor Units,49,1155.18,56604.0,35185.67,21418.33,37.84,North,Claire Morrison,Net 60,Completed,2023-06-06,19
+2023-05-19,PO-10396,Apex Fluid Systems,Compressor Units,35,1653.56,57874.48,37224.8,20649.68,35.68,Midlands,Sarah Okonkwo,Net 45,Completed,2023-05-31,12
+2023-05-19,INV-10405,BritOil Downstream Services,Valve Assemblies,42,319.06,13400.48,8736.23,4664.25,34.81,Scotland,David Liang,Immediate,Completed,2023-05-23,4
+2023-05-23,INV-11859,Apex Fluid Systems,Industrial Pumps,25,451.73,11293.3,7012.5,4280.8,37.91,Inverness,James Whitfield,Immediate,Partially Returned,2023-06-12,20
+2023-05-24,INV-11611,BritOil Downstream Services,Maintenance Kits,11,166.87,1835.57,1177.02,658.55,35.88,Inverness,Claire Morrison,Net 30,Completed,2023-05-26,2
+2023-05-26,SO-10960,Pacific Offshore GmbH,Industrial Pumps,37,691.47,25584.23,13881.91,11702.32,45.74,Germany,James Whitfield,Net 30,Completed,2023-06-02,7
+2023-05-26,PO-10486,Apex Fluid Systems,Seals & Gaskets,29,74.4,2157.57,1231.86,925.71,42.91,Midlands,Emma Thornton,Net 60,Completed,2023-06-07,12
+2023-05-29,SO-11562,Pacific Offshore GmbH,Industrial Pumps,35,441.66,15458.22,9302.17,6156.05,39.82,Germany,Emma Thornton,Net 30,Completed,2023-06-05,7
+2023-05-29,SO-10879,Apex Fluid Systems,Valve Assemblies,43,256.07,11011.04,7115.15,3895.89,35.38,Midlands,Sarah Okonkwo,Immediate,Completed,2023-06-01,3
+2023-05-30,PO-11348,Meridian Process Group,Compressor Units,13,1651.67,21471.72,14814.24,6657.48,31.01,Wales,Raj Patel,Net 60,Completed,2023-06-09,10
+2023-05-30,PO-10122,BritOil Downstream Services,Compressor Units,86,1452.25,124893.83,89863.26,35030.57,28.05,Birmingham,Emma Thornton,Net 60,Completed,2023-06-16,17
+2023-06-01,SO-12074,TechCore Manufacturing,Maintenance Kits,43,180.66,7768.29,4665.31,3102.98,39.94,South,James Whitfield,Immediate,Completed,2023-06-06,5
+2023-06-02,PO-11103,Northgate Engineering Ltd,Seals & Gaskets,91,199.45,18150.2,8842.14,9308.06,51.28,North,Raj Patel,Immediate,Completed,2023-06-07,5
+2023-06-02,SO-11277,Pacific Offshore GmbH,Seals & Gaskets,36,76.73,2762.23,1473.37,1288.86,46.66,Germany,Sarah Okonkwo,Immediate,Completed,2023-06-06,4
+2023-06-05,SO-10721,Pacific Offshore GmbH,Maintenance Kits,18,397.11,7148.03,4819.56,2328.47,32.57,Germany,Emma Thornton,Net 30,Completed,2023-06-22,17
+2023-06-05,INV-11495,BritOil Downstream Services,Seals & Gaskets,18,205.6,3700.88,2175.51,1525.37,41.22,Scotland,James Whitfield,Net 60,Completed,2023-06-23,18
+2023-06-06,SO-10592,Pacific Offshore GmbH,Hydraulic Fittings,2,205.31,410.62,235.92,174.7,42.55,Germany,Emma Thornton,Net 60,Completed,2023-06-17,11
+2023-06-06,PO-10435,Northgate Engineering Ltd,Seals & Gaskets,83,114.3,9486.79,4585.75,4901.04,51.66,North,David Liang,Net 30,Completed,2023-06-17,11
+2023-06-08,PO-10023,Northgate Engineering Ltd,Hydraulic Fittings,21,179.95,3778.89,1919.87,1859.02,49.19,North,Raj Patel,Net 30,Completed,2023-06-18,10
+2023-06-08,PO-12061,Orion Subsea Ltd,Industrial Pumps,11,546.03,6006.28,3607.89,2398.39,39.93,Scotland,David Liang,Net 60,Completed,2023-06-20,12
+2023-06-09,INV-11231,Pacific Offshore GmbH,Hydraulic Fittings,21,74.1,1556.18,976.66,579.52,37.24,Germany,Sarah Okonkwo,Net 45,Completed,2023-06-21,12
+2023-06-12,INV-11125,Meridian Process Group,Valve Assemblies,15,530.15,7952.21,4610.48,3341.73,42.02,Wales,Sarah Okonkwo,Immediate,Completed,2023-06-17,5
+2023-06-12,SO-11825,Orion Subsea Ltd,Maintenance Kits,13,371.19,4825.41,2982.18,1843.23,38.2,Scotland,Raj Patel,Immediate,Completed,2023-06-30,18
+2023-06-13,INV-11104,TechCore Manufacturing,Valve Assemblies,24,155.25,3726.07,2334.19,1391.88,37.36,Cardiff,Claire Morrison,Immediate,Completed,2023-06-26,13
+2023-06-15,INV-10685,BritOil Downstream Services,Industrial Pumps,114,501.2,57136.55,33441.87,23694.68,41.47,Scotland,Raj Patel,Immediate,Completed,2023-06-27,12
+2023-06-15,INV-11055,TechCore Manufacturing,Maintenance Kits,26,197.27,5129.12,3540.09,1589.03,30.98,South,Raj Patel,Immediate,Completed,2023-06-17,2
+2023-06-15,INV-11734,TechCore Manufacturing,Seals & Gaskets,37,206.02,7622.64,3873.05,3749.59,49.19,South,Raj Patel,Net 60,Completed,2023-06-22,7
+2023-06-15,PO-10220,Apex Fluid Systems,Maintenance Kits,36,347.85,12522.54,8132.14,4390.4,35.06,Hamburg,Sarah Okonkwo,Immediate,Completed,2023-06-26,11
+2023-06-16,PO-11663,Valor Industrial Partners,Industrial Pumps,41,590.25,24200.08,12953.59,11246.49,46.47,North,Raj Patel,Immediate,Completed,2023-06-19,3
+2023-06-16,PO-10123,TechCore Manufacturing,Industrial Pumps,38,437.91,16640.48,10133.98,6506.5,39.1,South,David Liang,Net 30,Completed,2023-06-17,1
+2023-06-19,PO-11648,BritOil Downstream Services,Hydraulic Fittings,106,163.22,17301.55,8898.03,8403.52,48.57,Manchester,James Whitfield,Net 60,Completed,2023-07-09,20
+2023-06-19,PO-10949,Valor Industrial Partners,Industrial Pumps,11,531.53,5846.88,3706.47,2140.41,36.61,London,Sarah Okonkwo,Immediate,Completed,2023-06-28,9
+2023-06-20,PO-10310,Northgate Engineering Ltd,Valve Assemblies,49,319.93,15676.41,10446.98,5229.43,33.36,North,Claire Morrison,Net 30,Partially Returned,2023-07-02,12
+2023-06-20,INV-11246,Apex Fluid Systems,Industrial Pumps,12,469.07,5628.83,3068.58,2560.25,45.48,Inverness,Raj Patel,Net 30,Partially Returned,2023-07-08,18
+2023-06-20,PO-10370,Apex Fluid Systems,Industrial Pumps,42,616.55,25895.09,15393.3,10501.79,40.56,Midlands,Claire Morrison,Immediate,Completed,2023-06-23,3
+2023-06-21,SO-11812,BritOil Downstream Services,Compressor Units,106,2712.34,287508.18,178253.13,109255.05,38.0,London,David Liang,Net 60,Partially Returned,2023-06-28,7
+2023-06-22,PO-12066,Northgate Engineering Ltd,Maintenance Kits,37,142.92,5288.1,3330.06,1958.04,37.03,North,Raj Patel,Net 45,Completed,2023-06-30,8
+2023-06-22,SO-11387,Apex Fluid Systems,Industrial Pumps,37,471.08,17429.93,9181.17,8248.76,47.33,Midlands,Sarah Okonkwo,Immediate,Completed,2023-06-25,3
+2023-06-23,SO-10571,Pacific Offshore GmbH,Industrial Pumps,31,572.67,17752.92,10493.73,7259.19,40.89,Germany,Claire Morrison,Net 45,Completed,2023-07-01,8
+2023-06-23,PO-11178,Pacific Offshore GmbH,Seals & Gaskets,30,167.34,5020.17,2959.61,2060.56,41.05,Germany,James Whitfield,Immediate,Completed,2023-06-25,2
+2023-06-23,PO-10355,Apex Fluid Systems,Hydraulic Fittings,27,83.95,2266.67,1408.79,857.88,37.85,Midlands,Sarah Okonkwo,Net 45,Completed,2023-07-12,19
+2023-06-26,PO-11208,BritOil Downstream Services,Seals & Gaskets,55,151.63,8339.55,4188.81,4150.74,49.77,Inverness,Raj Patel,Immediate,Partially Returned,2023-07-02,6
+2023-06-27,PO-10039,Northgate Engineering Ltd,Compressor Units,33,2134.64,70443.09,45698.24,24744.85,35.13,North,Raj Patel,Net 45,Completed,2023-07-12,15
+2023-06-27,PO-10907,BritOil Downstream Services,Seals & Gaskets,98,124.57,12208.27,6298.75,5909.52,48.41,Cardiff,David Liang,Net 60,Completed,2023-07-08,11
+2023-06-28,INV-12045,Northgate Engineering Ltd,Seals & Gaskets,113,201.57,22777.91,11201.29,11576.62,50.82,North,Emma Thornton,Net 45,Completed,2023-07-10,12
+2023-06-29,SO-11781,Northgate Engineering Ltd,Valve Assemblies,88,517.55,45544.27,28418.48,17125.79,37.6,North,James Whitfield,Net 60,Completed,2023-07-19,20
+2023-06-29,PO-11060,Pacific Offshore GmbH,Valve Assemblies,31,256.83,7961.83,5295.88,2665.95,33.48,Germany,David Liang,Net 30,Completed,2023-07-06,7
+2023-06-29,PO-10034,BritOil Downstream Services,Maintenance Kits,69,126.57,8733.4,5833.2,2900.2,33.21,Scotland,Claire Morrison,Net 30,Completed,2023-07-08,9
+2023-06-29,PO-12057,Northgate Engineering Ltd,Industrial Pumps,16,554.85,8877.67,5363.8,3513.87,39.58,Cardiff,Sarah Okonkwo,Net 60,Completed,2023-07-18,19
+2023-06-30,SO-11213,Northgate Engineering Ltd,Hydraulic Fittings,54,84.38,4556.74,2310.69,2246.05,49.29,Hamburg,Emma Thornton,Net 45,Completed,2023-07-03,3
+2023-06-30,SO-11580,BritOil Downstream Services,Seals & Gaskets,42,144.84,6083.08,5994.83,88.25,1.45,Scotland,Sarah Okonkwo,Net 60,Completed,2023-07-01,1
+2023-07-03,INV-10246,Apex Fluid Systems,Seals & Gaskets,36,107.56,3872.17,1946.68,1925.49,49.73,Hamburg,Claire Morrison,Net 30,Completed,2023-07-22,19
+2023-07-05,SO-11067,Northgate Engineering Ltd,Compressor Units,20,1703.04,34060.88,24089.77,9971.11,29.27,North,Emma Thornton,Net 45,Completed,2023-07-10,5
+2023-07-10,PO-10976,Apex Fluid Systems,Maintenance Kits,4,221.58,886.31,513.46,372.85,42.07,Midlands,David Liang,Net 30,Completed,2023-07-27,17
+2023-07-11,SO-11408,Apex Fluid Systems,Maintenance Kits,20,112.67,2253.35,1283.61,969.74,43.04,Sheffield,Claire Morrison,Immediate,Completed,2023-07-15,4
+2023-07-11,PO-10799,BritOil Downstream Services,Seals & Gaskets,55,91.04,5006.97,2565.04,2441.93,48.77,Scotland,Sarah Okonkwo,Net 30,Completed,2023-07-25,14
+2023-07-12,PO-11849,TechCore Manufacturing,Industrial Pumps,27,551.68,14895.47,7902.83,6992.64,46.94,South,Claire Morrison,Net 30,Completed,2023-07-31,19
+2023-07-13,SO-10833,Northgate Engineering Ltd,Industrial Pumps,104,333.01,34633.49,18255.56,16377.93,47.29,North,Emma Thornton,Net 30,Completed,2023-07-24,11
+2023-07-14,PO-11143,BritOil Downstream Services,Industrial Pumps,43,590.65,25398.12,13377.61,12020.51,47.33,Scotland,Claire Morrison,Immediate,Completed,2023-07-26,12
+2023-07-18,SO-10226,BritOil Downstream Services,Compressor Units,114,1436.25,163732.45,117140.73,46591.72,28.46,Birmingham,Claire Morrison,Net 30,Completed,2023-07-31,13
+2023-07-18,INV-10221,Pacific Offshore GmbH,Industrial Pumps,4,278.44,1113.76,675.15,438.61,39.38,Germany,Raj Patel,Net 30,Completed,2023-08-01,14
+2023-07-19,PO-11244,Orion Subsea Ltd,Hydraulic Fittings,11,33.66,370.31,230.07,140.24,37.87,Scotland,Claire Morrison,Net 45,Completed,2023-07-28,9
+2023-07-19,INV-10024,Apex Fluid Systems,Industrial Pumps,8,320.42,2563.37,1594.06,969.31,37.81,Midlands,Emma Thornton,Net 60,Partially Returned,2023-08-08,20
+2023-07-20,PO-11030,Northgate Engineering Ltd,Industrial Pumps,38,298.47,11341.81,7015.3,4326.51,38.15,North,David Liang,Immediate,Completed,2023-07-25,5
+2023-07-20,SO-10889,BritOil Downstream Services,Seals & Gaskets,62,75.88,4704.42,2536.24,2168.18,46.09,Scotland,Emma Thornton,Net 60,Completed,2023-08-01,12
+2023-07-20,PO-11880,BritOil Downstream Services,Industrial Pumps,13,348.64,4532.27,2749.73,1782.54,39.33,Scotland,Claire Morrison,Net 30,Completed,2023-07-30,10
+2023-07-21,INV-11154,Northgate Engineering Ltd,Seals & Gaskets,97,46.2,4481.25,2232.02,2249.23,50.19,North,Claire Morrison,Immediate,Completed,2023-08-03,13
+2023-07-21,INV-11307,Orion Subsea Ltd,Seals & Gaskets,15,76.78,1151.72,641.7,510.02,44.28,Aberdeen,James Whitfield,Net 45,Completed,2023-08-08,18
+2023-07-24,INV-10108,TechCore Manufacturing,Maintenance Kits,4,118.88,475.54,271.0,204.54,43.01,South,Raj Patel,Net 45,Completed,2023-08-13,20
+2023-07-24,SO-11709,Pacific Offshore GmbH,Maintenance Kits,19,261.24,4963.5,3198.88,1764.62,35.55,Birmingham,Claire Morrison,Net 30,Completed,2023-07-29,5
+2023-07-25,INV-10620,BritOil Downstream Services,Seals & Gaskets,79,108.82,8597.17,5323.69,3273.48,38.08,Scotland,Raj Patel,Immediate,Completed,2023-07-30,5
+2023-07-25,INV-10096,Northgate Engineering Ltd,Maintenance Kits,57,186.89,10652.68,6391.49,4261.19,40.0,North,Emma Thornton,Immediate,Completed,2023-07-29,4
+2023-07-26,PO-11510,Apex Fluid Systems,Maintenance Kits,27,130.51,3523.81,1987.92,1535.89,43.59,Midlands,Sarah Okonkwo,Net 45,Completed,2023-08-10,15
+2023-07-27,SO-10077,Meridian Process Group,Industrial Pumps,5,483.68,2418.38,2254.36,164.02,6.78,Wales,Sarah Okonkwo,Net 45,Completed,2023-08-02,6
+2023-07-31,SO-11830,Orion Subsea Ltd,Maintenance Kits,3,169.17,507.5,330.87,176.63,34.8,Scotland,Claire Morrison,Net 45,Refunded,2023-08-13,13
+2023-07-31,PO-10325,Northgate Engineering Ltd,Industrial Pumps,12,393.21,4718.5,2509.15,2209.35,46.82,North,James Whitfield,Net 60,Completed,2023-08-14,14
+2023-07-31,PO-11968,Apex Fluid Systems,Compressor Units,23,2146.93,49379.34,33340.1,16039.24,32.48,Midlands,Emma Thornton,Net 60,Completed,2023-08-02,2
+2023-08-01,PO-11001,BritOil Downstream Services,Industrial Pumps,73,368.62,26909.43,16738.7,10170.73,37.8,London,Emma Thornton,Net 60,Completed,2023-08-19,18
+2023-08-02,SO-12023,Apex Fluid Systems,Seals & Gaskets,41,164.67,6751.42,3970.46,2780.96,41.19,Midlands,Claire Morrison,Net 30,Completed,2023-08-20,18
+2023-08-02,SO-10762,Northgate Engineering Ltd,Hydraulic Fittings,83,50.53,4194.35,2175.87,2018.48,48.12,London,Raj Patel,Immediate,Partially Returned,2023-08-06,4
+2023-08-02,INV-11870,Northgate Engineering Ltd,Seals & Gaskets,78,63.5,4952.76,2392.54,2560.22,51.69,North,Claire Morrison,Net 60,Completed,2023-08-10,8
+2023-08-02,SO-10453,Apex Fluid Systems,Valve Assemblies,41,447.93,18364.98,10638.47,7726.51,42.07,Midlands,Raj Patel,Net 60,Completed,2023-08-20,18
+2023-08-04,PO-11985,Meridian Process Group,Seals & Gaskets,24,139.97,3359.17,1759.09,1600.08,47.63,Wales,James Whitfield,Net 45,Completed,2023-08-17,13
+2023-08-04,SO-11187,Meridian Process Group,Industrial Pumps,20,431.0,8619.94,4541.18,4078.76,47.32,Wales,David Liang,Net 45,Completed,2023-08-24,20
+2023-08-04,SO-10981,Northgate Engineering Ltd,Maintenance Kits,84,141.72,11904.77,6927.09,4977.68,41.81,Inverness,Sarah Okonkwo,Net 45,Completed,2023-08-09,5
+2023-08-04,SO-10366,TechCore Manufacturing,Industrial Pumps,15,465.11,6976.6,4008.01,2968.59,42.55,South,Raj Patel,Immediate,Completed,2023-08-06,2
+2023-08-07,PO-11817,Pacific Offshore GmbH,Industrial Pumps,10,603.73,6037.3,3690.0,2347.3,38.88,Germany,Claire Morrison,Immediate,Completed,2023-08-26,19
+2023-08-10,INV-11165,Northgate Engineering Ltd,Compressor Units,52,1944.16,101096.09,59831.04,41265.05,40.82,North,David Liang,Immediate,Partially Returned,2023-08-16,6
+2023-08-11,SO-10110,Apex Fluid Systems,Seals & Gaskets,11,68.29,751.15,379.09,372.06,49.53,Manchester,David Liang,Net 45,Completed,2023-08-15,4
+2023-08-11,PO-11696,Northgate Engineering Ltd,Industrial Pumps,96,413.42,39688.64,24038.26,15650.38,39.43,North,Emma Thornton,Net 30,Completed,2023-08-29,18
+2023-08-11,INV-11827,Apex Fluid Systems,Industrial Pumps,16,447.13,7154.08,3863.31,3290.77,46.0,Midlands,Sarah Okonkwo,Net 60,Completed,2023-08-30,19
+2023-08-14,PO-11889,Meridian Process Group,Valve Assemblies,9,232.44,2091.97,1319.15,772.82,36.94,Wales,David Liang,Net 30,Completed,2023-09-02,19
+2023-08-18,SO-11912,Pacific Offshore GmbH,Valve Assemblies,30,430.25,12907.51,7774.89,5132.62,39.76,Germany,David Liang,Immediate,Completed,2023-08-28,10
+2023-08-18,PO-11278,BritOil Downstream Services,Seals & Gaskets,37,119.0,4403.02,2643.6,1759.42,39.96,Scotland,Emma Thornton,Net 30,Completed,2023-08-29,11
+2023-08-18,PO-10444,Pacific Offshore GmbH,Maintenance Kits,8,162.2,1297.57,875.66,421.91,32.52,Germany,Sarah Okonkwo,Net 60,Completed,2023-08-21,3
+2023-08-18,INV-10074,Meridian Process Group,Maintenance Kits,17,211.31,3592.34,2307.94,1284.4,35.75,Wales,Sarah Okonkwo,Net 60,Completed,2023-08-20,2
+2023-08-21,SO-10175,Orion Subsea Ltd,Seals & Gaskets,10,142.35,1423.52,872.39,551.13,38.72,Scotland,David Liang,Immediate,Completed,2023-08-30,9
+2023-08-21,PO-11415,BritOil Downstream Services,Seals & Gaskets,49,120.34,5896.73,3575.62,2321.11,39.36,Scotland,Claire Morrison,Net 60,Completed,2023-08-24,3
+2023-08-22,SO-11372,Pacific Offshore GmbH,Maintenance Kits,16,298.93,4782.95,2799.66,1983.29,41.47,Germany,Claire Morrison,Net 30,Completed,2023-09-11,20
+2023-08-22,SO-10455,Northgate Engineering Ltd,Industrial Pumps,78,401.64,31327.67,19715.79,11611.88,37.07,Birmingham,David Liang,Immediate,Completed,2023-09-01,10
+2023-08-23,PO-10387,Apex Fluid Systems,Seals & Gaskets,9,100.11,901.02,514.41,386.61,42.91,Midlands,Sarah Okonkwo,Immediate,Completed,2023-08-31,8
+2023-08-24,SO-12052,BritOil Downstream Services,Maintenance Kits,23,296.91,6829.04,4424.63,2404.41,35.21,Scotland,Emma Thornton,Net 30,Completed,2023-09-01,8
+2023-08-24,SO-10872,Northgate Engineering Ltd,Seals & Gaskets,19,60.55,1150.36,653.43,496.93,43.2,North,Raj Patel,Net 30,Completed,2023-09-02,9
+2023-08-24,PO-10837,Northgate Engineering Ltd,Hydraulic Fittings,48,41.19,1976.95,1162.05,814.9,41.22,Hamburg,Sarah Okonkwo,Net 30,Completed,2023-08-26,2
+2023-08-28,SO-11505,Northgate Engineering Ltd,Seals & Gaskets,16,145.52,2328.27,1131.53,1196.74,51.4,Aberdeen,Emma Thornton,Net 45,Completed,2023-09-05,8
+2023-08-28,PO-11978,Apex Fluid Systems,Valve Assemblies,41,448.59,18392.13,10577.91,7814.22,42.49,Midlands,Sarah Okonkwo,Net 45,Completed,2023-08-30,2
+2023-08-29,SO-10942,Meridian Process Group,Industrial Pumps,15,359.36,5390.45,2926.98,2463.47,45.7,Wales,Emma Thornton,Net 45,Completed,2023-09-04,6
+2023-08-30,INV-10452,Apex Fluid Systems,Hydraulic Fittings,29,190.07,5511.94,2932.21,2579.73,46.8,Aberdeen,Emma Thornton,Net 60,Completed,2023-08-31,1
+2023-08-30,SO-10153,Apex Fluid Systems,Industrial Pumps,42,509.92,21416.75,13035.55,8381.2,39.13,Midlands,James Whitfield,Net 30,Refunded,2023-09-17,18
+2023-08-30,SO-11517,TechCore Manufacturing,Maintenance Kits,15,305.37,4580.56,2895.63,1684.93,36.78,South,David Liang,Net 60,Completed,2023-09-01,2
+2023-09-06,PO-10658,Northgate Engineering Ltd,Seals & Gaskets,94,94.52,8884.6,5168.66,3715.94,41.82,North,Raj Patel,Net 60,Partially Returned,2023-09-14,8
+2023-09-06,SO-11202,Northgate Engineering Ltd,Valve Assemblies,23,263.74,6066.04,3771.84,2294.2,37.82,North,Claire Morrison,Net 60,Completed,2023-09-23,17
+2023-09-07,PO-10422,Apex Fluid Systems,Industrial Pumps,39,566.18,22080.92,12373.11,9707.81,43.96,Midlands,Raj Patel,Net 30,Completed,2023-09-08,1
+2023-09-08,SO-10281,Meridian Process Group,Industrial Pumps,36,615.74,22166.52,13651.87,8514.65,38.41,Wales,Sarah Okonkwo,Immediate,Completed,2023-09-25,17
+2023-09-12,SO-11466,Apex Fluid Systems,Valve Assemblies,5,388.29,1941.44,1232.66,708.78,36.51,Midlands,James Whitfield,Net 60,Completed,2023-09-18,6
+2023-09-13,PO-11955,TechCore Manufacturing,Industrial Pumps,39,332.69,12974.83,7004.29,5970.54,46.02,South,David Liang,Net 60,Completed,2023-09-14,1
+2023-09-13,SO-10275,Orion Subsea Ltd,Valve Assemblies,5,132.43,662.16,389.88,272.28,41.12,Scotland,Raj Patel,Net 30,Completed,2023-09-30,17
+2023-09-13,INV-10165,Orion Subsea Ltd,Seals & Gaskets,39,63.64,2481.87,1193.61,1288.26,51.91,Scotland,Claire Morrison,Immediate,Completed,2023-09-29,16
+2023-09-14,INV-11442,Pacific Offshore GmbH,Compressor Units,10,2184.38,21843.75,14384.03,7459.72,34.15,Birmingham,Claire Morrison,Net 30,Completed,2023-09-26,12
+2023-09-14,SO-10749,Apex Fluid Systems,Hydraulic Fittings,33,129.75,4281.85,2263.65,2018.2,47.13,Midlands,Emma Thornton,Immediate,Completed,2023-09-23,9
+2023-09-14,INV-10534,Northgate Engineering Ltd,Maintenance Kits,97,175.51,17024.56,11423.84,5600.72,32.9,North,Raj Patel,Immediate,Partially Returned,2023-09-30,16
+2023-09-19,INV-11108,Pacific Offshore GmbH,Seals & Gaskets,4,104.85,419.39,237.07,182.32,43.47,Cardiff,Emma Thornton,Net 30,Completed,2023-09-28,9
+2023-09-20,SO-11380,BritOil Downstream Services,Seals & Gaskets,77,173.54,13362.91,7928.89,5434.02,40.66,London,David Liang,Immediate,Partially Returned,2023-10-09,19
+2023-09-21,PO-10446,Apex Fluid Systems,Seals & Gaskets,39,45.7,1782.34,1063.17,719.17,40.35,Midlands,Claire Morrison,Net 45,Completed,2023-09-23,2
+2023-09-21,SO-10315,Northgate Engineering Ltd,Maintenance Kits,21,93.58,1965.15,1150.28,814.87,41.47,North,Sarah Okonkwo,Immediate,Refunded,2023-09-24,3
+2023-09-22,SO-11432,BritOil Downstream Services,Valve Assemblies,28,445.11,12463.12,13555.4,-1092.28,-8.76,Scotland,James Whitfield,Net 45,Partially Returned,2023-09-26,4
+2023-09-22,INV-11413,Northgate Engineering Ltd,Seals & Gaskets,63,57.69,3634.76,1784.04,1850.72,50.92,North,David Liang,Net 60,Completed,2023-09-26,4
+2023-09-25,PO-10925,BritOil Downstream Services,Compressor Units,109,1693.71,184614.83,114154.73,70460.1,38.17,Scotland,Emma Thornton,Immediate,Completed,2023-10-10,15
+2023-09-25,PO-10774,Apex Fluid Systems,Industrial Pumps,6,375.32,2251.92,1252.41,999.51,44.38,Midlands,Claire Morrison,Net 60,Completed,2023-10-11,16
+2023-09-25,INV-11754,Northgate Engineering Ltd,Seals & Gaskets,16,126.77,2028.27,1215.46,812.81,40.07,North,Claire Morrison,Net 30,Refunded,2023-09-27,2
+2023-09-28,INV-10724,BritOil Downstream Services,Hydraulic Fittings,76,38.09,2894.95,1605.84,1289.11,44.53,Scotland,Emma Thornton,Immediate,Refunded,2023-10-16,18
+2023-09-28,SO-10212,Northgate Engineering Ltd,Seals & Gaskets,69,88.48,6105.13,6498.32,-393.19,-6.44,Inverness,Sarah Okonkwo,Net 30,Completed,2023-10-03,5
+2023-09-29,SO-11226,Orion Subsea Ltd,Compressor Units,15,1090.07,16350.99,10253.99,6097.0,37.29,Scotland,Claire Morrison,Net 45,Completed,2023-10-08,9
+2023-09-29,INV-11878,Apex Fluid Systems,Seals & Gaskets,42,135.43,5687.99,2996.87,2691.12,47.31,Midlands,James Whitfield,Immediate,Completed,2023-10-18,19
+2023-09-29,INV-11773,Pacific Offshore GmbH,Industrial Pumps,36,602.12,21676.27,13521.02,8155.25,37.62,Germany,David Liang,Net 45,Completed,2023-10-12,13
+2023-10-02,INV-11313,BritOil Downstream Services,Seals & Gaskets,47,163.42,7680.87,3952.76,3728.11,48.54,Hamburg,Sarah Okonkwo,Immediate,Completed,2023-10-21,19
+2023-10-02,SO-10127,Apex Fluid Systems,Maintenance Kits,13,314.17,4084.19,3653.12,431.07,10.55,Midlands,David Liang,Net 30,Completed,2023-10-16,14
+2023-10-02,PO-11411,Northgate Engineering Ltd,Maintenance Kits,17,180.64,3070.84,1697.07,1373.77,44.74,North,Emma Thornton,Immediate,Partially Returned,2023-10-11,9
+2023-10-03,SO-10854,Apex Fluid Systems,Valve Assemblies,7,575.66,4029.65,4379.62,-349.97,-8.68,Midlands,David Liang,Net 30,Completed,2023-10-08,5
+2023-10-05,PO-10265,Pacific Offshore GmbH,Seals & Gaskets,26,169.42,4404.95,2123.17,2281.78,51.8,Germany,David Liang,Net 45,Completed,2023-10-18,13
+2023-10-06,INV-11323,BritOil Downstream Services,Compressor Units,49,2052.99,100596.46,58881.35,41715.11,41.47,Scotland,James Whitfield,Net 30,Refunded,2023-10-14,8
+2023-10-06,INV-11314,BritOil Downstream Services,Valve Assemblies,69,376.66,25989.29,14428.16,11561.13,44.48,Inverness,Sarah Okonkwo,Net 30,Completed,2023-10-15,9
+2023-10-06,INV-11531,Valor Industrial Partners,Hydraulic Fittings,7,79.21,554.49,350.42,204.07,36.8,North,Emma Thornton,Net 45,Completed,2023-10-08,2
+2023-10-06,INV-10745,Northgate Engineering Ltd,Hydraulic Fittings,99,197.73,19574.95,11387.61,8187.34,41.83,North,Sarah Okonkwo,Immediate,Completed,2023-10-09,3
+2023-10-09,PO-11905,Valor Industrial Partners,Industrial Pumps,17,544.37,9254.27,5528.73,3725.54,40.26,North,Raj Patel,Immediate,Partially Returned,2023-10-25,16
+2023-10-09,SO-11915,Northgate Engineering Ltd,Hydraulic Fittings,27,76.15,2056.08,1303.16,752.92,36.62,North,James Whitfield,Net 30,Completed,2023-10-13,4
+2023-10-10,PO-10975,BritOil Downstream Services,Hydraulic Fittings,84,210.98,17722.33,9436.28,8286.05,46.75,Sheffield,Sarah Okonkwo,Net 30,Completed,2023-10-30,20
+2023-10-12,PO-10441,BritOil Downstream Services,Maintenance Kits,97,231.03,22409.59,13398.52,9011.07,40.21,Hamburg,Raj Patel,Net 30,Partially Returned,2023-10-22,10
+2023-10-12,PO-11489,TechCore Manufacturing,Maintenance Kits,27,382.48,10326.84,6015.45,4311.39,41.75,South,Emma Thornton,Net 30,Partially Returned,2023-10-18,6
+2023-10-13,PO-11425,Northgate Engineering Ltd,Maintenance Kits,35,385.37,13488.11,8187.72,5300.39,39.3,North,Claire Morrison,Immediate,Completed,2023-10-17,4
+2023-10-17,INV-11316,Orion Subsea Ltd,Valve Assemblies,31,492.54,15268.61,9001.16,6267.45,41.05,Scotland,Raj Patel,Immediate,Completed,2023-10-25,8
+2023-10-17,PO-11044,Northgate Engineering Ltd,Industrial Pumps,57,399.79,22787.83,13746.24,9041.59,39.68,North,James Whitfield,Net 45,Completed,2023-10-18,1
+2023-10-18,PO-12038,Northgate Engineering Ltd,Compressor Units,21,2381.51,50011.8,35164.27,14847.53,29.69,North,Raj Patel,Net 60,Completed,2023-10-23,5
+2023-10-18,SO-10827,Northgate Engineering Ltd,Compressor Units,74,2322.92,171896.06,122571.58,49324.48,28.69,North,James Whitfield,Net 60,Completed,2023-11-04,17
+2023-10-19,SO-11343,Northgate Engineering Ltd,Valve Assemblies,50,446.84,22341.88,14637.62,7704.26,34.48,North,James Whitfield,Immediate,Completed,2023-11-04,16
+2023-10-24,INV-11379,Apex Fluid Systems,Maintenance Kits,30,185.7,5570.98,6041.78,-470.8,-8.45,Midlands,David Liang,Net 45,Completed,2023-10-30,6
+2023-10-25,PO-11458,Apex Fluid Systems,Industrial Pumps,22,366.79,8069.43,4398.23,3671.2,45.5,Midlands,Raj Patel,Immediate,Completed,2023-11-01,7
+2023-10-25,SO-12017,Apex Fluid Systems,Seals & Gaskets,33,88.26,2912.74,1653.7,1259.04,43.23,Midlands,Emma Thornton,Net 60,Completed,2023-10-28,3
+2023-10-30,PO-10995,BritOil Downstream Services,Hydraulic Fittings,19,52.32,994.05,617.22,376.83,37.91,Manchester,Raj Patel,Immediate,Completed,2023-11-05,6
+2023-10-31,SO-11354,BritOil Downstream Services,Industrial Pumps,71,601.58,42712.41,24587.34,18125.07,42.44,Scotland,Claire Morrison,Immediate,Completed,2023-11-05,5
+2023-10-31,INV-11656,Northgate Engineering Ltd,Maintenance Kits,72,164.69,11857.9,7073.69,4784.21,40.35,North,Raj Patel,Net 45,Completed,2023-11-17,17
+2023-10-31,PO-10141,Pacific Offshore GmbH,Industrial Pumps,10,633.95,6339.54,3527.75,2811.79,44.35,Germany,Raj Patel,Immediate,Completed,2023-11-10,10
+2023-10-31,INV-11957,Apex Fluid Systems,Industrial Pumps,13,566.08,7359.08,4331.04,3028.04,41.15,Sheffield,Claire Morrison,Net 30,Completed,2023-11-10,10
+2023-11-02,PO-10348,Meridian Process Group,Industrial Pumps,28,619.83,17355.23,10141.4,7213.83,41.57,Aberdeen,Sarah Okonkwo,Net 45,Completed,2023-11-04,2
+2023-11-03,SO-10296,Pacific Offshore GmbH,Hydraulic Fittings,26,157.97,4107.34,2328.21,1779.13,43.32,Germany,James Whitfield,Immediate,Refunded,2023-11-14,11
+2023-11-03,PO-10320,Meridian Process Group,Industrial Pumps,23,513.46,11809.64,11266.14,543.5,4.6,Wales,Claire Morrison,Net 45,Refunded,2023-11-17,14
+2023-11-03,PO-11337,Northgate Engineering Ltd,Maintenance Kits,75,379.27,28445.39,18196.92,10248.47,36.03,North,Emma Thornton,Net 60,Completed,2023-11-11,8
+2023-11-06,PO-10524,TechCore Manufacturing,Industrial Pumps,40,666.61,26664.57,14355.94,12308.63,46.16,South,Emma Thornton,Immediate,Completed,2023-11-26,20
+2023-11-08,INV-11048,Northgate Engineering Ltd,Industrial Pumps,16,580.94,9295.07,5562.09,3732.98,40.16,North,James Whitfield,Net 60,Completed,2023-11-26,18
+2023-11-08,SO-10545,BritOil Downstream Services,Valve Assemblies,43,409.58,17611.78,10020.24,7591.54,43.1,Scotland,Raj Patel,Net 30,Completed,2023-11-19,11
+2023-11-09,INV-11327,TechCore Manufacturing,Hydraulic Fittings,28,228.64,6401.91,3237.86,3164.05,49.42,Hamburg,Emma Thornton,Net 45,Refunded,2023-11-12,3
+2023-11-09,SO-10919,Pacific Offshore GmbH,Industrial Pumps,17,667.06,11339.96,6096.79,5243.17,46.24,Germany,Claire Morrison,Net 60,Completed,2023-11-22,13
+2023-11-09,SO-10694,BritOil Downstream Services,Seals & Gaskets,94,183.3,17230.31,9613.32,7616.99,44.21,Scotland,Emma Thornton,Net 30,Completed,2023-11-28,19
+2023-11-10,PO-11421,Northgate Engineering Ltd,Seals & Gaskets,81,163.92,13277.59,7311.39,5966.2,44.93,North,Emma Thornton,Net 45,Completed,2023-11-16,6
+2023-11-10,SO-10331,Valor Industrial Partners,Hydraulic Fittings,36,112.24,4040.6,2400.12,1640.48,40.6,North,Raj Patel,Immediate,Completed,2023-11-23,13
+2023-11-13,SO-11960,Northgate Engineering Ltd,Seals & Gaskets,79,193.24,15266.11,7640.36,7625.75,49.95,North,Emma Thornton,Net 30,Refunded,2023-11-27,14
+2023-11-13,SO-11694,Pacific Offshore GmbH,Seals & Gaskets,24,118.48,2843.46,1522.9,1320.56,46.44,Germany,David Liang,Immediate,Completed,2023-11-26,13
+2023-11-15,SO-11653,Pacific Offshore GmbH,Valve Assemblies,44,145.13,6385.85,4067.23,2318.62,36.31,Germany,David Liang,Net 45,Refunded,2023-12-01,16
+2023-11-16,INV-11330,Northgate Engineering Ltd,Industrial Pumps,18,657.88,11841.77,7136.34,4705.43,39.74,North,Emma Thornton,Net 30,Completed,2023-12-05,19
+2023-11-16,SO-11670,BritOil Downstream Services,Industrial Pumps,80,361.78,28942.66,17617.7,11324.96,39.13,London,Emma Thornton,Net 30,Completed,2023-11-19,3
+2023-11-17,PO-11832,BritOil Downstream Services,Seals & Gaskets,57,161.71,9217.21,5564.81,3652.4,39.63,Scotland,Claire Morrison,Net 30,Completed,2023-11-18,1
+2023-11-20,INV-11777,Apex Fluid Systems,Industrial Pumps,33,550.33,18160.96,9665.4,8495.56,46.78,Midlands,Emma Thornton,Immediate,Completed,2023-12-08,18
+2023-11-20,PO-11534,TechCore Manufacturing,Maintenance Kits,11,338.7,3725.67,3734.42,-8.75,-0.23,South,Raj Patel,Net 30,Completed,2023-11-28,8
+2023-11-21,INV-10769,Pacific Offshore GmbH,Seals & Gaskets,34,71.82,2441.99,1391.94,1050.05,43.0,Germany,Claire Morrison,Net 30,Completed,2023-11-28,7
+2023-11-24,INV-10577,Pacific Offshore GmbH,Maintenance Kits,6,207.65,1245.9,742.39,503.51,40.41,Germany,Claire Morrison,Immediate,Completed,2023-12-12,18
+2023-11-27,INV-10965,Apex Fluid Systems,Compressor Units,8,2535.22,20281.79,12085.64,8196.15,40.41,Midlands,James Whitfield,Immediate,Refunded,2023-12-04,7
+2023-11-29,SO-10613,Northgate Engineering Ltd,Industrial Pumps,41,355.06,14557.39,9239.25,5318.14,36.53,London,Claire Morrison,Net 30,Completed,2023-12-06,7
+2023-11-29,INV-10384,Pacific Offshore GmbH,Seals & Gaskets,19,204.29,3881.59,2096.18,1785.41,46.0,Germany,Claire Morrison,Net 30,Completed,2023-11-30,1
+2023-11-30,PO-10500,Northgate Engineering Ltd,Industrial Pumps,68,699.82,47588.04,25270.74,22317.3,46.9,North,Sarah Okonkwo,Net 45,Completed,2023-12-20,20
+2023-11-30,SO-10674,Pacific Offshore GmbH,Hydraulic Fittings,15,128.27,1924.09,1069.25,854.84,44.43,Germany,David Liang,Immediate,Completed,2023-12-12,12
+2023-12-01,SO-11807,BritOil Downstream Services,Industrial Pumps,26,554.08,14406.0,7914.44,6491.56,45.06,Scotland,Sarah Okonkwo,Net 60,Completed,2023-12-10,9
+2023-12-01,PO-11301,Apex Fluid Systems,Seals & Gaskets,20,96.54,1930.7,935.47,995.23,51.55,Midlands,Sarah Okonkwo,Net 30,Completed,2023-12-03,2
+2023-12-05,SO-11486,TechCore Manufacturing,Seals & Gaskets,12,190.2,2282.44,1245.97,1036.47,45.41,South,Claire Morrison,Net 60,Completed,2023-12-17,12
+2023-12-05,SO-10653,Northgate Engineering Ltd,Seals & Gaskets,16,124.56,1992.9,1145.89,847.01,42.5,North,James Whitfield,Net 30,Completed,2023-12-19,14
+2023-12-05,PO-10358,BritOil Downstream Services,Compressor Units,13,1674.64,21770.37,13067.46,8702.91,39.98,Scotland,Raj Patel,Net 30,Completed,2023-12-14,9
+2023-12-06,PO-10754,BritOil Downstream Services,Compressor Units,83,1519.68,126133.74,85337.37,40796.37,32.34,Hamburg,Raj Patel,Immediate,Completed,2023-12-07,1
+2023-12-06,PO-11559,BritOil Downstream Services,Industrial Pumps,13,677.18,8803.31,9120.11,-316.8,-3.6,Scotland,Raj Patel,Net 30,Completed,2023-12-25,19
+2023-12-07,PO-11185,BritOil Downstream Services,Maintenance Kits,77,357.42,27521.56,27332.85,188.71,0.69,Hamburg,Claire Morrison,Net 45,Completed,2023-12-21,14
+2023-12-07,SO-10429,Pacific Offshore GmbH,Seals & Gaskets,19,197.17,3746.17,2065.71,1680.46,44.86,Germany,Sarah Okonkwo,Net 30,Completed,2023-12-13,6
+2023-12-07,SO-11675,Apex Fluid Systems,Industrial Pumps,13,369.04,4797.53,2922.86,1874.67,39.08,Midlands,Sarah Okonkwo,Net 45,Completed,2023-12-15,8
+2023-12-07,PO-10844,Northgate Engineering Ltd,Hydraulic Fittings,30,131.69,3950.85,4242.4,-291.55,-7.38,North,James Whitfield,Net 60,Completed,2023-12-24,17
+2023-12-07,SO-10186,Northgate Engineering Ltd,Industrial Pumps,72,651.99,46943.15,29941.72,17001.43,36.22,North,Claire Morrison,Net 60,Completed,2023-12-27,20
+2023-12-08,PO-10234,Meridian Process Group,Industrial Pumps,17,354.96,6034.33,3390.25,2644.08,43.82,Wales,Raj Patel,Net 60,Completed,2023-12-18,10
+2023-12-08,SO-10664,Northgate Engineering Ltd,Hydraulic Fittings,114,122.55,13971.27,8200.2,5771.07,41.31,North,Sarah Okonkwo,Immediate,Completed,2023-12-17,9
+2023-12-11,INV-11461,Pacific Offshore GmbH,Compressor Units,28,1903.66,53302.36,31671.42,21630.94,40.58,Germany,David Liang,Net 60,Partially Returned,2023-12-15,4
+2023-12-11,INV-10985,TechCore Manufacturing,Industrial Pumps,30,682.5,20475.02,12394.04,8080.98,39.47,South,David Liang,Net 45,Completed,2023-12-15,4
+2023-12-12,INV-10820,TechCore Manufacturing,Valve Assemblies,36,411.3,14806.78,8701.1,6105.68,41.24,Hamburg,Emma Thornton,Net 30,Completed,2023-12-19,7
+2023-12-13,SO-11271,BritOil Downstream Services,Seals & Gaskets,97,179.51,17412.87,9961.8,7451.07,42.79,Scotland,David Liang,Net 30,Completed,2023-12-18,5
+2023-12-13,PO-10484,TechCore Manufacturing,Hydraulic Fittings,36,174.45,6280.21,3646.72,2633.49,41.93,South,Raj Patel,Net 45,Completed,2023-12-28,15
+2023-12-14,SO-11990,BritOil Downstream Services,Maintenance Kits,30,305.81,9174.25,5315.66,3858.59,42.06,Scotland,Claire Morrison,Net 45,Completed,2023-12-31,17
+2023-12-14,PO-10062,Northgate Engineering Ltd,Compressor Units,41,2383.98,97743.09,62428.41,35314.68,36.13,Hamburg,Emma Thornton,Net 30,Completed,2023-12-22,8
+2023-12-15,INV-11308,Apex Fluid Systems,Seals & Gaskets,44,109.71,4827.06,2601.41,2225.65,46.11,Sheffield,James Whitfield,Net 60,Completed,2023-12-27,12
+2023-12-20,PO-12005,Northgate Engineering Ltd,Seals & Gaskets,30,179.99,5399.7,3220.09,2179.61,40.37,North,James Whitfield,Net 30,Completed,2023-12-25,5
+2023-12-20,SO-11618,Northgate Engineering Ltd,Hydraulic Fittings,38,95.01,3610.21,2026.52,1583.69,43.87,North,David Liang,Net 45,Completed,2024-01-07,18
+2023-12-21,PO-11099,TechCore Manufacturing,Industrial Pumps,16,670.06,10720.89,6111.57,4609.32,42.99,South,Raj Patel,Immediate,Completed,2023-12-23,2
+2023-12-22,INV-10757,Northgate Engineering Ltd,Maintenance Kits,35,353.18,12361.34,7763.82,4597.52,37.19,North,Emma Thornton,Net 30,Completed,2024-01-03,12
+2023-12-25,INV-11762,Northgate Engineering Ltd,Maintenance Kits,40,346.43,13857.27,8811.11,5046.16,36.42,North,Sarah Okonkwo,Net 30,Completed,2023-12-29,4
+2023-12-26,PO-11196,Pacific Offshore GmbH,Seals & Gaskets,22,120.06,2641.26,1360.49,1280.77,48.49,Germany,Claire Morrison,Net 30,Completed,2024-01-11,16
+2023-12-27,PO-10644,BritOil Downstream Services,Hydraulic Fittings,73,78.11,5702.1,3698.98,2003.12,35.13,Scotland,James Whitfield,Net 30,Completed,2024-01-12,16
+2023-12-27,SO-10911,BritOil Downstream Services,Maintenance Kits,67,304.98,20433.77,12571.6,7862.17,38.48,Sheffield,Sarah Okonkwo,Net 30,Completed,2024-01-07,11
+2023-12-28,PO-10192,TechCore Manufacturing,Maintenance Kits,27,172.98,4670.36,2635.46,2034.9,43.57,Inverness,Raj Patel,Immediate,Completed,2024-01-02,5
+2023-12-29,PO-10647,Apex Fluid Systems,Maintenance Kits,5,342.37,1711.84,1107.76,604.08,35.29,Midlands,James Whitfield,Net 30,Completed,2024-01-04,6
+2024-01-01,SO-10930,Valor Industrial Partners,Maintenance Kits,2,188.73,377.47,241.92,135.55,35.91,North,David Liang,Net 45,Completed,2024-01-15,14
+2024-01-01,SO-11200,Apex Fluid Systems,Industrial Pumps,17,286.61,4872.42,2821.63,2050.79,42.09,Midlands,David Liang,Net 45,Refunded,2024-01-15,14
+2024-01-02,SO-10874,Northgate Engineering Ltd,Industrial Pumps,66,469.51,30987.53,16247.66,14739.87,47.57,North,David Liang,Net 45,Refunded,2024-01-21,19
+2024-01-02,PO-11679,Apex Fluid Systems,Hydraulic Fittings,12,78.6,943.22,596.29,346.93,36.78,Midlands,Raj Patel,Net 30,Completed,2024-01-04,2
+2024-01-03,INV-10589,Northgate Engineering Ltd,Industrial Pumps,14,436.89,6116.46,3773.44,2343.02,38.31,North,Claire Morrison,Net 30,Completed,2024-01-21,18
+2024-01-03,SO-11837,Pacific Offshore GmbH,Industrial Pumps,44,342.88,15086.76,8025.69,7061.07,46.8,Germany,Sarah Okonkwo,Net 45,Completed,2024-01-19,16
+2024-01-03,SO-10552,Apex Fluid Systems,Maintenance Kits,19,214.04,4066.85,2542.22,1524.63,37.49,Manchester,James Whitfield,Immediate,Completed,2024-01-22,19
+2024-01-04,INV-11728,Pacific Offshore GmbH,Valve Assemblies,3,383.87,1151.61,644.34,507.27,44.05,Germany,David Liang,Net 30,Completed,2024-01-16,12
+2024-01-08,PO-11503,BritOil Downstream Services,Maintenance Kits,41,141.07,5783.76,3881.29,1902.47,32.89,Scotland,James Whitfield,Net 60,Completed,2024-01-28,20
+2024-01-08,SO-10898,Northgate Engineering Ltd,Industrial Pumps,81,455.97,36933.84,22808.12,14125.72,38.25,Cardiff,David Liang,Net 30,Completed,2024-01-16,8
+2024-01-10,SO-10823,Apex Fluid Systems,Industrial Pumps,30,450.47,13513.95,7652.62,5861.33,43.37,Midlands,Emma Thornton,Net 45,Completed,2024-01-15,5
+2024-01-10,SO-10665,Apex Fluid Systems,Seals & Gaskets,21,117.84,2474.74,1358.96,1115.78,45.09,Midlands,Raj Patel,Net 60,Completed,2024-01-29,19
+2024-01-11,PO-11034,BritOil Downstream Services,Industrial Pumps,11,341.8,3759.8,2037.99,1721.81,45.8,Scotland,Emma Thornton,Net 45,Completed,2024-01-17,6
+2024-01-11,INV-10477,Northgate Engineering Ltd,Seals & Gaskets,89,100.29,8925.48,4880.89,4044.59,45.32,North,Sarah Okonkwo,Immediate,Refunded,2024-01-19,8
+2024-01-11,SO-10597,BritOil Downstream Services,Seals & Gaskets,31,106.8,3310.95,1853.67,1457.28,44.01,Scotland,David Liang,Net 45,Refunded,2024-01-14,3
+2024-01-12,SO-10483,Meridian Process Group,Maintenance Kits,39,224.84,8768.9,5455.97,3312.93,37.78,Wales,Raj Patel,Net 60,Completed,2024-01-16,4
+2024-01-12,PO-10752,Apex Fluid Systems,Compressor Units,3,1543.15,4629.44,2906.96,1722.48,37.21,Inverness,Sarah Okonkwo,Net 30,Completed,2024-01-25,13
+2024-01-12,SO-10516,Northgate Engineering Ltd,Maintenance Kits,116,201.58,23383.13,13731.68,9651.45,41.28,Inverness,Raj Patel,Net 30,Completed,2024-01-17,5
+2024-01-15,PO-10730,Meridian Process Group,Maintenance Kits,30,122.7,3681.1,2434.32,1246.78,33.87,Wales,Raj Patel,Net 45,Completed,2024-01-25,10
+2024-01-16,INV-10836,Meridian Process Group,Valve Assemblies,44,307.06,13510.75,7919.6,5591.15,41.38,Wales,Emma Thornton,Net 60,Completed,2024-01-20,4
+2024-01-17,PO-11163,BritOil Downstream Services,Seals & Gaskets,53,48.52,2571.81,1572.16,999.65,38.87,Scotland,Sarah Okonkwo,Net 60,Completed,2024-02-02,16
+2024-01-18,SO-10722,Northgate Engineering Ltd,Valve Assemblies,104,219.62,22840.1,14001.8,8838.3,38.7,Sheffield,Raj Patel,Immediate,Refunded,2024-01-29,11
+2024-01-18,INV-10206,Pacific Offshore GmbH,Industrial Pumps,18,379.47,6830.4,3793.01,3037.39,44.47,Germany,Sarah Okonkwo,Net 30,Completed,2024-01-19,1
+2024-01-18,SO-11253,TechCore Manufacturing,Seals & Gaskets,27,41.31,1115.27,640.68,474.59,42.55,South,Sarah Okonkwo,Net 30,Completed,2024-01-21,3
+2024-01-19,PO-11885,Northgate Engineering Ltd,Valve Assemblies,66,379.58,25052.39,15542.95,9509.44,37.96,North,Claire Morrison,Net 45,Completed,2024-02-06,18
+2024-01-19,INV-11020,Meridian Process Group,Seals & Gaskets,19,65.62,1246.73,750.25,496.48,39.82,Wales,James Whitfield,Net 30,Completed,2024-02-01,13
+2024-01-22,INV-11987,Pacific Offshore GmbH,Hydraulic Fittings,32,100.39,3212.37,1979.4,1232.97,38.38,Sheffield,Emma Thornton,Net 30,Completed,2024-01-26,4
+2024-01-22,INV-10537,Apex Fluid Systems,Industrial Pumps,29,469.31,13609.93,7607.44,6002.49,44.1,Midlands,Claire Morrison,Net 45,Completed,2024-02-02,11
+2024-01-23,SO-10007,Pacific Offshore GmbH,Industrial Pumps,24,441.62,10598.97,5990.66,4608.31,43.48,Germany,Sarah Okonkwo,Net 30,Completed,2024-01-25,2
+2024-01-23,PO-11398,TechCore Manufacturing,Seals & Gaskets,43,147.88,6358.96,3748.15,2610.81,41.06,South,David Liang,Immediate,Completed,2024-01-24,1
+2024-01-23,PO-10341,Northgate Engineering Ltd,Compressor Units,117,1094.5,128056.47,82047.75,46008.72,35.93,North,Raj Patel,Net 30,Completed,2024-02-01,9
+2024-01-25,SO-11628,Apex Fluid Systems,Compressor Units,8,768.62,6148.98,3732.95,2416.03,39.29,Midlands,James Whitfield,Net 30,Completed,2024-02-14,20
+2024-01-26,SO-11219,Meridian Process Group,Seals & Gaskets,22,138.71,3051.51,1590.34,1461.17,47.88,Wales,Raj Patel,Net 30,Completed,2024-02-06,11
+2024-02-01,INV-11624,Meridian Process Group,Seals & Gaskets,20,58.94,1178.86,667.88,510.98,43.35,Aberdeen,David Liang,Net 30,Partially Returned,2024-02-19,18
+2024-02-01,SO-11842,Valor Industrial Partners,Industrial Pumps,24,365.55,8773.13,4621.28,4151.85,47.32,North,Claire Morrison,Net 45,Completed,2024-02-20,19
+2024-02-01,SO-10582,Apex Fluid Systems,Hydraulic Fittings,5,43.04,215.22,125.42,89.8,41.72,Birmingham,Emma Thornton,Net 30,Completed,2024-02-11,10
+2024-02-01,PO-10057,Valor Industrial Partners,Industrial Pumps,34,351.04,11935.41,7299.75,4635.66,38.84,North,Emma Thornton,Net 30,Completed,2024-02-11,10
+2024-02-02,SO-10173,Apex Fluid Systems,Maintenance Kits,40,176.91,7076.23,3947.3,3128.93,44.22,Midlands,Emma Thornton,Net 30,Completed,2024-02-08,6
+2024-02-05,SO-11937,Northgate Engineering Ltd,Maintenance Kits,73,165.15,12055.71,7391.23,4664.48,38.69,North,Emma Thornton,Net 45,Completed,2024-02-06,1
+2024-02-05,INV-11227,TechCore Manufacturing,Hydraulic Fittings,18,136.73,2461.22,1341.09,1120.13,45.51,London,Sarah Okonkwo,Net 60,Refunded,2024-02-25,20
+2024-02-09,PO-10089,BritOil Downstream Services,Seals & Gaskets,81,98.3,7961.93,4239.75,3722.18,46.75,Scotland,James Whitfield,Net 30,Completed,2024-02-17,8
+2024-02-09,PO-10789,BritOil Downstream Services,Industrial Pumps,20,268.98,5379.52,3166.82,2212.7,41.13,Scotland,Raj Patel,Net 30,Completed,2024-02-13,4
+2024-02-13,SO-10458,Northgate Engineering Ltd,Hydraulic Fittings,88,75.72,6663.72,3708.55,2955.17,44.35,North,Raj Patel,Net 45,Completed,2024-02-22,9
+2024-02-13,INV-11401,Apex Fluid Systems,Industrial Pumps,36,269.39,9698.03,5330.02,4368.01,45.04,Midlands,Sarah Okonkwo,Net 30,Completed,2024-02-19,6
+2024-02-13,SO-10817,BritOil Downstream Services,Seals & Gaskets,84,51.97,4365.37,2417.59,1947.78,44.62,Scotland,Claire Morrison,Net 30,Completed,2024-02-18,5
+2024-02-14,PO-11511,Pacific Offshore GmbH,Valve Assemblies,42,281.44,11820.37,8025.26,3795.11,32.11,Germany,Raj Patel,Immediate,Completed,2024-02-25,11
+2024-02-16,INV-10865,Apex Fluid Systems,Seals & Gaskets,44,109.75,4828.82,2922.86,1905.96,39.47,Inverness,David Liang,Net 30,Refunded,2024-02-27,11
+2024-02-16,SO-10899,Northgate Engineering Ltd,Industrial Pumps,100,380.07,38007.4,20456.94,17550.46,46.18,North,David Liang,Net 30,Completed,2024-02-25,9
+2024-02-20,INV-10798,Orion Subsea Ltd,Industrial Pumps,28,461.27,12915.53,6939.91,5975.62,46.27,Scotland,Claire Morrison,Net 30,Completed,2024-03-08,17
+2024-02-21,SO-10915,Northgate Engineering Ltd,Maintenance Kits,27,95.05,2566.45,1457.06,1109.39,43.23,North,Raj Patel,Net 30,Completed,2024-03-10,18
+2024-02-21,PO-10413,BritOil Downstream Services,Industrial Pumps,53,357.72,18959.29,10472.45,8486.84,44.76,Scotland,Raj Patel,Immediate,Completed,2024-02-26,5
+2024-02-22,INV-10801,TechCore Manufacturing,Hydraulic Fittings,13,129.96,1689.53,850.54,838.99,49.66,South,David Liang,Net 30,Completed,2024-03-07,14
+2024-02-22,SO-11365,Pacific Offshore GmbH,Industrial Pumps,31,386.42,11979.1,7368.2,4610.9,38.49,Germany,Sarah Okonkwo,Net 45,Completed,2024-03-03,10
+2024-02-23,INV-10835,BritOil Downstream Services,Industrial Pumps,90,380.01,34200.66,34082.94,117.72,0.34,Scotland,Claire Morrison,Net 45,Partially Returned,2024-03-04,10
+2024-02-26,INV-11569,BritOil Downstream Services,Valve Assemblies,42,292.5,12285.14,8254.33,4030.81,32.81,Scotland,James Whitfield,Net 60,Completed,2024-02-28,2
+2024-02-28,PO-10998,Meridian Process Group,Seals & Gaskets,39,100.2,3907.69,1941.56,1966.13,50.31,Wales,David Liang,Immediate,Completed,2024-03-19,20
+2024-02-28,INV-11638,TechCore Manufacturing,Maintenance Kits,27,189.74,5122.85,3261.01,1861.84,36.34,South,Claire Morrison,Net 30,Completed,2024-03-13,14
+2024-03-01,INV-11758,TechCore Manufacturing,Compressor Units,34,1254.14,42640.83,30238.85,12401.98,29.08,South,Emma Thornton,Net 30,Completed,2024-03-13,12
+2024-03-01,INV-10305,BritOil Downstream Services,Industrial Pumps,108,320.94,34661.61,21371.73,13289.88,38.34,Sheffield,Raj Patel,Net 30,Completed,2024-03-04,3
+2024-03-08,INV-11606,Pacific Offshore GmbH,Hydraulic Fittings,43,142.12,6110.96,3754.74,2356.22,38.56,Germany,Raj Patel,Net 30,Completed,2024-03-18,10
+2024-03-12,PO-11355,Northgate Engineering Ltd,Industrial Pumps,41,553.49,22692.95,13322.97,9369.98,41.29,North,Emma Thornton,Net 60,Completed,2024-03-15,3
+2024-03-13,SO-11973,Valor Industrial Partners,Compressor Units,18,1093.32,19679.73,13972.5,5707.23,29.0,North,Raj Patel,Net 60,Completed,2024-03-24,11
+2024-03-14,PO-10181,Pacific Offshore GmbH,Industrial Pumps,40,320.12,12804.83,7764.42,5040.41,39.36,Germany,Raj Patel,Immediate,Completed,2024-04-03,20
+2024-03-14,PO-10235,Northgate Engineering Ltd,Compressor Units,76,2161.9,164304.13,149554.41,14749.72,8.98,North,Claire Morrison,Net 45,Completed,2024-03-20,6
+2024-03-18,SO-11997,Meridian Process Group,Industrial Pumps,8,589.66,4717.24,2845.04,1872.2,39.69,Wales,Emma Thornton,Immediate,Completed,2024-03-19,1
+2024-03-19,PO-10619,TechCore Manufacturing,Maintenance Kits,7,276.97,1938.76,1145.54,793.22,40.91,South,James Whitfield,Net 60,Completed,2024-03-22,3
+2024-03-20,PO-10935,Northgate Engineering Ltd,Seals & Gaskets,12,50.74,608.88,299.45,309.43,50.82,North,Sarah Okonkwo,Net 30,Completed,2024-03-21,1
+2024-03-20,SO-11412,BritOil Downstream Services,Hydraulic Fittings,79,144.64,11426.77,10253.37,1173.4,10.27,Scotland,Emma Thornton,Net 30,Completed,2024-03-22,2
+2024-03-21,INV-11893,Valor Industrial Partners,Maintenance Kits,32,314.84,10074.93,5808.6,4266.33,42.35,North,David Liang,Net 30,Completed,2024-03-30,9
+2024-03-22,INV-11192,BritOil Downstream Services,Seals & Gaskets,91,82.2,7479.85,4396.95,3082.9,41.22,Scotland,James Whitfield,Immediate,Completed,2024-03-23,1
+2024-03-22,PO-10069,Pacific Offshore GmbH,Valve Assemblies,13,246.24,3201.15,1933.6,1267.55,39.6,Germany,Raj Patel,Net 45,Completed,2024-03-23,1
+2024-03-22,PO-11963,BritOil Downstream Services,Seals & Gaskets,78,115.52,9010.32,4381.57,4628.75,51.37,Scotland,Sarah Okonkwo,Net 60,Completed,2024-03-29,7
+2024-03-22,PO-12019,Northgate Engineering Ltd,Valve Assemblies,83,169.33,14054.79,8578.25,5476.54,38.97,Cardiff,James Whitfield,Net 30,Completed,2024-04-10,19
+2024-03-25,SO-10678,TechCore Manufacturing,Industrial Pumps,2,416.7,833.41,468.48,364.93,43.79,South,Raj Patel,Net 30,Completed,2024-04-14,20
+2024-03-25,INV-11344,Northgate Engineering Ltd,Seals & Gaskets,108,123.47,13334.63,8135.19,5199.44,38.99,North,Claire Morrison,Net 30,Refunded,2024-04-13,19
+2024-03-27,INV-11800,TechCore Manufacturing,Hydraulic Fittings,20,121.08,2421.69,1277.98,1143.71,47.23,Sheffield,Sarah Okonkwo,Net 45,Completed,2024-04-09,13
+2024-03-28,INV-10622,BritOil Downstream Services,Seals & Gaskets,62,122.31,7583.11,4204.33,3378.78,44.56,Scotland,David Liang,Net 30,Refunded,2024-04-15,18
+2024-03-29,PO-12053,Northgate Engineering Ltd,Hydraulic Fittings,114,192.63,21959.85,11925.66,10034.19,45.69,North,Claire Morrison,Net 45,Completed,2024-04-11,13
+2024-04-01,SO-10021,Northgate Engineering Ltd,Compressor Units,63,2501.4,157588.17,94721.53,62866.64,39.89,North,Emma Thornton,Net 60,Refunded,2024-04-11,10
+2024-04-01,PO-10680,Northgate Engineering Ltd,Industrial Pumps,50,349.31,17465.7,9810.88,7654.82,43.83,North,James Whitfield,Net 30,Completed,2024-04-12,11
+2024-04-02,SO-10779,BritOil Downstream Services,Maintenance Kits,63,206.87,13032.65,11669.0,1363.65,10.46,Manchester,Emma Thornton,Immediate,Completed,2024-04-16,14
+2024-04-02,PO-11523,BritOil Downstream Services,Industrial Pumps,37,719.76,26631.0,14764.92,11866.08,44.56,Scotland,David Liang,Immediate,Partially Returned,2024-04-07,5
+2024-04-03,SO-10972,Pacific Offshore GmbH,Industrial Pumps,18,543.47,9782.37,5088.01,4694.36,47.99,Germany,Emma Thornton,Net 30,Refunded,2024-04-15,12
+2024-04-05,PO-11148,Northgate Engineering Ltd,Seals & Gaskets,54,52.77,2849.42,1442.9,1406.52,49.36,North,Raj Patel,Net 45,Completed,2024-04-15,10
+2024-04-05,PO-10251,BritOil Downstream Services,Industrial Pumps,100,519.22,51922.09,31531.75,20390.34,39.27,Scotland,Emma Thornton,Net 30,Completed,2024-04-19,14
+2024-04-10,SO-10231,Apex Fluid Systems,Maintenance Kits,3,397.47,1192.4,802.51,389.89,32.7,Midlands,Emma Thornton,Net 45,Completed,2024-04-18,8
+2024-04-10,SO-11008,Pacific Offshore GmbH,Compressor Units,21,2791.03,58611.67,35427.62,23184.05,39.56,Hamburg,Raj Patel,Net 45,Completed,2024-04-12,2
+2024-04-12,PO-11481,TechCore Manufacturing,Hydraulic Fittings,10,99.13,991.32,541.75,449.57,45.35,Sheffield,David Liang,Net 30,Completed,2024-04-15,3
+2024-04-15,PO-10406,Apex Fluid Systems,Industrial Pumps,28,575.96,16127.0,10021.82,6105.18,37.86,Midlands,Raj Patel,Net 45,Refunded,2024-04-20,5
+2024-04-17,PO-11949,Apex Fluid Systems,Industrial Pumps,43,580.9,24978.85,14496.92,10481.93,41.96,Midlands,James Whitfield,Net 60,Completed,2024-04-20,3
+2024-04-17,INV-11476,Northgate Engineering Ltd,Hydraulic Fittings,47,69.84,3282.64,1645.2,1637.44,49.88,North,Sarah Okonkwo,Net 45,Completed,2024-04-24,7
+2024-04-18,INV-10471,Northgate Engineering Ltd,Seals & Gaskets,101,180.77,18258.05,10315.92,7942.13,43.5,Aberdeen,Claire Morrison,Net 60,Completed,2024-04-19,1
+2024-04-19,INV-11931,Northgate Engineering Ltd,Maintenance Kits,96,316.67,30400.31,18312.09,12088.22,39.76,North,Sarah Okonkwo,Net 60,Completed,2024-04-22,3
+2024-04-22,SO-11977,TechCore Manufacturing,Industrial Pumps,15,577.42,8661.25,5401.87,3259.38,37.63,Hamburg,Emma Thornton,Immediate,Completed,2024-04-23,1
+2024-04-22,PO-10093,Northgate Engineering Ltd,Industrial Pumps,68,436.08,29653.41,16537.31,13116.1,44.23,North,David Liang,Net 30,Completed,2024-04-25,3
+2024-04-23,SO-10544,Northgate Engineering Ltd,Industrial Pumps,116,646.01,74937.58,43663.94,31273.64,41.73,Hamburg,Emma Thornton,Net 60,Completed,2024-04-25,2
+2024-04-23,SO-10740,Northgate Engineering Ltd,Industrial Pumps,80,343.81,27504.52,14800.96,12703.56,46.19,North,James Whitfield,Net 30,Completed,2024-04-28,5
+2024-04-26,INV-10400,BritOil Downstream Services,Maintenance Kits,50,211.04,10551.83,6866.53,3685.3,34.93,Inverness,Emma Thornton,Net 30,Partially Returned,2024-05-06,10
+2024-04-29,SO-10521,Northgate Engineering Ltd,Industrial Pumps,89,540.65,48117.74,27285.35,20832.39,43.29,North,David Liang,Net 30,Completed,2024-04-30,1
+2024-04-29,SO-10627,Apex Fluid Systems,Industrial Pumps,25,476.91,11922.64,6981.21,4941.43,41.45,Midlands,Sarah Okonkwo,Net 30,Completed,2024-05-19,20
+2024-05-01,PO-11575,Northgate Engineering Ltd,Seals & Gaskets,98,169.95,16654.87,8797.64,7857.23,47.18,North,Emma Thornton,Immediate,Refunded,2024-05-08,7
+2024-05-02,PO-11006,BritOil Downstream Services,Industrial Pumps,80,412.78,33022.44,20027.82,12994.62,39.35,Scotland,Emma Thornton,Net 30,Completed,2024-05-11,9
+2024-05-03,PO-10609,Meridian Process Group,Compressor Units,41,1413.03,57934.08,62831.45,-4897.37,-8.45,Wales,Sarah Okonkwo,Net 30,Completed,2024-05-15,12
+2024-05-06,INV-10243,Northgate Engineering Ltd,Compressor Units,13,1563.73,20328.49,14571.24,5757.25,28.32,North,Raj Patel,Net 60,Partially Returned,2024-05-09,3
+2024-05-07,PO-11075,Apex Fluid Systems,Industrial Pumps,44,338.59,14897.98,9203.36,5694.62,38.22,Midlands,Sarah Okonkwo,Net 30,Completed,2024-05-27,20
+2024-05-07,SO-10360,TechCore Manufacturing,Seals & Gaskets,32,130.25,4167.96,2309.18,1858.78,44.6,Inverness,Emma Thornton,Net 30,Completed,2024-05-23,16
+2024-05-07,INV-11132,Pacific Offshore GmbH,Compressor Units,44,1602.76,70521.45,43482.63,27038.82,38.34,Germany,Sarah Okonkwo,Net 30,Partially Returned,2024-05-15,8
+2024-05-10,PO-10116,Pacific Offshore GmbH,Maintenance Kits,30,124.2,3725.93,2172.72,1553.21,41.69,Birmingham,Raj Patel,Net 60,Completed,2024-05-12,2
+2024-05-10,INV-10389,Pacific Offshore GmbH,Hydraulic Fittings,29,187.9,5449.14,3515.92,1933.22,35.48,Hamburg,Raj Patel,Net 60,Completed,2024-05-22,12
+2024-05-14,PO-10239,TechCore Manufacturing,Industrial Pumps,19,500.99,9518.82,5104.42,4414.4,46.38,South,James Whitfield,Net 60,Completed,2024-05-20,6
+2024-05-15,INV-10050,Northgate Engineering Ltd,Seals & Gaskets,95,132.1,12549.95,7109.2,5440.75,43.35,Hamburg,Claire Morrison,Net 30,Completed,2024-06-04,20
+2024-05-15,SO-10714,Pacific Offshore GmbH,Compressor Units,44,1957.44,86127.55,58395.56,27731.99,32.2,Manchester,Claire Morrison,Immediate,Completed,2024-05-23,8
+2024-05-15,PO-11587,Northgate Engineering Ltd,Valve Assemblies,37,218.47,8083.5,5042.26,3041.24,37.62,North,Raj Patel,Net 30,Completed,2024-05-19,4
+2024-05-15,INV-11823,Apex Fluid Systems,Seals & Gaskets,13,61.07,793.94,424.67,369.27,46.51,Midlands,James Whitfield,Net 30,Completed,2024-05-20,5
+2024-05-16,SO-10765,Apex Fluid Systems,Compressor Units,8,1805.71,14445.66,10155.19,4290.47,29.7,Aberdeen,Sarah Okonkwo,Immediate,Completed,2024-05-30,14
+2024-05-17,PO-11537,BritOil Downstream Services,Valve Assemblies,53,146.04,7740.08,5253.53,2486.55,32.13,Scotland,Sarah Okonkwo,Immediate,Completed,2024-05-19,2
+2024-05-17,PO-10815,Apex Fluid Systems,Compressor Units,17,2296.76,39045.0,26103.11,12941.89,33.15,Midlands,Claire Morrison,Net 60,Completed,2024-06-05,19
+2024-05-20,INV-11393,Northgate Engineering Ltd,Compressor Units,20,2587.13,51742.56,36185.61,15556.95,30.07,North,Sarah Okonkwo,Net 30,Completed,2024-05-26,6
+2024-05-21,INV-10459,Apex Fluid Systems,Seals & Gaskets,7,64.96,454.73,256.49,198.24,43.6,Midlands,James Whitfield,Net 60,Refunded,2024-06-01,11
+2024-05-24,SO-11247,Pacific Offshore GmbH,Industrial Pumps,10,623.6,6236.05,3298.81,2937.24,47.1,Germany,Emma Thornton,Net 30,Completed,2024-05-28,4
+2024-05-24,PO-11684,BritOil Downstream Services,Maintenance Kits,108,300.32,32435.08,19950.6,12484.48,38.49,London,Raj Patel,Net 45,Completed,2024-06-10,17
+2024-05-27,PO-11437,Northgate Engineering Ltd,Seals & Gaskets,15,192.92,2893.73,1615.89,1277.84,44.16,Inverness,Emma Thornton,Net 60,Completed,2024-06-09,13
+2024-05-27,SO-10608,Northgate Engineering Ltd,Hydraulic Fittings,38,197.95,7522.12,4632.01,2890.11,38.42,North,James Whitfield,Net 30,Completed,2024-06-16,20
+2024-05-29,INV-11642,BritOil Downstream Services,Maintenance Kits,87,280.91,24439.51,15644.76,8794.75,35.99,Cardiff,Sarah Okonkwo,Net 45,Completed,2024-06-12,14
+2024-05-30,PO-10479,Northgate Engineering Ltd,Industrial Pumps,93,448.65,41724.51,26662.36,15062.15,36.1,North,James Whitfield,Net 30,Completed,2024-06-15,16
+2024-05-30,INV-11622,Northgate Engineering Ltd,Compressor Units,42,2609.92,109616.45,66802.47,42813.98,39.06,North,Claire Morrison,Net 30,Completed,2024-06-03,4
+2024-05-31,SO-11237,BritOil Downstream Services,Maintenance Kits,118,150.1,17711.91,18165.48,-453.57,-2.56,Cardiff,Claire Morrison,Net 30,Completed,2024-06-16,16
+2024-05-31,INV-12003,BritOil Downstream Services,Industrial Pumps,95,379.68,36069.72,20121.26,15948.46,44.22,Scotland,David Liang,Net 45,Completed,2024-06-14,14
+2024-05-31,PO-10249,Valor Industrial Partners,Valve Assemblies,15,251.31,3769.6,2153.3,1616.3,42.88,Sheffield,James Whitfield,Net 30,Completed,2024-06-07,7
+2024-05-31,INV-10909,Pacific Offshore GmbH,Hydraulic Fittings,37,167.03,6179.93,3924.31,2255.62,36.5,Germany,Sarah Okonkwo,Net 30,Completed,2024-06-06,6
+2024-05-31,SO-11451,Pacific Offshore GmbH,Compressor Units,34,1721.84,58542.62,34775.95,23766.67,40.6,Germany,David Liang,Net 30,Completed,2024-06-07,7
+2024-05-31,INV-11704,Pacific Offshore GmbH,Industrial Pumps,38,650.83,24731.54,15484.67,9246.87,37.39,Germany,Raj Patel,Immediate,Completed,2024-06-14,14
+2024-05-31,INV-11528,BritOil Downstream Services,Maintenance Kits,80,127.64,10211.02,6543.44,3667.58,35.92,Birmingham,Claire Morrison,Immediate,Completed,2024-06-07,7
+2024-05-31,SO-10225,Apex Fluid Systems,Seals & Gaskets,42,195.24,8199.87,4113.58,4086.29,49.83,Midlands,Claire Morrison,Net 60,Completed,2024-06-09,9
+2024-06-03,INV-11814,BritOil Downstream Services,Maintenance Kits,34,265.39,9023.31,5522.99,3500.32,38.79,Scotland,Emma Thornton,Net 30,Partially Returned,2024-06-05,2
+2024-06-03,INV-10014,Pacific Offshore GmbH,Maintenance Kits,2,311.79,623.58,370.03,253.55,40.66,Germany,James Whitfield,Net 30,Completed,2024-06-15,12
+2024-06-04,SO-10166,BritOil Downstream Services,Valve Assemblies,45,180.62,8127.68,4663.85,3463.83,42.62,Scotland,Claire Morrison,Immediate,Completed,2024-06-16,12
+2024-06-05,INV-11114,Pacific Offshore GmbH,Industrial Pumps,5,440.55,2202.77,1191.96,1010.81,45.89,Inverness,David Liang,Net 60,Completed,2024-06-19,14
+2024-06-05,SO-10241,Meridian Process Group,Valve Assemblies,31,242.24,7509.31,4553.17,2956.14,39.37,Wales,Raj Patel,Net 45,Completed,2024-06-12,7
+2024-06-10,PO-11852,Orion Subsea Ltd,Valve Assemblies,16,272.8,4364.86,2688.07,1676.79,38.42,Scotland,Sarah Okonkwo,Immediate,Completed,2024-06-16,6
+2024-06-12,SO-10468,Meridian Process Group,Seals & Gaskets,25,113.28,2831.89,1602.14,1229.75,43.43,Cardiff,Claire Morrison,Net 60,Completed,2024-06-20,8
+2024-06-13,INV-11472,BritOil Downstream Services,Maintenance Kits,25,315.71,7892.8,5384.97,2507.83,31.77,Scotland,David Liang,Net 60,Partially Returned,2024-06-23,10
+2024-06-13,INV-11473,BritOil Downstream Services,Industrial Pumps,72,709.0,51047.74,49574.89,1472.85,2.89,Scotland,Claire Morrison,Net 45,Completed,2024-06-30,17
+2024-06-13,SO-10308,Pacific Offshore GmbH,Hydraulic Fittings,14,74.26,1039.71,540.49,499.22,48.02,Birmingham,Claire Morrison,Net 45,Completed,2024-06-21,8
+2024-06-14,PO-10425,Northgate Engineering Ltd,Valve Assemblies,27,280.62,7576.62,5056.81,2519.81,33.26,North,Sarah Okonkwo,Net 30,Completed,2024-06-15,1
+2024-06-18,SO-11016,Pacific Offshore GmbH,Maintenance Kits,3,135.55,406.64,270.76,135.88,33.42,Germany,David Liang,Net 60,Completed,2024-07-05,17
+2024-06-18,INV-10248,Apex Fluid Systems,Industrial Pumps,14,608.49,8518.9,5103.29,3415.61,40.09,Midlands,Claire Morrison,Net 30,Completed,2024-06-22,4
+2024-06-19,PO-11702,Orion Subsea Ltd,Maintenance Kits,14,333.4,4667.63,2787.0,1880.63,40.29,Scotland,Claire Morrison,Net 30,Completed,2024-06-23,4
+2024-06-20,SO-10554,Northgate Engineering Ltd,Hydraulic Fittings,87,216.31,18818.98,9561.19,9257.79,49.19,North,Sarah Okonkwo,Immediate,Completed,2024-07-01,11
+2024-06-21,SO-10792,Pacific Offshore GmbH,Industrial Pumps,36,518.54,18667.52,16680.45,1987.07,10.64,Cardiff,Raj Patel,Net 60,Completed,2024-06-22,1
+2024-06-25,SO-10568,Northgate Engineering Ltd,Hydraulic Fittings,67,116.05,7775.08,3917.54,3857.54,49.61,North,David Liang,Net 45,Completed,2024-07-15,20
+2024-06-27,PO-10864,Northgate Engineering Ltd,Seals & Gaskets,26,132.9,3455.46,1917.67,1537.79,44.5,North,Sarah Okonkwo,Net 60,Completed,2024-07-06,9
+2024-06-27,SO-11166,Pacific Offshore GmbH,Industrial Pumps,20,556.09,11121.72,12112.12,-990.4,-8.91,Germany,Emma Thornton,Immediate,Completed,2024-07-08,11
+2024-06-28,INV-10893,Meridian Process Group,Seals & Gaskets,33,209.45,6911.91,3389.73,3522.18,50.96,Wales,Raj Patel,Net 30,Completed,2024-06-30,2
+2024-06-28,SO-11908,Pacific Offshore GmbH,Industrial Pumps,7,685.89,4801.26,2967.2,1834.06,38.2,Germany,Raj Patel,Net 30,Partially Returned,2024-07-17,19

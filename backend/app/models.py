@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, JSON, Enum
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, JSON, Enum, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 import enum
@@ -16,6 +16,8 @@ class Organization(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)
+    plan = Column(String, default="SANDBOX_INIT")
+    storage_used = Column(Float, default=0.0)
     created_at = Column(DateTime, default=datetime.utcnow)
     
     members = relationship("OrganizationMember", back_populates="organization")
@@ -56,6 +58,7 @@ class Upload(Base):
     filename = Column(String)
     file_type = Column(String)
     status = Column(String, default=UploadStatus.UPLOADED.value)
+    file_size = Column(Float, default=0.0)
     mapping_json = Column(JSON, nullable=True)
     uploaded_at = Column(DateTime, default=datetime.utcnow)
     
@@ -67,6 +70,7 @@ class Transaction(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     organization_id = Column(Integer, ForeignKey("organizations.id"))
+    upload_id = Column(Integer, ForeignKey("uploads.id"), nullable=True)
     date = Column(DateTime)
     customer = Column(String)
     product = Column(String)
@@ -129,3 +133,7 @@ class Report(Base):
     generated_at = Column(DateTime, default=datetime.utcnow)
     report_type = Column(String)
     pdf_url = Column(String)
+    summary = Column(String, nullable=True)
+    health_score = Column(Float, nullable=True)
+    actions = Column(JSON, nullable=True)
+    is_saved = Column(Boolean, default=False)

@@ -43,3 +43,7 @@ env/
 dist/
 build/
 *.db
+
+# generated report pdfs and uploads
+backend/reports_pdf/
+backend/uploads/

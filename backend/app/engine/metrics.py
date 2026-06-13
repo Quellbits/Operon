@@ -17,12 +17,33 @@ class MetricsEngine:
             "products": self._product_metrics(),
             "cost": self._cost_metrics(),
         }
-        return results
+        return self._sanitize(results)
+
+    def _sanitize(self, data):
+        import math
+        import numpy as np
+        if isinstance(data, dict):
+            return {k: self._sanitize(v) for k, v in data.items()}
+        elif isinstance(data, list):
+            return [self._sanitize(v) for v in data]
+        elif pd.isna(data):
+            return 0.0
+        elif isinstance(data, (float, np.floating)):
+            val = float(data)
+            if math.isnan(val) or math.isinf(val):
+                return 0.0
+            return val
+        elif isinstance(data, (int, np.integer)):
+            return int(data)
+        else:
+            return data
 
     def _revenue_metrics(self):
         total_rev = self.df['revenue'].sum()
-        # Simple trend (group by month)
-        trend = self.df.set_index('date').resample('M')['revenue'].sum().to_dict()
+        try:
+            trend = self.df.set_index('date').resample('ME')['revenue'].sum().to_dict()
+        except ValueError:
+            trend = self.df.set_index('date').resample('M')['revenue'].sum().to_dict()
         growth = 0
         if len(trend) > 1:
             vals = list(trend.values())
@@ -37,7 +58,7 @@ class MetricsEngine:
     def _customer_metrics(self):
         unique_customers = self.df['customer'].nunique()
         customer_rev = self.df.groupby('customer')['revenue'].sum()
-        top_customer_share = (customer_rev.max() / customer_rev.sum()) if not customer_rev.empty else 0
+        top_customer_share = (customer_rev.max() / customer_rev.sum()) if not customer_rev.empty and customer_rev.sum() != 0 else 0
         
         return {
             "total_customers": unique_customers,
