@@ -112,16 +112,10 @@ export default function WaitingListLanding() {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <div className="hidden sm:flex items-center gap-2 border border-zinc-800 bg-[#121620]/30 px-3 py-1 rounded text-[9px] text-zinc-500">
+          <div className="flex items-center gap-2 border border-zinc-800 bg-[#121620]/30 px-3 py-1.5 rounded text-[9px] text-zinc-500">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
             <span>BUILD_PHASE: ACTIVE</span>
           </div>
-          <a 
-            href="/dashboard" 
-            className="text-[9px] font-bold text-orange-400 border border-orange-500/20 hover:border-orange-500/50 bg-orange-500/5 hover:bg-orange-500/10 px-3 py-1.5 rounded transition-all"
-          >
-            ENTER_SANDBOX_DEMO
-          </a>
         </div>
       </header>
 
