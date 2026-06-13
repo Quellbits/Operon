@@ -345,12 +345,12 @@ export default function LandingPage() {
 
         {/* Central Operations Console */}
         <section id="console" className="max-w-4xl mx-auto px-6 pb-24 scroll-mt-20">
-          <div className="bg-zinc-950 border border-zinc-900 rounded-lg p-6 sm:p-8 backdrop-blur-md shadow-2xl relative group neon-border-glow transition-all duration-500">
+          <div className="bg-zinc-950/90 border border-zinc-800 rounded-lg p-6 sm:p-8 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:border-zinc-700/80 hover:shadow-[0_0_60px_rgba(249,115,22,0.02),0_20px_50px_rgba(0,0,0,0.8)] relative group neon-border-glow transition-all duration-500">
             {/* Corner visual marks */}
-            <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-700" />
-            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-zinc-700" />
-            <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-zinc-700" />
-            <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-zinc-700" />
+            <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-500 group-hover:border-orange-500/80 transition-colors duration-500" />
+            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-zinc-500 group-hover:border-orange-500/80 transition-colors duration-500" />
+            <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-zinc-500 group-hover:border-orange-500/80 transition-colors duration-500" />
+            <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-zinc-500 group-hover:border-orange-500/80 transition-colors duration-500" />
             
             <div className="grid grid-cols-1 gap-6 relative z-10">
               
@@ -554,12 +554,12 @@ export default function LandingPage() {
               </div>
 
               {/* Console / Simulator (Right 7 Cols) */}
-              <div className="lg:col-span-7 bg-black border border-zinc-900 rounded p-6 shadow-2xl relative h-[380px] overflow-hidden flex flex-col font-mono text-xs">
+              <div className="lg:col-span-7 bg-zinc-950 border border-zinc-800 rounded p-6 shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative h-[380px] overflow-hidden flex flex-col font-mono text-xs">
                 {/* Visual grid inside sandbox */}
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
                 
                 {/* Header */}
-                <div className="flex items-center justify-between border-b border-zinc-900 pb-3 mb-4 shrink-0 relative z-10">
+                <div className="flex items-center justify-between border-b border-zinc-800 pb-3 mb-4 shrink-0 relative z-10">
                   <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-zinc-800" />
                     <span className="text-[9px] text-zinc-500">OPERON_PIPELINE.LOG</span>
@@ -777,13 +777,13 @@ export default function LandingPage() {
             </div>
 
             {/* Visual card container (Base44 style mockup) */}
-            <div className="bg-zinc-950 border border-zinc-900 rounded p-6 sm:p-8 backdrop-blur-md relative overflow-hidden group">
+            <div className="bg-zinc-950 border border-zinc-800 rounded p-6 sm:p-8 backdrop-blur-md shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:border-zinc-700/80 transition-all duration-300 relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full filter blur-3xl" />
-              <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-800" />
-              <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-zinc-800" />
+              <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-500 group-hover:border-orange-500/80 transition-colors duration-500" />
+              <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-zinc-500 group-hover:border-orange-500/80 transition-colors duration-500" />
               
               <div className="space-y-6 text-left relative z-10">
-                <div className="flex justify-between items-center pb-4 border-b border-zinc-900">
+                <div className="flex justify-between items-center pb-4 border-b border-zinc-800">
                   <h4 className="font-bold text-xs text-zinc-300 font-mono tracking-widest">KPI_MONITORING</h4>
                   <span className="text-[8px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">STABLE</span>
                 </div>
@@ -849,7 +849,7 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               
               <div 
-                className="bg-zinc-950 border border-zinc-900 rounded p-6 text-left space-y-3 hover:border-zinc-700 transition-colors relative"
+                className="bg-zinc-950 border border-zinc-800 rounded p-6 text-left space-y-3 hover:border-orange-500/40 hover:shadow-[0_0_30px_rgba(249,115,22,0.03),0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-300 relative group"
                 onMouseEnter={() => setHoveredCard(0)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -864,10 +864,11 @@ export default function LandingPage() {
               </div>
 
               <div 
-                className="bg-zinc-950 border border-zinc-900 rounded p-6 text-left space-y-3 hover:border-zinc-700 transition-colors relative"
+                className="bg-zinc-950 border border-zinc-800 rounded p-6 text-left space-y-3 hover:border-orange-500/40 hover:shadow-[0_0_30px_rgba(249,115,22,0.03),0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-300 relative group"
                 onMouseEnter={() => setHoveredCard(1)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
+                <div className="absolute top-0 right-0 w-16 h-16 bg-orange-500/5 rounded-full filter blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="w-8 h-8 bg-zinc-900 border border-zinc-800 rounded flex items-center justify-center text-orange-400">
                   <Activity size={16} />
                 </div>
@@ -878,10 +879,11 @@ export default function LandingPage() {
               </div>
 
               <div 
-                className="bg-zinc-950 border border-zinc-900 rounded p-6 text-left space-y-3 hover:border-zinc-700 transition-colors relative"
+                className="bg-zinc-950 border border-zinc-800 rounded p-6 text-left space-y-3 hover:border-orange-500/40 hover:shadow-[0_0_30px_rgba(249,115,22,0.03),0_10px_30px_rgba(0,0,0,0.5)] transition-all duration-300 relative group"
                 onMouseEnter={() => setHoveredCard(2)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
+                <div className="absolute top-0 right-0 w-16 h-16 bg-orange-500/5 rounded-full filter blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="w-8 h-8 bg-zinc-900 border border-zinc-800 rounded flex items-center justify-center text-orange-400">
                   <TrendingUp size={16} />
                 </div>
@@ -909,7 +911,7 @@ export default function LandingPage() {
 
             <div className="space-y-4 font-mono">
               
-              <div className="p-5 bg-zinc-950 border border-zinc-900 rounded text-left space-y-2">
+              <div className="p-5 bg-zinc-950 border border-zinc-800 rounded text-left space-y-2 shadow-[0_10px_35px_rgba(0,0,0,0.4)] hover:border-zinc-700/80 transition-colors duration-300">
                 <h4 className="font-bold text-zinc-300 text-xs flex items-center gap-2">
                   <HelpCircle size={12} className="text-orange-400" />
                   WHAT SPREADSHEET TYPES ARE SUPPORTED?
@@ -919,7 +921,7 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              <div className="p-5 bg-zinc-950 border border-zinc-900 rounded text-left space-y-2">
+              <div className="p-5 bg-zinc-950 border border-zinc-800 rounded text-left space-y-2 shadow-[0_10px_35px_rgba(0,0,0,0.4)] hover:border-zinc-700/80 transition-colors duration-300">
                 <h4 className="font-bold text-zinc-300 text-xs flex items-center gap-2">
                   <HelpCircle size={12} className="text-orange-400" />
                   HOW DOES QUERY-BASED OPERATIONS AUDITING WORK?
@@ -929,7 +931,7 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              <div className="p-5 bg-zinc-950 border border-zinc-900 rounded text-left space-y-2">
+              <div className="p-5 bg-zinc-950 border border-zinc-800 rounded text-left space-y-2 shadow-[0_10px_35px_rgba(0,0,0,0.4)] hover:border-zinc-700/80 transition-colors duration-300">
                 <h4 className="font-bold text-zinc-300 text-xs flex items-center gap-2">
                   <HelpCircle size={12} className="text-orange-400" />
                   IS MY TRANSACTION DATA SECURE?
