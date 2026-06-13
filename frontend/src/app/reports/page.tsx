@@ -57,6 +57,11 @@ export default function ReportsPage() {
         
         setReports(prev => [newReport, ...prev]);
         setCustomQuery("");
+        
+        // Wait a brief moment to show success state, then redirect to dashboard
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 1000);
       } else {
         const errJson = await res.json().catch(() => ({}));
         alert(errJson.detail || "Failed to generate report.");
