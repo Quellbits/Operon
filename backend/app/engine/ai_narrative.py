@@ -90,21 +90,18 @@ INSIGHT FLAGS:
             resp = self.client.chat.completions.create(
                 model="gpt-4o",
                 messages=[
-                    {"role": "system", "content": """You are a senior operations analyst and COO-level advisor at a Tier-1 management consulting firm (McKinsey, BCG standard).
-Your task is to write an executive summary for a formal business operations audit report. 
-Requirements:
-- 4-6 dense analytical paragraphs, each with 3-5 sentences
-- Cite specific numbers and percentages from the data (revenue, margins, growth rates, AOV, HHI, etc.)
-- Identify the primary operational risk based on the data
-- Mention the correlation signals and what they imply operationally
-- Sound like a senior human analyst, not generic AI
-- Use formal corporate language, past and present tense mix
-- Do not use bullet points, write in paragraphs
-- Reference the health score and explain what the sub-scores mean"""},
+                    {"role": "system", "content": """You are a senior operations specialist. Write a concise, high-impact executive summary for an operations audit report.
+Format requirements:
+- DO NOT write long paragraphs or block text.
+- Use 1-2 short, focused paragraphs (max 3 sentences each) for the opening synthesis.
+- Use a bulleted list of "Critical Takeaways" (3-4 points) highlighting key metrics in bold (e.g., gross margins, concentration, leakage ratio).
+- Identify the main operational risks and bottlenecks directly.
+- Sound like a senior human specialist drafting a memo: crisp, data-dense, and highly actionable.
+- Use professional terminology (e.g., COGS exposure, pricing discipline, operational leverage)."""},
                     {"role": "user", "content": f"Write the executive summary for this operations audit:\n{ctx}"}
                 ],
                 temperature=0.3,
-                max_tokens=700
+                max_tokens=600
             )
             return resp.choices[0].message.content.strip()
         except Exception:
@@ -125,17 +122,17 @@ Requirements:
         aov = kpis.get("aov", 0)
 
         return (
-            f"This operations audit was conducted against the complete financial ledger for the review period. "
-            f"The organization recorded total revenues of ${total_rev:,.2f} against total operating costs of ${total_cost:,.2f}, "
-            f"yielding a net operating contribution of ${net:,.2f} and an overall gross margin of {gross_margin:.1f}%. "
-            f"The period-over-period revenue trajectory registered a {growth:+.1f}% shift, "
-            f"signalling {'positive momentum requiring capitalisation' if growth >= 0 else 'a contraction requiring immediate intervention and root-cause analysis'}.\n\n"
-            f"The composite business health score of {score:.1f}/100 reflects a {'stable' if score >= 60 else 'stressed'} operational posture. "
-            f"Customer revenue concentration stands at {top_conc:.1f}% attributable to the top account, "
-            f"a level that {'exceeds acceptable thresholds and introduces significant revenue-at-risk exposure' if top_conc > 40 else 'remains within manageable diversification parameters'}. "
-            f"The average order value (AOV) of ${aov:,.2f} provides a baseline pricing efficiency benchmark against which product-level deviation analysis should be conducted. "
-            f"The ledger anomaly detection engine identified {len(self.advanced_stats.get('anomalies', []))} statistical outliers in cost ratios, unit pricing, and customer billing patterns "
-            f"that collectively represent quantifiable leakage against the reported revenue base."
+            f"Operations audit synthesized from ledger records. The organization recorded revenues of "
+            f"${total_rev:,.2f} against operating costs of ${total_cost:,.2f}, yielding a net profit of "
+            f"${net:,.2f} and a gross margin of {gross_margin:.1f}%.\n\n"
+            f"Critical Takeaways:\n"
+            f"• Revenue Trajectory: Period MoM change is {growth:+.1f}%, indicating "
+            f"{'stable growth parameters' if growth >= 0 else 'underlying margin contraction requiring mitigation'}.\n"
+            f"• Concentration Risk: Top-customer account concentration is at {top_conc:.1f}%, introducing "
+            f"{'elevated exposure thresholds' if top_conc > 35 else 'manageable customer diversification'}.\n"
+            f"• Average Order Value: Pricing baseline registers at ${aov:,.2f} per transaction.\n"
+            f"• Ledger Deviations: Anomaly detection isolated {len(self.advanced_stats.get('anomalies', []))} cost and pricing outliers "
+            f"representing profit leakage."
         )
 
     def generate_action_plan(self) -> List[str]:
@@ -295,17 +292,17 @@ Output as a JSON array of strings called 'pain_points'."""},
             resp = self.client.chat.completions.create(
                 model="gpt-4o",
                 messages=[
-                    {"role": "system", "content": """You are a senior COO advisor writing the conclusions and strategic outlook section of a formal operations audit report.
-Write 3-4 analytical paragraphs that:
-- Synthesise the key findings with specific numbers referenced
-- Connect the correlation findings to the forecast trajectory
-- State the headline risk and opportunity clearly
-- End with a measurable improvement target tied to the data
-Write in formal corporate prose, no bullet points."""},
+                    {"role": "system", "content": """You are a senior operations specialist. Write a concise "Conclusions & Operational Outlook" section.
+Format requirements:
+- DO NOT write long paragraphs.
+- Write 1 short, crisp introductory paragraph (max 3 sentences).
+- Provide a bulleted list of "Strategic Action Gates" (3 points) showing immediate target metrics (e.g., target margin recovery, leak containment).
+- End with a single, high-impact outlook sentence.
+- Sound like a human executive drafting a brief memo, not an AI essay."""},
                     {"role": "user", "content": f"Write the conclusions and strategic outlook:\n{ctx}"}
                 ],
                 temperature=0.3,
-                max_tokens=500
+                max_tokens=400
             )
             return resp.choices[0].message.content.strip()
         except Exception:
@@ -323,16 +320,16 @@ Write in formal corporate prose, no bullet points."""},
 
         fwd_rev = forecast[2].get("revenue", 0) if len(forecast) > 2 else total_rev
         fwd_cost = forecast[2].get("cost", 0) if len(forecast) > 2 else 0
+        net_fwd = fwd_rev - fwd_cost
 
         return (
-            f"The operations audit for this review period reveals a business at an operational health score of {score:.1f}/100, "
-            f"with a gross margin of {gross_margin:.1f}% and a cost leakage ratio of {leakage:.1f}% that together define the primary remediation priorities. "
-            f"The regression-based 3-month revenue forecast projects revenue of ${fwd_rev:,.0f} against estimated costs of ${fwd_cost:,.0f}, "
-            f"implying a forward net margin of ${fwd_rev - fwd_cost:,.0f} — {'an improvement over the current run-rate if cost containment actions are executed' if fwd_rev > fwd_cost else 'a trajectory that will require urgent intervention to prevent further margin deterioration'}.\n\n"
-            f"The statistical evidence compiled in this report points to three addressable improvement levers: "
-            f"(1) customer base diversification to reduce concentration risk below 25%, "
-            f"(2) a targeted cost renegotiation initiative aligned to the anomalous cost-ratio entries identified in the Z-score analysis, "
-            f"and (3) implementation of a pricing floor framework anchored to the AOV benchmark established in this report. "
-            f"Execution of these three interventions is estimated to recover between 5-12 percentage points of gross margin within two quarters, "
-            f"contingent on account-level pricing discipline and supplier contract enforcement."
+            f"Audit conclusions indicate a composite operational score of {score:.1f}/100, driven by a "
+            f"{gross_margin:.1f}% gross margin and a {leakage:.1f}% cost leakage ratio. The 3-month predictive "
+            f"regression models project forward revenue of ${fwd_rev:,.0f} against costs of ${fwd_cost:,.0f}, "
+            f"implying a forward net margin of ${net_fwd:,.0f}.\n\n"
+            f"Strategic Action Gates:\n"
+            f"• Customer Diversification: Onboard 3 new client accounts to lower concentration below 25%.\n"
+            f"• Contract Renegotiation: Address variable cost leakage in Z-score outlier categories.\n"
+            f"• Pricing Floor Implementation: Anchor new product price quotes to the AOV baseline.\n\n"
+            f"Execution of these targets is estimated to recover 5-12 percentage points of gross margin."
         )

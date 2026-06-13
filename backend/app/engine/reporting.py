@@ -59,8 +59,8 @@ class HRule(Flowable):
 
 
 class HealthScoreBar(Flowable):
-    """Rounded health score progress bar."""
-    def __init__(self, score: float, width=504, height=16):
+    """Segmented level indicator for business health score."""
+    def __init__(self, score: float, width=504, height=12):
         super().__init__()
         self.score = max(0.0, min(100.0, score))
         self.width = width
@@ -71,17 +71,22 @@ class HealthScoreBar(Flowable):
 
     def draw(self):
         self.canv.saveState()
-        # Track
-        self.canv.setFillColor(HexColor("#e2e8f0"))
-        self.canv.setStrokeColor(HexColor("#cbd5e1"))
-        self.canv.setLineWidth(0.5)
-        self.canv.roundRect(0, 2, self.width, self.height, self.height / 2, fill=1, stroke=1)
-        # Fill
-        fill_w = max((self.score / 100.0) * self.width, self.height)
+        num_segments = 20
+        gap = 2.5
+        seg_w = (self.width - (num_segments - 1) * gap) / num_segments
+        active_segs = int(round((self.score / 100.0) * num_segments))
+        
         bar_color = C_GREEN if self.score >= 70 else C_AMBER if self.score >= 40 else C_RED
-        self.canv.setFillColor(bar_color)
-        self.canv.roundRect(0, 2, fill_w, self.height, self.height / 2, fill=1, stroke=0)
+        inactive_color = HexColor("#e2e8f0")
+        
+        for i in range(num_segments):
+            x = i * (seg_w + gap)
+            color = bar_color if i < active_segs else inactive_color
+            self.canv.setFillColor(color)
+            self.canv.roundRect(x, 2, seg_w, self.height, 2, fill=1, stroke=0)
+            
         self.canv.restoreState()
+
 
 
 class KPICard(Flowable):
@@ -343,13 +348,22 @@ class MiniTrendLine(Flowable):
 # ─────────────────────────────────────────────────────────────────────────────
 
 def draw_cover_page(canvas, doc):
-    """Draws a dark, branded cover page."""
+    """Draws a dark, branded cover page with blueprint grid texture."""
     W, H = letter
     canvas.saveState()
 
     # Dark background
     canvas.setFillColor(C_COVER_BG)
     canvas.rect(0, 0, W, H, fill=1, stroke=0)
+
+    # Subtle grid overlay (matching web blueprint grids)
+    canvas.setStrokeColor(HexColor("#161d2d"))
+    canvas.setLineWidth(0.4)
+    grid_size = 36
+    for x in range(0, int(W), grid_size):
+        canvas.line(x, 0, x, H)
+    for y in range(0, int(H), grid_size):
+        canvas.line(0, y, W, y)
 
     # Orange accent stripe (left)
     canvas.setFillColor(C_COVER_LINE)
@@ -709,7 +723,17 @@ class ReportingEngine:
         for para in self.summary.split("\n\n"):
             para = para.strip()
             if para:
-                els.append(Paragraph(para, styles["normal"]))
+                lines = para.split("\n")
+                if any(line.strip().startswith(('•', '-', '*')) for line in lines):
+                    for line in lines:
+                        line_strip = line.strip()
+                        if line_strip.startswith(('•', '-', '*')):
+                            clean_line = line_strip.lstrip('•-* ').strip()
+                            els.append(Paragraph(clean_line, styles["bullet"]))
+                        else:
+                            els.append(Paragraph(line_strip, styles["normal"]))
+                else:
+                    els.append(Paragraph(para, styles["normal"]))
         els.append(Spacer(1, 6))
         return els
 
@@ -732,26 +756,53 @@ class ReportingEngine:
         if not self.actions:
             return []
         els = []
-        els.append(Paragraph("Strategic Recommendations & Action Plan", styles["h1"]))
+        els.append(Paragraph("Strategic Implementation Roadmap", styles["h1"]))
         els.append(HRule())
-        # Priority labels
-        priorities = ["P1 — IMMEDIATE", "P2 — SHORT-TERM", "P3 — SHORT-TERM",
-                      "P4 — MEDIUM-TERM", "P5 — MEDIUM-TERM", "P6 — LONG-TERM", "P7 — ONGOING"]
-
-        rows = [[
-            Paragraph("<b>Priority</b>", styles["th"]),
-            Paragraph("<b>Strategic Action</b>", styles["th"]),
-        ]]
-        for i, action in enumerate(self.actions):
-            priority = priorities[i] if i < len(priorities) else f"P{i+1}"
-            p_color = "#dc2626" if "IMMEDIATE" in priority else "#d97706" if "SHORT" in priority else "#16a34a"
-            p_html  = f"<font color='{p_color}'><b>{priority}</b></font>"
+        
+        # Group actions by operational phase
+        phases = [
+            ("PHASE 1: Immediate Containment (Days 1–30)", [act for i, act in enumerate(self.actions) if i < 2], "#dc2626"),
+            ("PHASE 2: Tactical Optimization (Days 31–60)", [act for i, act in enumerate(self.actions) if 2 <= i < 5], "#ea580c"),
+            ("PHASE 3: Structural Leverage (Days 61–90)", [act for i, act in enumerate(self.actions) if i >= 5], "#16a34a"),
+        ]
+        
+        rows = []
+        for phase_title, phase_actions, p_color in phases:
+            if not phase_actions:
+                continue
+            # Phase Title Header Row
             rows.append([
-                Paragraph(p_html, styles["td_small"]),
-                Paragraph(action, styles["td"]),
+                Paragraph(f"<font color='{p_color}'><b>{phase_title}</b></font>", styles["th"]),
+                Paragraph("", styles["th"])
             ])
-        t = Table(rows, colWidths=[100, 404])
-        t.setStyle(self._table_style())
+            # Actions under this phase
+            for act in phase_actions:
+                bullet_pt = f"<font color='{p_color}'><b>•</b></font>"
+                rows.append([
+                    Paragraph(bullet_pt, styles["td_small"]),
+                    Paragraph(act, styles["td"])
+                ])
+                
+        t = Table(rows, colWidths=[20, 484])
+        ts = TableStyle([
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ("TOPPADDING", (0, 0), (-1, -1), 6),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+            ("LEFTPADDING", (0, 0), (-1, -1), 6),
+            ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+            ("LINEBELOW", (0, 0), (-1, -1), 0.5, C_BORDER),
+        ])
+        
+        row_idx = 0
+        for phase_title, phase_actions, p_color in phases:
+            if not phase_actions:
+                continue
+            ts.add("SPAN", (0, row_idx), (1, row_idx))
+            ts.add("BACKGROUND", (0, row_idx), (-1, row_idx), HexColor("#f8fafc"))
+            ts.add("LINEBELOW", (0, row_idx), (-1, row_idx), 1, p_color)
+            row_idx += len(phase_actions) + 1
+            
+        t.setStyle(ts)
         els.append(t)
         els.append(Spacer(1, 10))
         return els
@@ -767,7 +818,17 @@ class ReportingEngine:
         for para in self.conclusions.split("\n\n"):
             para = para.strip()
             if para:
-                els.append(Paragraph(para, styles["normal"]))
+                lines = para.split("\n")
+                if any(line.strip().startswith(('•', '-', '*')) for line in lines):
+                    for line in lines:
+                        line_strip = line.strip()
+                        if line_strip.startswith(('•', '-', '*')):
+                            clean_line = line_strip.lstrip('•-* ').strip()
+                            els.append(Paragraph(clean_line, styles["bullet"]))
+                        else:
+                            els.append(Paragraph(line_strip, styles["normal"]))
+                else:
+                    els.append(Paragraph(para, styles["normal"]))
         els.append(Spacer(1, 8))
         return els
 

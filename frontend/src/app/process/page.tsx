@@ -4,8 +4,35 @@ import AIAgent from '../../components/AIAgent';
 
  
 import React, { useState, useEffect, useRef } from 'react';
-import { Loader2, ArrowRight, Download, Terminal, MessageSquare, Send, CheckCircle2, Lock } from 'lucide-react';
- 
+import { Loader2, ArrowRight, Download, Terminal, MessageSquare, Send, CheckCircle2, Lock, ShieldAlert, TrendingUp, Sparkles, FileText, Target, Activity } from 'lucide-react';
+
+const parseMarkdown = (text: string) => {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={index} className="text-zinc-150 font-bold">{part.slice(2, -2)}</strong>;
+    }
+    return part;
+  });
+};
+
+const renderParagraph = (para: string, i: number) => {
+  const lines = para.split('\n').filter(Boolean);
+  const isBulletList = lines.some(line => line.trim().startsWith('•') || line.trim().startsWith('-') || line.trim().startsWith('*') || /^\d+\.\s+/.test(line.trim()));
+  
+  if (isBulletList) {
+    return (
+      <ul key={i} className="list-disc pl-5 space-y-2 text-xs text-zinc-400 font-sans my-2">
+        {lines.map((line, idx) => {
+          const cleanLine = line.replace(/^[•\-\*\d\.]\s*/, '');
+          return <li key={idx} className="leading-relaxed">{parseMarkdown(cleanLine)}</li>;
+        })}
+      </ul>
+    );
+  }
+  return <p key={i} className="text-xs text-zinc-400 leading-relaxed font-sans">{parseMarkdown(para)}</p>;
+};
+
 const APP_STAGE = process.env.NEXT_PUBLIC_APP_STAGE || "sandbox";
 
 export default function ProcessPage() {
@@ -610,17 +637,27 @@ export default function ProcessPage() {
 
                       {/* Health Score Bar */}
                       <div className="bg-zinc-950 border border-zinc-900 rounded p-4">
-                        <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center justify-between mb-3">
                           <p className="text-[9px] font-mono text-zinc-500 tracking-widest">COMPOSITE HEALTH SCORE</p>
                           <span className="text-[9px] font-mono font-bold" style={{ color: scoreColor }}>{overall.toFixed(1)}/100 — {scoreLabel}</span>
                         </div>
-                        <div className="h-3 bg-zinc-900 rounded-full overflow-hidden">
-                          <div
-                            className="h-full rounded-full transition-all duration-1000"
-                            style={{ width: `${overall}%`, background: `linear-gradient(90deg, ${scoreColor}, ${scoreColor}aa)`, boxShadow: `0 0 8px ${scoreColor}66` }}
-                          />
+                        <div className="flex items-center gap-1.5 h-2">
+                          {Array.from({ length: 20 }).map((_, idx) => {
+                            const segmentValue = (idx + 1) * 5; // 5% per segment
+                            const isActive = overall >= segmentValue;
+                            return (
+                              <div
+                                key={idx}
+                                className="flex-1 h-1.5 rounded-sm transition-all duration-500"
+                                style={{
+                                  backgroundColor: isActive ? scoreColor : '#18181b', // zinc-900
+                                  boxShadow: isActive ? `0 0 6px ${scoreColor}88` : 'none',
+                                }}
+                              />
+                            );
+                          })}
                         </div>
-                        <div className="flex justify-between mt-1.5 text-[8px] font-mono text-zinc-700">
+                        <div className="flex justify-between mt-2 text-[8px] font-mono text-zinc-700">
                           <span>0 — CRITICAL</span><span>50 — AT RISK</span><span>100 — OPTIMAL</span>
                         </div>
                       </div>
@@ -631,16 +668,14 @@ export default function ProcessPage() {
                 {/* ── Executive Summary ─────────────────────────────────────── */}
                 {draftingProgress >= 2 && (
                   <div className="bg-zinc-950 border border-zinc-900 rounded p-6 space-y-4 text-left font-sans">
-                    <div className="flex items-center gap-3 border-b border-zinc-900 pb-3">
-                      <div className="w-6 h-6 rounded flex items-center justify-center shrink-0" style={{ background: 'rgba(249,115,22,0.15)', border: '1px solid rgba(249,115,22,0.3)' }}>
-                        <span className="text-[9px] font-mono font-bold text-orange-400">§2</span>
+                    <div className="flex items-center gap-3 border-b border-zinc-800 pb-3">
+                      <div className="w-6 h-6 rounded flex items-center justify-center shrink-0 bg-orange-500/10 border border-orange-500/30">
+                        <FileText size={12} className="text-orange-400" />
                       </div>
                       <h3 className="text-[10px] font-bold text-zinc-300 uppercase tracking-widest font-mono">Executive Operations Summary</h3>
                     </div>
                     <div className="space-y-3">
-                      {(reportSummary || '').split('\n\n').filter(Boolean).map((para, i) => (
-                        <p key={i} className="text-xs text-zinc-400 leading-relaxed">{para}</p>
-                      ))}
+                      {(reportSummary || '').split('\n\n').filter(Boolean).map((para, i) => renderParagraph(para, i))}
                     </div>
 
                     {/* Mini inline bar chart — health score components */}
@@ -674,87 +709,109 @@ export default function ProcessPage() {
                   </div>
                 )}
 
-                {/* ── Mini Donut Chart — Revenue vs Cost split ──────────────── */}
+                {/* ── Visual Analytics Grid — Circular Gauge & Timeline Roadmap ── */}
                 {draftingProgress >= 2 && reportHealthScore && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Donut: Score Distribution */}
-                    <div className="bg-zinc-950 border border-zinc-900 rounded p-5">
-                      <p className="text-[9px] font-mono text-zinc-600 tracking-widest mb-4 uppercase">§ 2a — Score Distribution</p>
-                      <div className="flex items-center gap-6">
-                        <svg width="88" height="88" viewBox="0 0 88 88">
-                          {(() => {
-                            const cats = reportHealthScore.categories ?? {};
-                            const slices = [
-                              { val: cats.revenue   ?? 0, max: 25, color: '#f97316' },
-                              { val: cats.customers ?? 0, max: 25, color: '#8b5cf6' },
-                              { val: cats.costs     ?? 0, max: 25, color: '#0ea5e9' },
-                              { val: cats.products  ?? 0, max: 25, color: '#16a34a' },
-                            ];
-                            const total = 100;
-                            const r = 34, cx = 44, cy = 44;
-                            const circumference = 2 * Math.PI * r;
-                            let offset = 0;
-                            return (
-                              <>
-                                <circle cx={cx} cy={cy} r={r} fill="none" stroke="#18181b" strokeWidth="14" />
-                                {slices.map((s, i) => {
-                                  const frac = s.val / total;
-                                  const dash = frac * circumference;
-                                  const el = (
-                                    <circle key={i} cx={cx} cy={cy} r={r} fill="none"
-                                      stroke={s.color} strokeWidth="14"
-                                      strokeDasharray={`${dash} ${circumference - dash}`}
-                                      strokeDashoffset={-offset}
-                                      transform={`rotate(-90 ${cx} ${cy})`}
-                                      opacity="0.85"
-                                    />
-                                  );
-                                  offset += dash;
-                                  return el;
-                                })}
-                                <text x={cx} y={cy - 4} textAnchor="middle" fill="white" fontSize="11" fontWeight="bold" fontFamily="monospace">{(reportHealthScore.overall ?? 0).toFixed(0)}</text>
-                                <text x={cx} y={cy + 9} textAnchor="middle" fill="#52525b" fontSize="7" fontFamily="monospace">/100</text>
-                              </>
-                            );
-                          })()}
-                        </svg>
-                        <div className="space-y-2">
-                          {[
-                            { label: 'Revenue', color: '#f97316' },
-                            { label: 'Customers', color: '#8b5cf6' },
-                            { label: 'Costs', color: '#0ea5e9' },
-                            { label: 'Products', color: '#16a34a' },
-                          ].map(({ label, color }) => (
-                            <div key={label} className="flex items-center gap-2">
-                              <div className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
-                              <span className="text-[9px] font-mono text-zinc-500">{label}</span>
-                            </div>
-                          ))}
+                    {/* Gauge: Score Distribution */}
+                    <div className="bg-zinc-950 border border-zinc-900 rounded p-5 flex flex-col justify-between">
+                      <div>
+                        <p className="text-[9px] font-mono text-zinc-500 tracking-widest mb-4 uppercase">§ 2a — Score Distribution</p>
+                        <div className="flex items-center gap-6">
+                          <svg width="88" height="88" viewBox="0 0 88 88" className="shrink-0">
+                            {(() => {
+                              const cats = reportHealthScore.categories ?? {};
+                              const slices = [
+                                { val: cats.revenue   ?? 0, max: 25, color: '#f97316' },
+                                { val: cats.customers ?? 0, max: 25, color: '#8b5cf6' },
+                                { val: cats.costs     ?? 0, max: 25, color: '#0ea5e9' },
+                                { val: cats.products  ?? 0, max: 25, color: '#16a34a' },
+                              ];
+                              const total = 100;
+                              const r = 38, cx = 44, cy = 44;
+                              const circumference = 2 * Math.PI * r;
+                              const progress = overall / 100;
+                              const strokeDashoffset = circumference - progress * circumference;
+                              return (
+                                <>
+                                  <circle cx={cx} cy={cy} r={r} fill="none" stroke="#18181b" strokeWidth="4" />
+                                  <circle
+                                    cx={cx}
+                                    cy={cy}
+                                    r={r}
+                                    fill="none"
+                                    stroke={scoreColor}
+                                    strokeWidth="4"
+                                    strokeDasharray={circumference}
+                                    strokeDashoffset={strokeDashoffset}
+                                    strokeLinecap="round"
+                                    transform={`rotate(-90 ${cx} ${cy})`}
+                                    className="transition-all duration-1000 ease-out"
+                                    style={{ filter: `drop-shadow(0 0 2px ${scoreColor}55)` }}
+                                  />
+                                  <text x={cx} y={cy - 2} textAnchor="middle" fill="white" fontSize="13" fontWeight="bold" fontFamily="monospace">{(overall).toFixed(0)}</text>
+                                  <text x={cx} y={cy + 10} textAnchor="middle" fill="#52525b" fontSize="6.5" fontWeight="bold" fontFamily="monospace">SCORE</text>
+                                </>
+                              );
+                            })()}
+                          </svg>
+                          <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-2.5">
+                            {[
+                              { label: 'Revenue', score: cats.revenue ?? 0, max: 25, color: '#f97316' },
+                              { label: 'Customer', score: cats.customers ?? 0, max: 25, color: '#8b5cf6' },
+                              { label: 'Cost', score: cats.costs ?? 0, max: 25, color: '#0ea5e9' },
+                              { label: 'Product', score: cats.products ?? 0, max: 25, color: '#16a34a' },
+                            ].map(({ label, score, max, color }) => (
+                              <div key={label} className="space-y-1">
+                                <div className="flex items-center justify-between text-[9px] font-mono">
+                                  <div className="flex items-center gap-1.5">
+                                    <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: color }} />
+                                    <span className="text-zinc-500">{label}</span>
+                                  </div>
+                                  <span className="font-bold" style={{ color }}>{score.toFixed(1)}</span>
+                                </div>
+                                <div className="h-1 bg-zinc-900 rounded-full overflow-hidden">
+                                  <div className="h-full rounded-full animate-pulse" style={{ width: `${(score / max) * 100}%`, background: color }} />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Mini bar chart: Actions priority */}
-                    {draftingProgress >= 3 && reportActions.length > 0 && (
-                      <div className="bg-zinc-950 border border-zinc-900 rounded p-5">
-                        <p className="text-[9px] font-mono text-zinc-600 tracking-widest mb-4 uppercase">§ 3a — Action Priority Matrix</p>
-                        <div className="space-y-2">
-                          {reportActions.slice(0, 5).map((_, i) => {
-                            const widths = [95, 82, 70, 58, 44];
-                            const colors = ['#dc2626', '#ea580c', '#d97706', '#16a34a', '#0ea5e9'];
-                            const labels = ['P1', 'P2', 'P3', 'P4', 'P5'];
-                            return (
-                              <div key={i} className="flex items-center gap-2">
-                                <span className="text-[8px] font-mono text-zinc-600 w-4 shrink-0">{labels[i]}</span>
-                                <div className="flex-1 h-2 bg-zinc-900 rounded-full overflow-hidden">
-                                  <div className="h-full rounded-full" style={{ width: `${widths[i]}%`, background: colors[i], opacity: 0.8 }} />
-                                </div>
-                                <span className="text-[8px] font-mono shrink-0" style={{ color: colors[i] }}>{widths[i]}%</span>
+                    {/* Timeline Roadmap */}
+                    {draftingProgress >= 3 && (
+                      <div className="bg-zinc-950 border border-zinc-900 rounded p-5 text-left">
+                        <p className="text-[9px] font-mono text-zinc-500 tracking-widest mb-4 uppercase">§ 3a — Strategic Implementation Timeline</p>
+                        <div className="relative pl-6 space-y-5 border-l border-zinc-900 ml-1">
+                          {[
+                            { phase: 'PHASE 1', title: 'Ingestion & Containment', duration: 'Days 1-30', desc: 'Isolate leakages, freeze anomalous billing accounts, and execute immediate z-score audit checks.', color: '#dc2626' },
+                            { phase: 'PHASE 2', title: 'Tactical Optimization', duration: 'Days 31-60', desc: 'Diversify customer portfolios, onboard key accounts, and restructure variable supplier agreements.', color: '#ea580c' },
+                            { phase: 'PHASE 3', title: 'Structural Leverage', duration: 'Days 61-90', desc: 'Decouple variable COGS scale, implement automated contract monitors, and enforce pricing compliance.', color: '#16a34a' }
+                          ].map((step, idx) => (
+                            <div key={idx} className="relative group">
+                              <div 
+                                className="absolute -left-[30px] top-1 w-3.5 h-3.5 rounded-full border border-black flex items-center justify-center transition-all duration-300"
+                                style={{
+                                  backgroundColor: step.color,
+                                  boxShadow: `0 0 6px ${step.color}66`
+                                }}
+                              >
+                                <div className="w-1.5 h-1.5 rounded-full bg-black/60" />
                               </div>
-                            );
-                          })}
+                              <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-[9px] font-bold font-mono tracking-wider px-1.5 py-0.5 rounded" style={{ color: step.color, background: `${step.color}15`, border: `1px solid ${step.color}25` }}>
+                                    {step.phase}
+                                  </span>
+                                  <span className="text-[9px] font-mono text-zinc-550 font-bold">{step.duration}</span>
+                                </div>
+                                <h4 className="text-xs font-bold text-zinc-200 font-mono tracking-tight">{step.title}</h4>
+                                <p className="text-[10px] text-zinc-400 font-sans leading-relaxed">{step.desc}</p>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                        <p className="text-[8px] font-mono text-zinc-700 mt-3">Urgency score relative to P1 baseline</p>
                       </div>
                     )}
                   </div>
@@ -764,8 +821,8 @@ export default function ProcessPage() {
                 {draftingProgress >= 3 && (
                   <div className="bg-zinc-950 border border-zinc-900 rounded p-6 space-y-4 text-left font-sans">
                     <div className="flex items-center gap-3 border-b border-zinc-900 pb-3">
-                      <div className="w-6 h-6 rounded flex items-center justify-center shrink-0" style={{ background: 'rgba(249,115,22,0.15)', border: '1px solid rgba(249,115,22,0.3)' }}>
-                        <span className="text-[9px] font-mono font-bold text-orange-400">§3</span>
+                      <div className="w-6 h-6 rounded flex items-center justify-center shrink-0 bg-orange-500/10 border border-orange-500/30">
+                        <Target size={12} className="text-orange-400" />
                       </div>
                       <h3 className="text-[10px] font-bold text-zinc-300 uppercase tracking-widest font-mono">Strategic Recommendations & Action Plan</h3>
                     </div>
@@ -799,13 +856,13 @@ export default function ProcessPage() {
                 {draftingProgress >= 3 && (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     {[
-                      { icon: '⚠', label: 'Risk Flag', text: 'Customer concentration risk detected. Revenue dependency on top accounts exceeds safe thresholds.', color: '#dc2626', bg: 'rgba(220,38,38,0.06)' },
-                      { icon: '📊', label: 'Key Signal', text: 'Cost-revenue correlation indicates near-fully variable cost structure limiting operating leverage.', color: '#d97706', bg: 'rgba(217,119,6,0.06)' },
-                      { icon: '✦', label: 'Opportunity', text: 'Margin recovery available through targeted pricing discipline and supplier contract renegotiation.', color: '#16a34a', bg: 'rgba(22,163,74,0.06)' },
+                      { icon: <ShieldAlert size={14} className="text-red-500" />, label: 'Risk Flag', text: 'Customer concentration risk detected. Revenue dependency on top accounts exceeds safe thresholds.', color: '#dc2626', bg: 'rgba(220,38,38,0.06)' },
+                      { icon: <TrendingUp size={14} className="text-amber-500" />, label: 'Key Signal', text: 'Cost-revenue correlation indicates near-fully variable cost structure limiting operating leverage.', color: '#d97706', bg: 'rgba(217,119,6,0.06)' },
+                      { icon: <Sparkles size={14} className="text-emerald-500" />, label: 'Opportunity', text: 'Margin recovery available through targeted pricing discipline and supplier contract renegotiation.', color: '#16a34a', bg: 'rgba(22,163,74,0.06)' },
                     ].map(({ icon, label, text, color, bg }, i) => (
                       <div key={i} className="rounded border p-4 text-left" style={{ background: bg, borderColor: `${color}25` }}>
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-sm">{icon}</span>
+                          {icon}
                           <span className="text-[9px] font-mono font-bold tracking-widest" style={{ color }}>{label.toUpperCase()}</span>
                         </div>
                         <p className="text-[10px] text-zinc-400 leading-relaxed font-sans">{text}</p>
