@@ -1,6 +1,7 @@
 "use client";
 import Logo from '../../components/Logo';
 import AIAgent from '../../components/AIAgent';
+import { API_BASE } from '@/config';
 
  
 import React, { useState, useEffect, useRef } from 'react';
@@ -77,8 +78,6 @@ export default function ProcessPage() {
 
   const consoleEndRef = useRef<HTMLDivElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
-
-  const API_BASE = "http://127.0.0.1:8000";
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -320,7 +319,7 @@ export default function ProcessPage() {
     setDownloadingPDF(true);
     
     try {
-      const res = await fetch(`http://127.0.0.1:8000/reports/${dbReportId}/pdf`, {
+      const res = await fetch(`${API_BASE}/reports/${dbReportId}/pdf`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (res.ok) {
@@ -356,7 +355,7 @@ export default function ProcessPage() {
     setSavingReport(true);
     
     try {
-      const res = await fetch(`http://127.0.0.1:8000/reports/${dbReportId}/save`, {
+      const res = await fetch(`${API_BASE}/reports/${dbReportId}/save`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` }
       });

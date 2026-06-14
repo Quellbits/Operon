@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { API_BASE } from '@/config';
 import { 
   ArrowUpRight, ArrowDownRight, Activity, TrendingUp, DollarSign, 
   ShieldCheck, AlertTriangle, Loader2, RefreshCw, Layers, 
@@ -301,7 +302,7 @@ export default function DashboardOverviewPage() {
     if (!token) return;
     try {
       // 1. Fetch dashboard overview
-      const res = await fetch("http://127.0.0.1:8000/analytics/overview", {
+      const res = await fetch(`${API_BASE}/analytics/overview`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (res.ok) {
@@ -310,7 +311,7 @@ export default function DashboardOverviewPage() {
       }
       
       // 2. Fetch metrics
-      const resMetrics = await fetch("http://127.0.0.1:8000/analytics/metrics", {
+      const resMetrics = await fetch(`${API_BASE}/analytics/metrics`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (resMetrics.ok) {

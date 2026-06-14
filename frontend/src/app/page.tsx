@@ -1,6 +1,7 @@
 "use client";
 import Logo from '../components/Logo';
 import React, { useState, useEffect } from 'react';
+import { API_BASE } from '@/config';
 import { 
   ArrowRight, 
   Loader2, 
@@ -23,8 +24,6 @@ export default function WaitingListLanding() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [metrics, setMetrics] = useState({ signups: 142, target: 500 });
-
-  const API_BASE = "http://127.0.0.1:8000";
 
   // Stepper preview states
   const [activeStep, setActiveStep] = useState(0);

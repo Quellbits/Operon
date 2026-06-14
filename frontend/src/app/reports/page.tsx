@@ -4,6 +4,7 @@ import Logo from '../../components/Logo';
  
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { API_BASE } from '@/config';
 import { FileText, Download, CheckCircle2, ChevronRight, FilePieChart, Loader2, AlertCircle } from 'lucide-react';
  
 export default function ReportsPage() {
@@ -41,7 +42,7 @@ export default function ReportsPage() {
     }, 2800);
     
     try {
-      const res = await fetch("http://127.0.0.1:8000/reports/generate", {
+      const res = await fetch(`${API_BASE}/reports/generate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +86,7 @@ export default function ReportsPage() {
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const res = await fetch("http://127.0.0.1:8000/reports/", {
+        const res = await fetch(`${API_BASE}/reports/`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         if (res.ok) {
@@ -116,7 +117,7 @@ export default function ReportsPage() {
     const cleanTitle = title.replace(/\s+/g, "_").toLowerCase();
     
     try {
-      const res = await fetch(`http://127.0.0.1:8000/reports/${reportId}/pdf`, {
+      const res = await fetch(`${API_BASE}/reports/${reportId}/pdf`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (res.ok) {

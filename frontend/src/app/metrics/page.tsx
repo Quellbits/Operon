@@ -4,6 +4,7 @@ import Logo from '../../components/Logo';
  
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { API_BASE } from '@/config';
 import { BarChart as RechartBarChart, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
 import { Loader2, AlertCircle } from 'lucide-react';
  
@@ -16,7 +17,7 @@ export default function MetricsPage() {
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const res = await fetch("http://127.0.0.1:8000/analytics/metrics", {
+        const res = await fetch(`${API_BASE}/analytics/metrics`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         if (res.ok) {

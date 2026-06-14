@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ShieldCheck, Loader2, ArrowLeft } from 'lucide-react';
 import Logo from '../../components/Logo';
+import { API_BASE } from '@/config';
 
 function CheckoutForm() {
   const searchParams = useSearchParams();
@@ -34,7 +35,7 @@ function CheckoutForm() {
           const token = localStorage.getItem("token");
           if (token) {
             try {
-              await fetch("http://127.0.0.1:8000/organizations/plan", {
+              await fetch(`${API_BASE}/organizations/plan`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

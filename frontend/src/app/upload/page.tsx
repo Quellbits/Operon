@@ -1,5 +1,6 @@
 "use client";
 import Logo from '../../components/Logo';
+import { API_BASE } from '@/config';
 
  
 import React, { useState, useRef } from 'react';
@@ -22,8 +23,6 @@ export default function UploadPage() {
   const [storageLimit, setStorageLimit] = useState<number>(10);
   const [orgPlan, setOrgPlan] = useState<string>("SANDBOX_INIT");
  
-  const API_BASE = "http://127.0.0.1:8000";
-
   const fetchStorageInfo = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;

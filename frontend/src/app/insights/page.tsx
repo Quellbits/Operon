@@ -4,6 +4,7 @@ import Logo from '../../components/Logo';
  
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { API_BASE } from '@/config';
 import { AlertCircle, TrendingDown, ShieldAlert, CheckCircle2, ArrowRight, Loader2 } from 'lucide-react';
  
 export default function InsightsPage() {
@@ -15,7 +16,7 @@ export default function InsightsPage() {
       const token = localStorage.getItem("token");
       if (!token) return;
       try {
-        const res = await fetch("http://127.0.0.1:8000/analytics/overview", {
+        const res = await fetch(`${API_BASE}/analytics/overview`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         if (res.ok) {

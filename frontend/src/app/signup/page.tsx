@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Loader2, ArrowRight, Terminal, Activity, Database, Check, AlertCircle, Shield, Play, ArrowUpRight } from 'lucide-react';
 import Logo from '../../components/Logo';
+import { API_BASE } from '@/config';
 
 const APP_STAGE = process.env.NEXT_PUBLIC_APP_STAGE || "sandbox";
 
@@ -70,8 +71,6 @@ function SignupForm() {
     }, 1500);
     return () => clearInterval(interval);
   }, []);
-
-  const API_BASE = "http://127.0.0.1:8000";
 
   // If already logged in, redirect directly (unless it is the default demo account)
   useEffect(() => {

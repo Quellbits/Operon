@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Send, Sparkles, ChevronDown, RotateCcw, Loader2, Bot } from 'lucide-react';
 import Logo from './Logo';
+import { API_BASE } from '@/config';
 
 interface Message {
   id: string;
@@ -50,8 +51,6 @@ export default function AIAgent({ mode = 'dashboard', context }: AIAgentProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
-
-  const API_BASE = 'http://127.0.0.1:8000';
 
   // Auto-scroll to bottom
   const scrollToBottom = useCallback(() => {

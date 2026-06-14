@@ -5,6 +5,7 @@ import { LayoutDashboard, FileUp, BarChart, AlertCircle, FileText, Menu, X, Arro
 import Link from 'next/link';
 import Logo from '../Logo';
 import AIAgent from '../AIAgent';
+import { API_BASE } from '@/config';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -30,7 +31,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       if (token) {
         // Fetch active organization details
         try {
-          const res = await fetch("http://127.0.0.1:8000/organizations/active", {
+          const res = await fetch(`${API_BASE}/organizations/active`, {
             headers: { "Authorization": `Bearer ${token}` }
           });
           if (res.ok) {
@@ -46,7 +47,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         return;
       }
       
-      const API_BASE = "http://127.0.0.1:8000";
       try {
         await fetch(`${API_BASE}/auth/signup`, {
           method: "POST",

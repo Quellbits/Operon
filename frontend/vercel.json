@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://operon-backend.onrender.com/:path*"
+      "destination": "https://operon-vk6e.onrender.com/:path*"
     }
   ]
 }
