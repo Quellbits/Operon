@@ -257,30 +257,36 @@ def get_admin_analytics(db: Session = Depends(database.get_db), _admin=Depends(v
     }
 
 @router.get("/settings")
-def get_settings(db: Session = Depends(database.get_db), _admin=Depends(verify_admin)):
+def get_settings(db: Session = Depends(database.get_db)):
     """
-    Get the currently active App Stage stage configuration.
+    Get the currently active App Stage stage configuration. (Public Endpoint)
     """
     stage_setting = db.query(models.AppSetting).filter(models.AppSetting.key == "app_stage").first()
-    active_stage = stage_setting.value if stage_setting else os.getenv("APP_STAGE", "sandbox")
+    active_stage = stage_setting.value if stage_setting else os.getenv("APP_STAGE", "development")
+    if active_stage == "sandbox":
+        active_stage = "development"
     return {"app_stage": active_stage}
 
 @router.post("/settings")
 def update_settings(payload: schemas.SettingsUpdatePayload, db: Session = Depends(database.get_db), _admin=Depends(verify_admin)):
     """
-    Update the active app stage setting (sandbox or production).
+    Update the active app stage setting (development or production).
     """
-    if payload.app_stage not in ["sandbox", "production"]:
+    stage = payload.app_stage.lower().strip()
+    if stage == "sandbox":
+        stage = "development"
+        
+    if stage not in ["development", "production"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid app stage. Must be 'sandbox' or 'production'."
+            detail="Invalid app stage. Must be 'development' or 'production'."
         )
         
     setting = db.query(models.AppSetting).filter(models.AppSetting.key == "app_stage").first()
     if not setting:
-        setting = models.AppSetting(key="app_stage", value=payload.app_stage)
+        setting = models.AppSetting(key="app_stage", value=stage)
         db.add(setting)
     else:
-        setting.value = payload.app_stage
+        setting.value = stage
     db.commit()
     return {"status": "success", "app_stage": setting.value}
