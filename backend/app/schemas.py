@@ -35,6 +35,7 @@ class ReportResponse(BaseModel):
     summary: Optional[str] = None
     health_score: Optional[float] = None
     actions: Optional[List[str]] = None
+    is_saved: Optional[bool] = None
     class Config:
         from_attributes = True
 
