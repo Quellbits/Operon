@@ -16,7 +16,7 @@ export default function AdminDashboard() {
   const [loginError, setLoginError] = useState("");
 
   const [data, setData] = useState<any>(null);
-  const [appStage, setAppStage] = useState<string>("sandbox");
+  const [appStage, setAppStage] = useState<string>("development");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   
@@ -60,7 +60,8 @@ export default function AdminDashboard() {
       });
       if (settingsRes.ok) {
         const settingsJson = await settingsRes.json();
-        setAppStage(settingsJson.app_stage);
+        const stage = settingsJson.app_stage === "sandbox" ? "development" : settingsJson.app_stage;
+        setAppStage(stage);
       }
     } catch (err: any) {
       setError(err.message || "An error occurred.");
@@ -123,7 +124,8 @@ export default function AdminDashboard() {
       });
       if (res.ok) {
         const json = await res.json();
-        setAppStage(json.app_stage);
+        const newStage = json.app_stage === "sandbox" ? "development" : json.app_stage;
+        setAppStage(newStage);
       } else {
         alert("Failed to save setting configuration.");
       }
@@ -400,16 +402,16 @@ export default function AdminDashboard() {
                 
                 <div className="grid grid-cols-2 gap-3 py-2 font-bold text-[10px]">
                   <button 
-                    onClick={() => handleToggleStage("sandbox")}
-                    disabled={savingSettings || appStage === "sandbox"}
+                    onClick={() => handleToggleStage("development")}
+                    disabled={savingSettings || appStage === "development"}
                     className={`py-3.5 rounded border transition-all flex flex-col items-center gap-1.5 cursor-pointer ${
-                      appStage === "sandbox"
+                      appStage === "development"
                         ? 'border-orange-500/30 bg-orange-500/5 text-orange-400 font-bold shadow-md shadow-orange-500/5'
                         : 'border-zinc-850 hover:border-zinc-700 bg-zinc-950/20 text-zinc-550 hover:text-zinc-300'
                     }`}
                   >
-                    <ShieldAlert size={14} className={appStage === "sandbox" ? "text-orange-450" : ""} />
-                    SANDBOX MODE
+                    <ShieldAlert size={14} className={appStage === "development" ? "text-orange-450" : ""} />
+                    DEVELOPMENT MODE
                   </button>
 
                   <button 
@@ -431,7 +433,7 @@ export default function AdminDashboard() {
                     <Database size={10} className="text-zinc-500" />
                     STAGE STATUS INSTRUCTIONS
                   </p>
-                  <p>• **Sandbox**: Block public signups, redirects all page requests to waitlist landing. Sandbox demo account access remains open.</p>
+                  <p>• **Development**: Block public signups, redirects all page requests to waitlist landing. Sandbox demo account access remains open.</p>
                   <p>• **Production**: Opens email registrations and lets public users sign up for custom accounts.</p>
                 </div>
               </div>

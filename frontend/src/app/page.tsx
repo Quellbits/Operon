@@ -12,16 +12,59 @@ import {
   FileSpreadsheet,
   Zap,
   Cpu,
-  Search,
   Check,
-  Send,
-  HelpCircle,
   FileText,
   AlertTriangle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import RealAppLanding from '@/components/RealAppLanding';
 
-export default function WaitingListLanding() {
+export default function Home() {
+  const [appStage, setAppStage] = useState<string | null>(null);
+  const [stageLoading, setStageLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStage = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/admin/settings`);
+        if (res.ok) {
+          const data = await res.json();
+          const stage = data.app_stage === 'sandbox' ? 'development' : data.app_stage;
+          setAppStage(stage);
+        } else {
+          setAppStage("development");
+        }
+      } catch (err) {
+        console.warn("Failed to fetch app stage config, defaulting to development mode.", err);
+        setAppStage("development");
+      } finally {
+        setStageLoading(false);
+      }
+    };
+    fetchStage();
+  }, []);
+
+  if (stageLoading) {
+    return (
+      <div className="min-h-screen bg-[#0c0e14] text-zinc-400 font-mono flex flex-col items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.005)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.005)_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-[0.03] blur-3xl pointer-events-none bg-orange-500" />
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="animate-spin text-orange-500" size={24} />
+          <span className="text-[10px] tracking-widest uppercase text-zinc-650 font-bold">Initializing System Console...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (appStage === 'production') {
+    return <RealAppLanding />;
+  }
+
+  return <WaitingListLanding />;
+}
+
+function WaitingListLanding() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -77,7 +120,6 @@ export default function WaitingListLanding() {
       setChatAnswers([]);
       setIsTyping(false);
     } else {
-      // Simulate typing initial assistant message
       setIsTyping(true);
       const t = setTimeout(() => {
         setIsTyping(false);
@@ -85,26 +127,6 @@ export default function WaitingListLanding() {
       return () => clearTimeout(t);
     }
   }, [activeStep]);
-
-  // Track anonymous page visit for admin analytics telemetry
-  useEffect(() => {
-    const trackVisit = async () => {
-      try {
-        await fetch(`${API_BASE}/admin/track`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            path: window.location.pathname,
-            user_agent: navigator.userAgent,
-            referrer: document.referrer || null
-          })
-        });
-      } catch (err) {
-        console.warn("Telemetry reporting skipped.", err);
-      }
-    };
-    trackVisit();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,7 +167,7 @@ export default function WaitingListLanding() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0c0e14] text-zinc-150 font-mono flex flex-col justify-between relative overflow-x-hidden selection:bg-orange-500/20 selection:text-orange-400">
+    <div className="min-h-screen bg-[#0c0e14] text-zinc-150 font-mono flex flex-col justify-between relative overflow-x-hidden selection:bg-orange-500/20 selection:text-orange-400 w-full">
       
       {/* Background coordinate grid lines */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.008)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.008)_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none z-0" />
@@ -165,9 +187,9 @@ export default function WaitingListLanding() {
           </div>
         </div>
         <div>
-          <div className="flex items-center gap-2 border border-zinc-900 bg-[#121620]/30 px-3 py-1.5 rounded text-[9px] text-zinc-500">
+          <div className="flex items-center gap-2 border border-zinc-900 bg-[#121620]/30 px-3 py-1.5 rounded text-[9px] text-zinc-500 font-mono">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
-            <span>EARLY DESIGN STAGE</span>
+            <span>EARLY ACCESS WAITLIST</span>
           </div>
         </div>
       </header>
@@ -180,7 +202,7 @@ export default function WaitingListLanding() {
           <div className="lg:col-span-6 space-y-8 text-left max-w-2xl">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-orange-500/20 bg-orange-500/5 text-[9px] font-bold tracking-widest text-orange-400">
-                <Sparkles size={10} className="animate-pulse text-orange-450" />
+                <Sparkles size={10} className="animate-pulse text-orange-455" />
                 <span>MEET YOUR INTELLIGENT FINANCIAL PARTNER</span>
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-[1.15] uppercase">
@@ -235,7 +257,7 @@ export default function WaitingListLanding() {
                       </div>
                     </div>
                     {error && (
-                      <p className="text-[10px] font-bold text-red-400 bg-red-950/15 border border-red-950/40 rounded p-2.5">
+                      <p className="text-[10px] font-bold text-red-400 bg-red-950/15 border border-red-955/40 rounded p-2.5">
                         ⚠️ {error}
                       </p>
                     )}
@@ -247,7 +269,7 @@ export default function WaitingListLanding() {
                     animate={{ scale: 1, opacity: 1 }}
                     className="py-4 text-center space-y-3"
                   >
-                    <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-450 mx-auto animate-bounce">
+                    <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-455 mx-auto animate-bounce">
                       <CheckCircle2 size={20} />
                     </div>
                     <div className="space-y-1">
@@ -265,7 +287,7 @@ export default function WaitingListLanding() {
             <div className="max-w-lg space-y-2">
               <div className="flex items-center justify-between text-[8px] font-bold text-zinc-550 uppercase tracking-widest">
                 <span>Reserved Slots Status</span>
-                <span className="text-orange-450 font-bold">{metrics.signups} / {metrics.target} joined</span>
+                <span className="text-orange-455 font-bold">{metrics.signups} / {metrics.target} joined</span>
               </div>
               <div className="h-1.5 bg-[#121620] rounded-full overflow-hidden flex gap-[2.5px] p-[1px]">
                 {Array.from({ length: 20 }).map((_, idx) => {
@@ -327,7 +349,6 @@ export default function WaitingListLanding() {
                       className="w-full space-y-4 flex flex-col items-center justify-center text-center"
                     >
                       <div className="relative">
-                        {/* Spreadsheet upload animation */}
                         <motion.div 
                           animate={{ y: [0, -8, 0] }}
                           transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
@@ -348,7 +369,7 @@ export default function WaitingListLanding() {
                       </div>
 
                       {/* Mock loading block */}
-                      <div className="w-48 h-1.5 bg-zinc-900 border border-zinc-850 rounded-full overflow-hidden relative">
+                      <div className="w-48 h-1.5 bg-zinc-900 border border-zinc-855 rounded-full overflow-hidden relative">
                         <motion.div 
                           initial={{ left: "-100%" }}
                           animate={{ left: "100%" }}
@@ -370,9 +391,7 @@ export default function WaitingListLanding() {
                     >
                       <span className="text-[8px] font-bold text-zinc-650 uppercase tracking-widest block mb-1">Scanning transactions...</span>
                       
-                      {/* Audited items representation */}
                       <div className="space-y-2 relative">
-                        {/* Scanning bar */}
                         <motion.div 
                           animate={{ y: [0, 92, 0] }}
                           transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
@@ -391,12 +410,12 @@ export default function WaitingListLanding() {
                         >
                           <div className="space-y-0.5">
                             <span className="text-zinc-200 font-sans block">Software Hosting Service</span>
-                            <span className="text-[7.5px] text-orange-450 font-bold uppercase tracking-widest block">Duplicate Bill Detected</span>
+                            <span className="text-[7.5px] text-orange-455 font-bold uppercase tracking-widest block">Duplicate Bill Detected</span>
                           </div>
                           <span className="text-red-400 font-bold">-$450.00</span>
                         </motion.div>
 
-                        <div className="p-2 border border-zinc-850/60 bg-zinc-950/20 rounded flex items-center justify-between text-[10px] opacity-60">
+                        <div className="p-2 border border-zinc-855/60 bg-zinc-955/20 rounded flex items-center justify-between text-[10px] opacity-60">
                           <span className="text-zinc-400 font-sans">Supplier Delivery Charge</span>
                           <span className="text-zinc-400 font-bold">$840.00</span>
                         </div>
@@ -415,13 +434,12 @@ export default function WaitingListLanding() {
                     >
                       <span className="text-[8px] font-bold text-zinc-650 uppercase tracking-widest block">Actionable Roadmaps</span>
                       
-                      {/* Flowchart Timeline Nodes */}
                       <div className="grid grid-cols-3 gap-3 relative font-sans text-[10px] normal-case text-zinc-300">
                         
                         <div className="p-3 border border-zinc-850 bg-zinc-950/20 rounded text-center relative flex flex-col justify-between min-h-[90px]">
                           <span className="text-[7px] text-zinc-650 font-bold uppercase tracking-wider font-mono">Immediate</span>
                           <p className="mt-1 leading-normal">Dispute Hosting Double Billing</p>
-                          <span className="text-[8px] font-bold text-emerald-450 mt-1 font-mono uppercase">Save $450</span>
+                          <span className="text-[8px] font-bold text-emerald-455 mt-1 font-mono uppercase">Save $450</span>
                         </div>
 
                         <div className="p-3 border border-orange-500/20 bg-orange-500/5 rounded text-center relative flex flex-col justify-between min-h-[90px]">
@@ -431,7 +449,7 @@ export default function WaitingListLanding() {
                         </div>
 
                         <div className="p-3 border border-zinc-850 bg-zinc-950/20 rounded text-center relative flex flex-col justify-between min-h-[90px] opacity-60">
-                          <span className="text-[7px] text-zinc-650 font-bold uppercase tracking-wider font-mono">Month 1</span>
+                          <span className="text-[7px] text-zinc-655 font-bold uppercase tracking-wider font-mono">Month 1</span>
                           <p className="mt-1 leading-normal">Consolidate Software Licenses</p>
                           <span className="text-[8px] font-bold text-zinc-500 mt-1 font-mono uppercase">Review</span>
                         </div>
@@ -449,7 +467,6 @@ export default function WaitingListLanding() {
                       transition={{ duration: 0.4 }}
                       className="w-full space-y-3 flex flex-col justify-between min-h-[160px] text-[10px]"
                     >
-                      {/* Conversation bubbles */}
                       <div className="space-y-2 flex-grow overflow-y-auto max-h-[120px]">
                         <div className="flex gap-2 items-start text-left">
                           <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 text-[8px] font-bold">
@@ -462,14 +479,12 @@ export default function WaitingListLanding() {
 
                         {chatAnswers.map((answer, index) => (
                           <div key={index} className="space-y-2">
-                            {/* User reply bubble */}
                             <div className="flex gap-2 items-start justify-end text-right">
                               <div className="bg-zinc-900 border border-zinc-800 text-zinc-300 p-2.5 rounded max-w-[85%] font-sans normal-case leading-relaxed">
                                 {answer}
                               </div>
                             </div>
                             
-                            {/* Assistant follow up */}
                             {!isTyping && index === chatAnswers.length - 1 && (
                               <div className="flex gap-2 items-start text-left">
                                 <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 text-[8px] font-bold">
@@ -491,7 +506,6 @@ export default function WaitingListLanding() {
                         )}
                       </div>
 
-                      {/* Interactive option buttons */}
                       {chatAnswers.length === 0 && !isTyping && (
                         <div className="flex gap-2 justify-start pt-1.5 font-sans normal-case">
                           <button 
@@ -516,7 +530,7 @@ export default function WaitingListLanding() {
 
               {/* Step indicator description bottom */}
               <div className="border-t border-zinc-900 pt-3 flex items-start gap-2 text-zinc-500">
-                <div className="w-4 h-4 rounded-full bg-zinc-900 border border-zinc-850 flex items-center justify-center text-orange-450 shrink-0">
+                <div className="w-4 h-4 rounded-full bg-zinc-900 border border-zinc-850 flex items-center justify-center text-orange-455 shrink-0">
                   <Zap size={8} />
                 </div>
                 <p className="text-[9.5px] font-sans normal-case leading-relaxed">

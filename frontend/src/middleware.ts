@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hostname = request.nextUrl.hostname;
 
@@ -11,8 +11,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // On public deployed server, allow root page, admin dashboard, API routes, and static assets
-  const isRoot = pathname === '/';
+  // Always allow admin portal, API routes, and static assets
   const isAdmin = pathname.startsWith('/admin');
   const isApi = pathname.startsWith('/api') || pathname.startsWith('/_next/data');
   const isAsset = pathname.startsWith('/_next') || 
@@ -22,11 +21,35 @@ export function middleware(request: NextRequest) {
                   pathname.endsWith('.svg') || 
                   pathname.endsWith('.jpg');
  
-  if (isRoot || isAdmin || isApi || isAsset) {
+  if (isAdmin || isApi || isAsset) {
     return NextResponse.next();
   }
 
-  // Redirect all other public page requests to the root waiting list page
+  // Fetch app stage from backend settings to determine access control
+  try {
+    const backendUrl = process.env.NODE_ENV === "production" 
+      ? "https://operon-vk6e.onrender.com" 
+      : "http://127.0.0.1:8000";
+      
+    const res = await fetch(`${backendUrl}/admin/settings`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.app_stage === 'production') {
+        // App is in production mode. Allow all routes (dashboard, upload, signup, etc.)
+        return NextResponse.next();
+      }
+    }
+  } catch (err) {
+    console.error("Middleware settings fetch failed, defaulting to development restrictions:", err);
+  }
+
+  // App is in development mode. Allow root page (which will display waitlist)
+  const isRoot = pathname === '/';
+  if (isRoot) {
+    return NextResponse.next();
+  }
+
+  // Redirect all other public page requests to the root page
   return NextResponse.redirect(new URL('/', request.url));
 }
 
