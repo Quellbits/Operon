@@ -9,8 +9,17 @@ class AINarrativeLayer:
         self.insights = insights
         self.health_score = health_score
         self.advanced_stats = advanced_stats or {}
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
-        self.api_available = bool(os.getenv("OPENAI_API_KEY", ""))
+        api_key = os.getenv("OPENAI_API_KEY", "")
+        if api_key and not api_key.startswith("sk-your-openai-api-key"):
+            try:
+                self.client = OpenAI(api_key=api_key)
+                self.api_available = True
+            except Exception:
+                self.client = None
+                self.api_available = False
+        else:
+            self.client = None
+            self.api_available = False
 
     def _build_data_context(self) -> str:
         """Build a rich, numeric-dense context string from all available metrics."""
