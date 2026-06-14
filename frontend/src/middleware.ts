@@ -11,8 +11,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // On public deployed server, allow root page, API routes, and static assets
+  // On public deployed server, allow root page, admin dashboard, API routes, and static assets
   const isRoot = pathname === '/';
+  const isAdmin = pathname.startsWith('/admin');
   const isApi = pathname.startsWith('/api') || pathname.startsWith('/_next/data');
   const isAsset = pathname.startsWith('/_next') || 
                   pathname.startsWith('/static') || 
@@ -20,8 +21,8 @@ export function middleware(request: NextRequest) {
                   pathname.endsWith('.png') || 
                   pathname.endsWith('.svg') || 
                   pathname.endsWith('.jpg');
-
-  if (isRoot || isApi || isAsset) {
+ 
+  if (isRoot || isAdmin || isApi || isAsset) {
     return NextResponse.next();
   }
 

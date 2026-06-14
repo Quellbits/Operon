@@ -44,3 +44,15 @@ class BatchProcessPayload(BaseModel):
 class WaitlistCreate(BaseModel):
     email: str
 
+class VisitorTrackPayload(BaseModel):
+    path: str
+    user_agent: Optional[str] = None
+    referrer: Optional[str] = None
+
+class AdminLoginPayload(BaseModel):
+    password: str
+
+class SettingsUpdatePayload(BaseModel):
+    app_stage: str
+
+

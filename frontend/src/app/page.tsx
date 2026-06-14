@@ -62,6 +62,26 @@ export default function WaitingListLanding() {
     return () => clearInterval(timer);
   }, []);
 
+  // Track anonymous page visit for admin telemetry
+  useEffect(() => {
+    const trackVisit = async () => {
+      try {
+        await fetch(`${API_BASE}/admin/track`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            path: window.location.pathname,
+            user_agent: navigator.userAgent,
+            referrer: document.referrer || null
+          })
+        });
+      } catch (err) {
+        console.warn("Telemetry reporting skipped.", err);
+      }
+    };
+    trackVisit();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || loading) return;

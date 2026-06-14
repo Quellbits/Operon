@@ -63,9 +63,18 @@ def seed_default_user():
             member = models.OrganizationMember(user_id=new_user.id, organization_id=new_org.id, role="owner")
             db.add(member)
             db.commit()
-            print("Successfully seeded default demo user.")
+            
+            # Seed default app setting
+            stage_exists = db.query(models.AppSetting).filter(models.AppSetting.key == "app_stage").first()
+            if not stage_exists:
+                default_stage = os.getenv("APP_STAGE", "sandbox")
+                db_stage = models.AppSetting(key="app_stage", value=default_stage)
+                db.add(db_stage)
+                db.commit()
+                
+            print("Successfully seeded default demo user and app settings.")
     except Exception as e:
-        print(f"Error seeding default user: {e}")
+        print(f"Error seeding default user or settings: {e}")
     finally:
         db.close()
 
@@ -87,7 +96,7 @@ app.add_middleware(
 def read_root():
     return {"message": "Welcome to Operon Operations API"}
  
-from .routers import uploads, auth, organizations, reports, analytics, ai_agent
+from .routers import uploads, auth, organizations, reports, analytics, ai_agent, admin
  
 app.include_router(auth.router)
 app.include_router(uploads.router)
@@ -95,3 +104,4 @@ app.include_router(organizations.router)
 app.include_router(reports.router)
 app.include_router(analytics.router)
 app.include_router(ai_agent.router)
+app.include_router(admin.router)

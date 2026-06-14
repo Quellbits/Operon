@@ -145,3 +145,29 @@ class WaitlistEmail(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+class AppSetting(Base):
+    __tablename__ = "app_settings"
+    
+    key = Column(String, primary_key=True, index=True)
+    value = Column(String)
+
+class VisitorLog(Base):
+    __tablename__ = "visitor_logs"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    ip_address = Column(String)  # Will store SHA-256 hashed/anonymized IPs
+    user_agent = Column(String)
+    referrer = Column(String, nullable=True)
+    path = Column(String)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
+class PaymentLog(Base):
+    __tablename__ = "payment_logs"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    amount = Column(Float)
+    plan_name = Column(String)
+    status = Column(String, default="completed")
+    timestamp = Column(DateTime, default=datetime.utcnow)
+

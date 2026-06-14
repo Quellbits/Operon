@@ -95,6 +95,24 @@ def update_organization_plan(payload: PlanUpdatePayload, current_user: models.Us
         raise HTTPException(status_code=400, detail="Invalid plan name. Must be one of SANDBOX_INIT, AUDIT_PROFESSIONAL, ENTERPRISE_COMMAND, QUANT_INTELLIGENCE.")
         
     org.plan = payload.plan
+    
+    # Log simulated plan purchase payment
+    prices = {
+        "AUDIT_PROFESSIONAL": 15.0,
+        "ENTERPRISE_COMMAND": 49.0,
+        "QUANT_INTELLIGENCE": 99.0,
+        "SANDBOX_INIT": 0.0
+    }
+    amount = prices.get(payload.plan, 0.0)
+    if amount > 0.0:
+        db_payment = models.PaymentLog(
+            organization_id=org.id,
+            amount=amount,
+            plan_name=payload.plan,
+            status="completed"
+        )
+        db.add(db_payment)
+        
     db.commit()
     db.refresh(org)
     

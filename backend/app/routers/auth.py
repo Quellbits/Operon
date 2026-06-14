@@ -29,7 +29,9 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 @router.post("/signup")
 def signup(user_data: schemas.UserCreate, db: Session = Depends(database.get_db)):
-    if os.getenv("APP_STAGE", "sandbox").lower() != "production":
+    stage_setting = db.query(models.AppSetting).filter(models.AppSetting.key == "app_stage").first()
+    active_stage = stage_setting.value if stage_setting else os.getenv("APP_STAGE", "sandbox")
+    if active_stage.lower() != "production":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User registration is disabled during the sandbox stage."
