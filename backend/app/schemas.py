@@ -55,4 +55,10 @@ class AdminLoginPayload(BaseModel):
 class SettingsUpdatePayload(BaseModel):
     app_stage: str
 
+class WebVitalsPayload(BaseModel):
+    name: str  # e.g. "FCP", "LCP", "TTFB", etc.
+    value: float
+    path: str
+
+
 

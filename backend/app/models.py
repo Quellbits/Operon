@@ -171,3 +171,23 @@ class PaymentLog(Base):
     status = Column(String, default="completed")
     timestamp = Column(DateTime, default=datetime.utcnow)
 
+class ClientWebVitalsLog(Base):
+    __tablename__ = "client_web_vitals_logs"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    metric_name = Column(String, index=True)  # e.g., TTFB, FCP, LCP, CLS, INP
+    value = Column(Float)
+    path = Column(String)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
+class ServerSpeedLog(Base):
+    __tablename__ = "server_speed_logs"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    path = Column(String, index=True)
+    method = Column(String)
+    duration_ms = Column(Float)
+    status_code = Column(Integer)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+
+

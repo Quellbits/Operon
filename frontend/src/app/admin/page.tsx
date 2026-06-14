@@ -5,7 +5,7 @@ import Logo from '../../components/Logo';
 import { 
   ShieldAlert, ShieldCheck, Loader2, ArrowRight, LogOut, Lock, 
   Users, Eye, Landmark, Globe, Activity, RefreshCw, Download, 
-  Search, Terminal, Database, CreditCard, HelpCircle
+  Search, Terminal, Database, CreditCard, HelpCircle, Gauge, Cpu, Zap
 } from 'lucide-react';
 import { API_BASE } from '@/config';
 
@@ -162,6 +162,48 @@ export default function AdminDashboard() {
     if (!data || !data.unique_visitors) return "0.0%";
     const rate = (data.total_signups / data.unique_visitors) * 100;
     return `${rate.toFixed(1)}%`;
+  };
+
+  const getVitalRating = (name: string, value: number) => {
+    if (value === undefined || value === null) return { text: "NO DATA", color: "text-zinc-650 border-zinc-850 bg-zinc-950/20" };
+    const upperName = name.toUpperCase();
+    if (upperName === 'TTFB') {
+      if (value <= 800) return { text: "GOOD", color: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5" };
+      if (value <= 1800) return { text: "NEEDS IMPR.", color: "text-orange-400 border-orange-500/20 bg-orange-500/5" };
+      return { text: "POOR", color: "text-red-400 border-red-500/20 bg-red-500/5" };
+    }
+    if (upperName === 'FCP') {
+      if (value <= 1800) return { text: "GOOD", color: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5" };
+      if (value <= 3000) return { text: "NEEDS IMPR.", color: "text-orange-400 border-orange-500/20 bg-orange-500/5" };
+      return { text: "POOR", color: "text-red-400 border-red-500/20 bg-red-500/5" };
+    }
+    if (upperName === 'LCP') {
+      if (value <= 2500) return { text: "GOOD", color: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5" };
+      if (value <= 4000) return { text: "NEEDS IMPR.", color: "text-orange-400 border-orange-500/20 bg-orange-500/5" };
+      return { text: "POOR", color: "text-red-400 border-red-500/20 bg-red-500/5" };
+    }
+    if (upperName === 'CLS') {
+      if (value <= 0.1) return { text: "GOOD", color: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5" };
+      if (value <= 0.25) return { text: "NEEDS IMPR.", color: "text-orange-400 border-orange-500/20 bg-orange-500/5" };
+      return { text: "POOR", color: "text-red-400 border-red-500/20 bg-red-500/5" };
+    }
+    if (upperName === 'INP') {
+      if (value <= 200) return { text: "GOOD", color: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5" };
+      if (value <= 500) return { text: "NEEDS IMPR.", color: "text-orange-400 border-orange-500/20 bg-orange-500/5" };
+      return { text: "POOR", color: "text-red-400 border-red-500/20 bg-red-500/5" };
+    }
+    if (upperName === 'FID') {
+      if (value <= 100) return { text: "GOOD", color: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5" };
+      if (value <= 300) return { text: "NEEDS IMPR.", color: "text-orange-400 border-orange-500/20 bg-orange-500/5" };
+      return { text: "POOR", color: "text-red-400 border-red-500/20 bg-red-500/5" };
+    }
+    return { text: "OK", color: "text-blue-400 border-blue-500/20 bg-blue-500/5" };
+  };
+
+  const getMetricUnit = (name: string) => {
+    const upper = name.toUpperCase();
+    if (upper === 'CLS') return '';
+    return 'ms';
   };
 
   if (!token) {
@@ -622,6 +664,146 @@ export default function AdminDashboard() {
                 <span>Displaying {data.recent_visitors?.length || 0} rows</span>
                 <span>TOTAL_PAGEVIEWS = {data.total_visitors}</span>
               </div>
+            </div>
+
+            {/* Speed & Performance Diagnostics (Two columns on large screen, one on small screen) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              {/* Server-Side API Latency Table */}
+              <div className="bg-[#121620]/45 border border-zinc-900 rounded p-5 relative overflow-hidden flex flex-col justify-between min-h-[400px]">
+                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-zinc-800" />
+                
+                <div className="space-y-4">
+                  <div className="space-y-0.5">
+                    <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-widest flex items-center gap-1.5">
+                      <Zap size={12} className="text-orange-450" />
+                      SERVER_LATENCY_DIAGNOSTICS
+                    </h3>
+                    <p className="text-[9px] text-zinc-550">Average request processing speed measured in-memory per API route.</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pb-2 text-[9px] font-mono uppercase tracking-wider text-left">
+                    <div className="p-3 border border-zinc-850 rounded flex flex-col justify-between min-h-[60px] bg-zinc-950/20">
+                      <span className="text-[8px] text-zinc-500 font-bold">Overall Average Latency</span>
+                      <span className="text-base font-bold mt-1 text-orange-400">
+                        {data.speed_stats?.avg_latency_ms?.toFixed(2) || "0.00"} <span className="text-[10px] text-zinc-650 font-normal">ms</span>
+                      </span>
+                    </div>
+
+                    <div className="p-3 border border-zinc-850 rounded flex flex-col justify-between min-h-[60px] bg-zinc-950/20">
+                      <span className="text-[8px] text-zinc-500 font-bold">Server RAM Footprint</span>
+                      <span className="text-base font-bold mt-1 text-blue-400 flex items-center gap-1">
+                        <Cpu size={12} className="text-zinc-600" />
+                        {data.speed_stats?.server_memory_mb?.toFixed(1) || "0.0"} <span className="text-[10px] text-zinc-650 font-normal">MB</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Latency Table */}
+                  <div className="border border-zinc-850 rounded overflow-hidden max-h-[200px] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+                    <table className="w-full text-left border-collapse text-[10px]">
+                      <thead>
+                        <tr className="bg-black border-b border-zinc-850 text-zinc-500 uppercase tracking-wider font-bold">
+                          <th className="px-4 py-2.5">API Endpoint</th>
+                          <th className="px-4 py-2.5 text-right">Calls</th>
+                          <th className="px-4 py-2.5 text-right">Average Latency</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-850 bg-zinc-950/20 text-zinc-400 font-mono">
+                        {data.speed_stats?.slowest_endpoints?.map((e: any, idx: number) => {
+                          const method = e.endpoint.split(" ")[0];
+                          const path = e.endpoint.split(" ")[1];
+                          const isSlow = e.avg_duration_ms > 200;
+                          return (
+                            <tr key={idx} className="hover:bg-zinc-900/30 transition-colors">
+                              <td className="px-4 py-2 truncate max-w-[200px]" title={e.endpoint}>
+                                <span className={`text-[8px] px-1 py-0.5 rounded font-bold mr-1.5 uppercase ${
+                                  method === 'POST' ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                                }`}>
+                                  {method}
+                                </span>
+                                <span className="text-zinc-300">{path}</span>
+                              </td>
+                              <td className="px-4 py-2 text-right text-zinc-500">{e.calls}</td>
+                              <td className={`px-4 py-2 text-right font-bold ${isSlow ? 'text-red-400' : 'text-emerald-400'}`}>
+                                {e.avg_duration_ms.toFixed(1)} ms
+                              </td>
+                            </tr>
+                          );
+                        })}
+                        {(!data.speed_stats?.slowest_endpoints || data.speed_stats.slowest_endpoints.length === 0) && (
+                          <tr>
+                            <td colSpan={3} className="px-4 py-8 text-center text-zinc-650 italic uppercase">No latency data. Request endpoints to log latency.</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="text-[9.5px] text-zinc-650 font-mono mt-4 pt-3 border-t border-zinc-900 flex justify-between uppercase font-bold">
+                  <span>Displaying {data.speed_stats?.slowest_endpoints?.length || 0} routes</span>
+                  <span>TOTAL_CALLS = {data.speed_stats?.total_api_requests || 0}</span>
+                </div>
+              </div>
+
+              {/* Client-Side Web Vitals Metrics */}
+              <div className="bg-[#121620]/45 border border-zinc-900 rounded p-5 relative overflow-hidden flex flex-col justify-between min-h-[400px]">
+                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-zinc-800" />
+                
+                <div className="space-y-4">
+                  <div className="space-y-0.5">
+                    <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-widest flex items-center gap-1.5">
+                      <Gauge size={12} className="text-orange-450" />
+                      CLIENT_WEB_VITALS_DIAGNOSTICS
+                    </h3>
+                    <p className="text-[9px] text-zinc-550">Real User Experience (RUM) Core Web Vitals reported by client browsers.</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 py-1 font-mono text-[9px] uppercase tracking-wider text-left">
+                    {[
+                      { name: "TTFB", desc: "Time to First Byte" },
+                      { name: "FCP", desc: "First Content Paint" },
+                      { name: "LCP", desc: "Largest Content Paint" },
+                      { name: "CLS", desc: "Layout Shift Index" },
+                      { name: "INP", desc: "Interaction to Paint" },
+                      { name: "FID", desc: "First Input Delay" }
+                    ].map((metric) => {
+                      const val = data.speed_stats?.vitals_averages?.[metric.name];
+                      const hasVal = val !== undefined && val !== null;
+                      const rating = getVitalRating(metric.name, val);
+                      return (
+                        <div key={metric.name} className="p-3 border border-zinc-850 rounded flex flex-col justify-between min-h-[85px] bg-zinc-950/20">
+                          <div>
+                            <span className="text-[8px] text-zinc-500 font-bold block">{metric.desc}</span>
+                            <span className="font-bold text-white text-xs mt-1 block">
+                              {metric.name}: <span className={hasVal ? 'text-zinc-300' : 'text-zinc-700 italic'}>
+                                {hasVal ? val.toFixed(metric.name === 'CLS' ? 3 : 0) + getMetricUnit(metric.name) : "N/A"}
+                              </span>
+                            </span>
+                          </div>
+                          
+                          <span className={`text-[7.5px] border self-start px-1.5 py-0.5 rounded font-bold uppercase tracking-widest mt-2 ${rating.color}`}>
+                            {rating.text}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="border border-zinc-850/60 rounded p-2.5 bg-zinc-950/40 text-[8.5px] text-zinc-650 leading-relaxed uppercase select-none font-mono">
+                  <p className="font-bold flex items-center gap-1 text-zinc-500 mb-0.5">
+                    <HelpCircle size={10} />
+                    GOOGLE PERFORMANCE RATING GUIDES
+                  </p>
+                  <p>• **GOOD**: Speedy user interaction. No optimization is urgent.</p>
+                  <p>• **NEEDS IMPR. / POOR**: Latency bottleneck detected. Profile database queries or client asset size.</p>
+                </div>
+              </div>
+
             </div>
 
           </div>

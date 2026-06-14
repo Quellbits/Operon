@@ -1,9 +1,10 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from . import models
 from .database import engine, get_db
 import os
+import time
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -91,6 +92,39 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def log_api_latency(request: Request, call_next):
+    path = request.url.path
+    is_telemetry = (
+        path.startswith("/admin") 
+        or path.startswith("/api/admin") 
+        or "/docs" in path 
+        or "/openapi.json" in path 
+        or path == "/"
+        or path.endswith(".ico")
+    )
+    if is_telemetry:
+        return await call_next(request)
+        
+    start_time = time.time()
+    response = await call_next(request)
+    duration_ms = (time.time() - start_time) * 1000.0
+    
+    try:
+        db = next(get_db())
+        log = models.ServerSpeedLog(
+            path=path,
+            method=request.method,
+            duration_ms=round(duration_ms, 2),
+            status_code=response.status_code
+        )
+        db.add(log)
+        db.commit()
+    except Exception as e:
+        print(f"Error logging server speed metric: {e}")
+        
+    return response
  
 @app.get("/")
 def read_root():

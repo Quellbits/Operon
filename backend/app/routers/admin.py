@@ -82,6 +82,43 @@ def track_visit(payload: schemas.VisitorTrackPayload, request: Request, db: Sess
     db.commit()
     return {"status": "tracked"}
 
+@router.post("/speed/web-vitals", status_code=201)
+def track_web_vital(payload: schemas.WebVitalsPayload, request: Request, db: Session = Depends(database.get_db)):
+    """
+    Public, rate-limited endpoint to record client web vitals details.
+    """
+    client_ip = request.client.host if request.client else "127.0.0.1"
+    forwarded_for = request.headers.get("X-Forwarded-For")
+    if forwarded_for:
+        client_ip = forwarded_for.split(",")[0].strip()
+        
+    now = time.time()
+    ip_history = track_rate_limits[f"vital_{client_ip}"]
+    ip_history = [t for t in ip_history if now - t < 60]
+    track_rate_limits[f"vital_{client_ip}"] = ip_history
+    
+    if len(ip_history) >= 30:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many web vital reports. Throttled."
+        )
+        
+    track_rate_limits[f"vital_{client_ip}"].append(now)
+    
+    valid_metrics = ["FCP", "LCP", "CLS", "TTFB", "FID", "INP"]
+    metric_name = payload.name.upper().strip()
+    if metric_name not in valid_metrics:
+        raise HTTPException(status_code=400, detail="Invalid metric name.")
+        
+    db_vital = models.ClientWebVitalsLog(
+        metric_name=metric_name,
+        value=payload.value,
+        path=(payload.path or "")[:250]
+    )
+    db.add(db_vital)
+    db.commit()
+    return {"status": "recorded"}
+
 @router.get("/analytics")
 def get_admin_analytics(db: Session = Depends(database.get_db), _admin=Depends(verify_admin)):
     """
@@ -156,6 +193,49 @@ def get_admin_analytics(db: Session = Depends(database.get_db), _admin=Depends(v
         for v in visitor_logs[:100]
     ]
     
+    # 4. Speed & Performance Telemetry
+    server_logs = db.query(models.ServerSpeedLog).order_by(models.ServerSpeedLog.timestamp.desc()).all()
+    total_api_requests = len(server_logs)
+    
+    avg_latency = 0.0
+    slowest_endpoints = []
+    
+    if total_api_requests > 0:
+        avg_latency = sum(l.duration_ms for l in server_logs) / total_api_requests
+        
+        path_latencies = defaultdict(list)
+        for l in server_logs:
+            path_latencies[f"{l.method} {l.path}"].append(l.duration_ms)
+            
+        path_averages = []
+        for path_method, durations in path_latencies.items():
+            path_averages.append({
+                "endpoint": path_method,
+                "avg_duration_ms": round(sum(durations) / len(durations), 2),
+                "calls": len(durations)
+            })
+            
+        slowest_endpoints = sorted(path_averages, key=lambda x: x["avg_duration_ms"], reverse=True)[:10]
+        
+    vitals_logs = db.query(models.ClientWebVitalsLog).order_by(models.ClientWebVitalsLog.timestamp.desc()).all()
+    
+    vitals_by_name = defaultdict(list)
+    for v in vitals_logs:
+        vitals_by_name[v.metric_name].append(v.value)
+        
+    vitals_averages = {}
+    for name, values in vitals_by_name.items():
+        vitals_averages[name] = round(sum(values) / len(values), 3)
+        
+    try:
+        import resource
+        import sys
+        usage = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        mem_mb = usage / (1024.0 * 1024.0) if sys.platform == 'darwin' else usage / 1024.0
+        memory_usage_mb = round(mem_mb, 2)
+    except Exception:
+        memory_usage_mb = 0.0
+
     return {
         "total_signups": total_signups,
         "total_visitors": total_visitors,
@@ -166,7 +246,14 @@ def get_admin_analytics(db: Session = Depends(database.get_db), _admin=Depends(v
         "plan_counts": plan_counts_list,
         "recent_signups": recent_signups,
         "recent_payments": recent_payments,
-        "recent_visitors": recent_visitors
+        "recent_visitors": recent_visitors,
+        "speed_stats": {
+            "avg_latency_ms": round(avg_latency, 2),
+            "total_api_requests": total_api_requests,
+            "slowest_endpoints": slowest_endpoints,
+            "vitals_averages": vitals_averages,
+            "server_memory_mb": memory_usage_mb
+        }
     }
 
 @router.get("/settings")
