@@ -51,7 +51,7 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-[0.03] blur-3xl pointer-events-none bg-orange-500" />
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="animate-spin text-orange-500" size={24} />
-          <span className="text-[10px] tracking-widest uppercase text-zinc-650 font-bold">Initializing System Console...</span>
+          <span className="text-[10px] tracking-widest uppercase text-zinc-655 font-bold">Initializing System Console...</span>
         </div>
       </div>
     );
@@ -316,7 +316,6 @@ function WaitingListLanding() {
             <div className="w-full bg-[#121620]/65 border border-zinc-900 rounded p-6 shadow-2xl space-y-5 text-left relative overflow-hidden backdrop-blur-sm min-h-[350px] flex flex-col justify-between">
               
               {/* Decorative corners */}
-              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-zinc-800" />
               <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-zinc-800" />
               <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-zinc-800" />
@@ -329,7 +328,7 @@ function WaitingListLanding() {
                   </span>
                   <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">Interactive Sandbox Preview</span>
                 </div>
-                <div className="text-[8px] font-bold text-zinc-550 border border-zinc-850 px-2 py-0.5 rounded tracking-widest uppercase">
+                <div className="text-[8px] font-bold text-zinc-555 border border-zinc-850 px-2 py-0.5 rounded tracking-widest uppercase">
                   Step {activeStep + 1} of 4
                 </div>
               </div>
@@ -356,7 +355,7 @@ function WaitingListLanding() {
                         >
                           <FileSpreadsheet size={28} />
                         </motion.div>
-                        <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-zinc-950 border border-zinc-850 flex items-center justify-center">
+                        <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-zinc-955 border border-zinc-850 flex items-center justify-center">
                           <Check className="text-emerald-400" size={10} />
                         </div>
                       </div>
@@ -436,7 +435,7 @@ function WaitingListLanding() {
                       
                       <div className="grid grid-cols-3 gap-3 relative font-sans text-[10px] normal-case text-zinc-300">
                         
-                        <div className="p-3 border border-zinc-850 bg-zinc-950/20 rounded text-center relative flex flex-col justify-between min-h-[90px]">
+                        <div className="p-3 border border-zinc-855 bg-zinc-950/20 rounded text-center relative flex flex-col justify-between min-h-[90px]">
                           <span className="text-[7px] text-zinc-650 font-bold uppercase tracking-wider font-mono">Immediate</span>
                           <p className="mt-1 leading-normal">Dispute Hosting Double Billing</p>
                           <span className="text-[8px] font-bold text-emerald-455 mt-1 font-mono uppercase">Save $450</span>
@@ -448,7 +447,7 @@ function WaitingListLanding() {
                           <span className="text-[8px] font-bold text-orange-400 mt-1 font-mono uppercase">Action Plan</span>
                         </div>
 
-                        <div className="p-3 border border-zinc-850 bg-zinc-950/20 rounded text-center relative flex flex-col justify-between min-h-[90px] opacity-60">
+                        <div className="p-3 border border-zinc-855 bg-zinc-950/20 rounded text-center relative flex flex-col justify-between min-h-[90px] opacity-60">
                           <span className="text-[7px] text-zinc-655 font-bold uppercase tracking-wider font-mono">Month 1</span>
                           <p className="mt-1 leading-normal">Consolidate Software Licenses</p>
                           <span className="text-[8px] font-bold text-zinc-500 mt-1 font-mono uppercase">Review</span>
@@ -499,7 +498,7 @@ function WaitingListLanding() {
                         ))}
 
                         {isTyping && (
-                          <div className="flex gap-2 items-center text-left text-zinc-550 italic pl-7 text-[8.5px]">
+                          <div className="flex gap-2 items-center text-left text-zinc-555 italic pl-7 text-[8.5px]">
                             <Loader2 className="animate-spin text-emerald-500" size={10} />
                             <span>ARIA is replying...</span>
                           </div>
@@ -510,13 +509,13 @@ function WaitingListLanding() {
                         <div className="flex gap-2 justify-start pt-1.5 font-sans normal-case">
                           <button 
                             onClick={() => handleChatOption("Yes, please write the drafts.")}
-                            className="px-2.5 py-1.5 rounded border border-zinc-800 hover:border-orange-500 hover:text-white bg-zinc-950/40 text-[9px] transition-colors cursor-pointer text-left"
+                            className="px-2.5 py-1.5 rounded border border-zinc-800 hover:border-orange-500 hover:text-white bg-zinc-955/40 text-[9px] transition-colors cursor-pointer text-left"
                           >
                             "Yes, write the drafts"
                           </button>
                           <button 
                             onClick={() => handleChatOption("How much did we spend on software in total?")}
-                            className="px-2.5 py-1.5 rounded border border-zinc-800 hover:border-orange-500 hover:text-white bg-zinc-950/40 text-[9px] transition-colors cursor-pointer text-left"
+                            className="px-2.5 py-1.5 rounded border border-zinc-800 hover:border-orange-500 hover:text-white bg-zinc-955/40 text-[9px] transition-colors cursor-pointer text-left"
                           >
                             "What is our total spend?"
                           </button>
@@ -550,7 +549,7 @@ function WaitingListLanding() {
                     className={`p-2.5 rounded border transition-all text-center uppercase tracking-wider text-[8.5px] font-bold cursor-pointer select-none flex flex-col items-center gap-1.5 ${
                       isActive 
                         ? 'bg-orange-500/5 border-orange-500/30 text-orange-400 font-bold shadow-md shadow-orange-500/5'
-                        : 'bg-zinc-950/20 border-zinc-900 text-zinc-550 hover:border-zinc-800 hover:text-zinc-300'
+                        : 'bg-zinc-950/20 border-zinc-900 text-zinc-555 hover:border-zinc-800 hover:text-zinc-300'
                     }`}
                   >
                     {step.icon}

@@ -243,6 +243,7 @@ def get_overview(current_user: models.User = Depends(get_current_user), db: Sess
     report = db.query(models.Report).filter(models.Report.organization_id == org_id).order_by(models.Report.generated_at.desc()).first()
     insights = db.query(models.Insight).filter(models.Insight.organization_id == org_id).all()
     uploads = db.query(models.Upload).filter(models.Upload.organization_id == org_id).order_by(models.Upload.uploaded_at.desc()).all()
+    tx_count = db.query(models.Transaction).filter(models.Transaction.organization_id == org_id).count()
     
     # Calculate health score breakdown based on metrics
     metrics = db.query(models.Metric).filter(models.Metric.organization_id == org_id).all()
@@ -258,6 +259,8 @@ def get_overview(current_user: models.User = Depends(get_current_user), db: Sess
     }
     
     return {
+        "transaction_count": tx_count,
+        "is_mock": tx_count == 0,
         "health_score": health_breakdown,
         "summary": report.summary if report else "Welcome to Operon, your operations copilot. Please upload your transaction files in the 'Upload Data' tab to begin automated profit leakage and P&L analysis.",
         "actions": report.actions if report else [
@@ -302,6 +305,8 @@ def get_metrics_data(current_user: models.User = Depends(get_current_user), db: 
     if not txs:
         # Return default mock values if no transactions are uploaded yet (for clean dashboard experience)
         return {
+            "transaction_count": 125,
+            "is_mock": True,
             "monthly_trend": [
                 { "name": "Jan", "revenue": 42000, "cost": 28000, "isForecast": False },
                 { "name": "Feb", "revenue": 45000, "cost": 29000, "isForecast": False },
@@ -433,6 +438,8 @@ def get_metrics_data(current_user: models.User = Depends(get_current_user), db: 
         })
         
     return {
+        "transaction_count": len(txs),
+        "is_mock": False,
         "monthly_trend": adv_data["monthly_trend"] if adv_data else [],
         "forecast_trend": adv_data["forecast_trend"] if adv_data else [],
         "product_distribution": product_distribution,

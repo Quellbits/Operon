@@ -21,7 +21,13 @@ import {
   ArrowUpRight,
   Shield,
   HelpCircle,
-  FolderOpen
+  FolderOpen,
+  CheckCircle2,
+  AlertTriangle,
+  ChevronDown,
+  Zap,
+  MessageSquare,
+  FileSpreadsheet
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { API_BASE } from '@/config';
@@ -39,6 +45,82 @@ export default function RealAppLanding() {
   const [activeStep, setActiveStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
+  // New States for Capabilities & FAQs
+  const [activeCapability, setActiveCapability] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // Auto-rotate capabilities
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveCapability(prev => (prev + 1) % 3);
+    }, 10000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const capabilities = [
+    {
+      title: "Dispute Duplicate Bills",
+      description: "Sometimes software or suppliers charge you twice for the same service. We instantly scan dates and prices to find duplicates and prepare the dispute.",
+      icon: <CheckCircle2 size={16} className="text-orange-500" />
+    },
+    {
+      title: "Spot Silent Rate Hikes",
+      description: "Suppliers often raise prices slowly without warning. We flag price increases the moment they happen so you don't keep paying more.",
+      icon: <AlertTriangle size={16} className="text-amber-500" />
+    },
+    {
+      title: "Clean Up Unused Accounts",
+      description: "Stop paying for team seat licenses or subscriptions that haven't been used in months. We identify dormant accounts for cleanup.",
+      icon: <Cpu size={16} className="text-blue-500" />
+    }
+  ];
+
+  const features = [
+    {
+      title: "Instant Spreadsheets Scanner",
+      description: "No setups or custom integrations. Just drop in your standard spreadsheet or billing logs, and we handle the rest.",
+      icon: <FileSpreadsheet className="text-orange-500" size={24} />
+    },
+    {
+      title: "Friendly Chat Partner",
+      description: "No code or complex formulas. Talk to your financial partner in simple language to find out exactly where money goes.",
+      icon: <MessageSquare className="text-emerald-500" size={24} />
+    },
+    {
+      title: "Ready-To-Send Emails",
+      description: "We write polite dispute drafts explaining overcharges to your suppliers. Just copy, paste, and recover your cash.",
+      icon: <Zap className="text-amber-500" size={24} />
+    },
+    {
+      title: "Direct Saving Roadmaps",
+      description: "Get a simple checklist of recommendations. You choose which to execute and track your progress in real-time.",
+      icon: <FileText className="text-blue-500" size={24} />
+    }
+  ];
+
+  const faqs = [
+    {
+      q: "What exactly does Operon do?",
+      a: "We scan your business billings, spreadsheet logs, and transactions to find duplicate charges, unannounced price increases, and unused software licenses. Then, we write simple email drafts you can send to suppliers to get your money back."
+    },
+    {
+      q: "Do I need to be a finance expert or know code?",
+      a: "Not at all! We designed Operon for regular business owners and team leads. We do not use any technical jargon, spreadsheet formulas, or complex dashboards. You get clear instructions and talk to your finance assistant in regular English."
+    },
+    {
+      q: "How secure is my billing information?",
+      a: "Security is our top priority. We use bank-grade security and do not sell or share any of your business records. Everything remains completely private and is stored under multi-layer security protections."
+    },
+    {
+      q: "How is this different from regular accounting software?",
+      a: "Traditional accounting software tells you what you have spent, but doesn't tell you if you were overcharged or how to fix it. Operon actively finds wasteful spending and guides you step-by-step to recover the cash."
+    },
+    {
+      q: "Is it free to join the waitlist?",
+      a: "Yes, joining the waitlist is completely free. We are launching in limited phases to give early members our full support, so reserve your spot today to lock in your priority access."
+    }
+  ];
 
   // Coordinates data for grid crossings
   const vLines = ['10%', '25%', '40%', '55%', '70%', '85%'];
@@ -304,8 +386,9 @@ export default function RealAppLanding() {
           
           <nav className="hidden md:flex items-center gap-8 text-[11px] font-mono text-zinc-400">
             <a href="#console" className="hover:text-white transition-colors">CONSOLE</a>
-            <a href="#how-it-works" className="hover:text-white transition-colors">PIPELINE</a>
             <a href="#capabilities" className="hover:text-white transition-colors">CAPABILITIES</a>
+            <a href="#how-it-works" className="hover:text-white transition-colors">PIPELINE</a>
+            <a href="#features" className="hover:text-white transition-colors">FEATURES</a>
             <a href="/pricing" className="hover:text-white transition-colors">PRICING</a>
             <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
           </nav>
@@ -428,7 +511,7 @@ export default function RealAppLanding() {
                       multiple
                       className="hidden" 
                     />
-                    <CloudUpload size={28} className="text-zinc-700 group-hover:text-orange-450 transition-colors mb-2" />
+                    <CloudUpload size={28} className="text-zinc-700 group-hover:text-orange-455 transition-colors mb-2" />
                     <p className="text-xs font-mono text-zinc-450 group-hover:text-white transition-colors">DRAG_OR_CLICK_TO_UPLOAD_SPREADSHEETS</p>
                     <p className="text-[10px] font-mono text-zinc-650 mt-1">Accepts up to 5 CSV/XLSX ledgers or invoice files</p>
                   </div>
@@ -437,7 +520,7 @@ export default function RealAppLanding() {
 
               {/* Error display */}
               {error && (
-                <div className="text-left text-xs font-mono text-red-500 bg-red-950/10 border border-red-900/30 rounded p-3 relative z-10 flex items-center gap-2">
+                <div className="text-left text-xs font-mono text-red-500 bg-red-955/10 border border-red-900/30 rounded p-3 relative z-10 flex items-center gap-2">
                   <AlertCircle size={14} />
                   <span>ERROR_CODE: {error}</span>
                 </div>
@@ -459,7 +542,7 @@ export default function RealAppLanding() {
                     DATASETS_STAGED = {files.length}
                     <button 
                       onClick={() => { setFiles([]); setUploadIds([]); setUseSample(false); }}
-                      className="text-zinc-550 hover:text-white underline ml-3"
+                      className="text-zinc-555 hover:text-white underline ml-3"
                     >
                       CLEAR_ALL
                     </button>
@@ -489,13 +572,256 @@ export default function RealAppLanding() {
           </div>
         </section>
 
+        {/* Capabilities Section */}
+        <section id="capabilities" className="max-w-4xl mx-auto px-6 pb-24 scroll-mt-20">
+          <div className="bg-zinc-950/90 border border-zinc-900 rounded-lg p-6 sm:p-8 backdrop-blur-md shadow-2xl relative group transition-all duration-500">
+            <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-zinc-500 group-hover:border-orange-500/80 transition-colors duration-500" />
+            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-zinc-500 group-hover:border-orange-500/80 transition-colors duration-500" />
+            
+            <div className="space-y-4 text-center max-w-3xl mx-auto mb-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-zinc-900/60 border border-zinc-800 rounded text-[9px] font-mono text-zinc-400 tracking-widest uppercase">
+                <Cpu size={10} className="text-orange-500" />
+                <span>Proven System Capabilities</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-light text-white font-mono tracking-tight uppercase">
+                Stop Money Leaking Out of Your Business
+              </h2>
+              <p className="text-zinc-500 text-xs sm:text-sm font-sans normal-case leading-relaxed max-w-xl mx-auto">
+                We automatically scan for duplicate charges, unannounced rate hikes, and unused software accounts hidden inside your raw spreadsheets. Click a capability below to preview the scanner.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mt-8 relative z-10">
+              {/* Capability Selectors Left */}
+              <div className="lg:col-span-5 flex flex-col justify-center gap-3">
+                {capabilities.map((cap, idx) => {
+                  const isActive = activeCapability === idx;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveCapability(idx)}
+                      className={`p-4 rounded border text-left transition-all cursor-pointer flex gap-4 ${
+                        isActive 
+                          ? 'bg-orange-500/5 border-orange-500/30 text-orange-400 shadow-md shadow-orange-500/5'
+                          : 'bg-zinc-950/10 border-zinc-900 text-zinc-450 hover:border-zinc-805 hover:text-zinc-300'
+                      }`}
+                    >
+                      <div className="pt-0.5 shrink-0">{cap.icon}</div>
+                      <div className="space-y-1 select-none">
+                        <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-white">
+                          {cap.title}
+                        </h4>
+                        <p className="text-[10px] text-zinc-550 font-sans normal-case leading-relaxed">
+                          {cap.description}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Capability Console Screen Right */}
+              <div className="lg:col-span-7 bg-zinc-950 border border-zinc-900 rounded p-6 shadow-2xl relative overflow-hidden min-h-[290px] flex flex-col justify-between">
+                
+                {/* Decorative Window dots */}
+                <div className="absolute top-3 left-4 flex gap-1.5 select-none pointer-events-none">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500/60" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/60" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500/60" />
+                </div>
+                <div className="text-[8px] font-mono text-zinc-650 uppercase tracking-widest absolute top-2 right-4">
+                  Capability_Simulation_Console
+                </div>
+
+                {/* Animated content screen */}
+                <div className="flex-grow flex items-center justify-center p-4 min-h-[220px]">
+                  <AnimatePresence mode="wait">
+                    {activeCapability === 0 && (
+                      <motion.div
+                        key="cap-dup"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-full flex flex-col items-center justify-center relative min-h-[180px]"
+                      >
+                        {/* Card A */}
+                        <motion.div
+                          animate={{ x: [ -30, 0, 0 ], y: [ -20, -12, -12 ], opacity: [ 0, 1, 1 ] }}
+                          transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
+                          className="w-[75%] max-w-[240px] bg-[#161b26] border border-zinc-800 rounded p-3 text-[10px] shadow-lg absolute"
+                        >
+                          <div className="flex justify-between items-center text-zinc-400">
+                            <span className="font-sans">Software Seat License</span>
+                            <span className="font-bold text-white">$250.00</span>
+                          </div>
+                          <div className="text-[7px] text-zinc-550 mt-1 flex justify-between">
+                            <span>BILLING_DATE: MAY 12, 2026</span>
+                            <span>ID: #9934A</span>
+                          </div>
+                        </motion.div>
+
+                        {/* Card B */}
+                        <motion.div
+                          animate={{ x: [ 30, 10, 10 ], y: [ 20, 12, 12 ], opacity: [ 0, 0.9, 0.9 ] }}
+                          transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
+                          className="w-[75%] max-w-[240px] bg-[#161b26] border border-zinc-800 rounded p-3 text-[10px] shadow-lg absolute"
+                        >
+                          <div className="flex justify-between items-center text-zinc-400">
+                            <span className="font-sans">Software Seat License</span>
+                            <span className="font-bold text-white">$250.00</span>
+                          </div>
+                          <div className="text-[7px] text-zinc-550 mt-1 flex justify-between">
+                            <span>BILLING_DATE: MAY 12, 2026</span>
+                            <span>ID: #9934B</span>
+                          </div>
+                        </motion.div>
+
+                        {/* Scan warning */}
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: [0, 0, 1, 1], scale: [0.8, 0.8, 1, 1] }}
+                          transition={{ duration: 3, repeat: Infinity, repeatDelay: 1.5 }}
+                          className="z-10 bg-red-950/90 border border-red-500 text-red-400 text-[9px] font-mono font-bold tracking-widest px-3 py-1.5 rounded uppercase shadow-xl flex items-center gap-1.5 animate-pulse"
+                        >
+                          <AlertCircle size={12} className="text-red-500" />
+                          <span>DUPLICATE BILL FOUND</span>
+                        </motion.div>
+
+                        {/* Dispute output */}
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: [0, 0, 0, 1], scale: [0.8, 0.8, 0.8, 1] }}
+                          transition={{ duration: 3.8, repeat: Infinity, repeatDelay: 0.7 }}
+                          className="z-20 absolute bottom-2 bg-emerald-950 border border-emerald-500 text-emerald-400 text-[8px] font-mono font-bold tracking-widest px-2.5 py-1 rounded uppercase flex items-center gap-1"
+                        >
+                          <Check size={10} />
+                          <span>SAVED $250.00</span>
+                        </motion.div>
+                      </motion.div>
+                    )}
+
+                    {activeCapability === 1 && (
+                      <motion.div
+                        key="cap-hike"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-full flex flex-col justify-center gap-4 min-h-[180px]"
+                      >
+                        <div className="max-w-[260px] mx-auto w-full bg-[#161b26] border border-zinc-800 rounded p-4 text-[10px] space-y-3 shadow-lg">
+                          <div className="flex justify-between items-center text-zinc-400">
+                            <span className="font-sans font-bold text-white">Monthly Server Fee</span>
+                            <span className="font-mono text-zinc-500">March: $55.00</span>
+                          </div>
+                          
+                          {/* Progress bar scale */}
+                          <div className="relative pt-2">
+                            <div className="h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+                              <motion.div 
+                                animate={{ width: ["30%", "85%", "85%"] }}
+                                transition={{ duration: 3, repeat: Infinity, repeatDelay: 1 }}
+                                className="h-full bg-orange-500"
+                              />
+                            </div>
+                            <div className="flex justify-between text-[7px] text-zinc-550 mt-1.5 font-bold tracking-wider font-mono">
+                              <span>MARCH ($55)</span>
+                              <motion.span 
+                                animate={{ color: ["#71717a", "#f97316", "#f97316"] }}
+                                transition={{ duration: 3, repeat: Infinity, repeatDelay: 1 }}
+                              >
+                                APRIL ($105)
+                              </motion.span>
+                            </div>
+                          </div>
+
+                          {/* Warning Alert */}
+                          <motion.div
+                            animate={{ opacity: [0, 1, 1], y: [5, 0, 0] }}
+                            transition={{ duration: 3, repeat: Infinity, repeatDelay: 1, delay: 0.8 }}
+                            className="bg-amber-955/60 border border-amber-600/35 text-amber-400 text-[8px] p-2 rounded leading-relaxed font-sans normal-case"
+                          >
+                            ⚠️ Rate increased by <strong>90.9%</strong> without notice. Drafted dispute request to original price.
+                          </motion.div>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {activeCapability === 2 && (
+                      <motion.div
+                        key="cap-seats"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-full flex flex-col justify-center gap-4 min-h-[180px]"
+                      >
+                        <div className="grid grid-cols-4 gap-2.5 max-w-[260px] mx-auto w-full">
+                          {/* Seat 1 */}
+                          <div className="p-2 border border-zinc-800 bg-[#161b26] rounded text-center flex flex-col items-center gap-1.5 text-[8.5px]">
+                            <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-455 text-[7px] font-bold">JD</div>
+                            <span className="text-[7px] text-zinc-500">Active</span>
+                          </div>
+                          {/* Seat 2 */}
+                          <div className="p-2 border border-zinc-800 bg-[#161b26] rounded text-center flex flex-col items-center gap-1.5 text-[8.5px]">
+                            <div className="w-5 h-5 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-455 text-[7px] font-bold">AM</div>
+                            <span className="text-[7px] text-zinc-500">Active</span>
+                          </div>
+                          {/* Seat 3 (Unused) */}
+                          <motion.div 
+                            animate={{ opacity: [1, 0.25, 0.25], scale: [1, 0.95, 0.95] }}
+                            transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1.5 }}
+                            className="p-2 border border-red-500/20 bg-red-955/5 rounded text-center flex flex-col items-center gap-1.5 text-[8.5px]"
+                          >
+                            <div className="w-5 h-5 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-[7px] font-bold">ST</div>
+                            <span className="text-[6.5px] text-red-400 font-bold font-mono uppercase tracking-wider">Unused</span>
+                          </motion.div>
+                          {/* Seat 4 (Unused) */}
+                          <motion.div 
+                            animate={{ opacity: [1, 0.25, 0.25], scale: [1, 0.95, 0.95] }}
+                            transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1.5, delay: 0.3 }}
+                            className="p-2 border border-red-500/20 bg-red-955/5 rounded text-center flex flex-col items-center gap-1.5 text-[8.5px]"
+                          >
+                            <div className="w-5 h-5 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-[7px] font-bold">HL</div>
+                            <span className="text-[6.5px] text-red-400 font-bold font-mono uppercase tracking-wider">Unused</span>
+                          </motion.div>
+                        </div>
+
+                        {/* Waste summary */}
+                        <motion.div 
+                          animate={{ y: [4, 0, 0], opacity: [0, 1, 1] }}
+                          transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
+                          className="max-w-[260px] mx-auto w-full border border-zinc-805 bg-[#161b26] p-2.5 rounded text-[8.5px] flex justify-between items-center font-mono"
+                        >
+                          <div className="space-y-0.5">
+                            <span className="text-zinc-550 uppercase tracking-wider block font-bold text-[7.5px]">DORMANT SEATS DETECTED</span>
+                            <span className="text-red-400 font-sans font-bold">2 accounts unused &gt; 90 days</span>
+                          </div>
+                          <span className="text-emerald-455 font-bold font-mono">-$50.00 / mo</span>
+                        </motion.div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <div className="border-t border-zinc-900 pt-2 flex items-center justify-between text-[8px] text-zinc-550 font-mono">
+                  <span>SIMULATOR STATUS: OPERATIONAL</span>
+                  <span>CYCLES COMPLETE: 100%</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
         {/* Section: Live Processing Pipeline Demo */}
         <section id="how-it-works" className="border-t border-zinc-900 bg-zinc-950/20 py-24 scroll-mt-20">
           <div className="max-w-5xl mx-auto px-6 space-y-12">
             
             <div className="text-center space-y-2">
               <h2 className="text-2xl font-light text-white font-mono tracking-tight">PIPELINE ARCHITECTURE</h2>
-              <p className="text-zinc-500 max-w-lg mx-auto text-xs font-mono">
+              <p className="text-zinc-550 max-w-lg mx-auto text-xs font-mono">
                 Observe the automated transition from raw accounting tables to clean semantic schemas and AI action reports.
               </p>
             </div>
@@ -575,7 +901,7 @@ export default function RealAppLanding() {
                   {/* Step 0: Ingestion */}
                   {activeStep === 0 && (
                     <div className="space-y-3 animate-fadeIn">
-                      <div className="text-zinc-450 flex items-center gap-2">
+                      <div className="text-zinc-455 flex items-center gap-2">
                         <Loader2 className="animate-spin text-orange-400 shrink-0" size={12} />
                         <span>Scanning directory for datasets...</span>
                       </div>
@@ -632,19 +958,19 @@ export default function RealAppLanding() {
                           <span className="text-zinc-500 bg-black px-1.5 py-0.5 rounded text-[9px]">Inv_Cost</span>
                           <span className="text-zinc-800">➡️</span>
                           <span className="text-orange-400 bg-orange-500/15 px-1.5 py-0.5 rounded text-[9px] font-bold">revenue</span>
-                          <span className="text-[9px] text-emerald-400 font-bold">98% match</span>
+                          <span className="text-[9px] text-emerald-450 font-bold">98% match</span>
                         </div>
                         <div className="flex items-center justify-between p-2 bg-zinc-950 border border-zinc-900 rounded">
                           <span className="text-zinc-500 bg-black px-1.5 py-0.5 rounded text-[9px]">Vendor_Name</span>
                           <span className="text-zinc-800">➡️</span>
                           <span className="text-orange-400 bg-orange-500/15 px-1.5 py-0.5 rounded text-[9px] font-bold">customer</span>
-                          <span className="text-[9px] text-emerald-400 font-bold">94% match</span>
+                          <span className="text-[9px] text-emerald-455 font-bold">94% match</span>
                         </div>
                         <div className="flex items-center justify-between p-2 bg-zinc-950 border border-zinc-900 rounded">
                           <span className="text-zinc-500 bg-black px-1.5 py-0.5 rounded text-[9px]">Txn_Dt</span>
                           <span className="text-zinc-800">➡️</span>
                           <span className="text-orange-400 bg-orange-500/15 px-1.5 py-0.5 rounded text-[9px] font-bold">date</span>
-                          <span className="text-[9px] text-emerald-400 font-bold">100% match</span>
+                          <span className="text-[9px] text-emerald-455 font-bold">100% match</span>
                         </div>
                       </div>
                       <div className="text-[9px] text-zinc-650">{`[MAPPING_ENG] Alignment complete. Ingesting transactions.`}</div>
@@ -660,7 +986,7 @@ export default function RealAppLanding() {
                       </div>
                       
                       <div className="space-y-2">
-                        <div className="p-2 bg-red-950/15 border border-red-900/30 rounded flex items-start gap-2">
+                        <div className="p-2 bg-red-955/15 border border-red-900/30 rounded flex items-start gap-2">
                           <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1 shrink-0 animate-pulse" />
                           <div>
                             <p className="text-red-400 font-bold text-[9px] tracking-wider">REVENUE CONCENTRATION</p>
@@ -668,7 +994,7 @@ export default function RealAppLanding() {
                           </div>
                         </div>
 
-                        <div className="p-2 bg-orange-950/15 border border-orange-900/30 rounded flex items-start gap-2">
+                        <div className="p-2 bg-orange-955/15 border border-orange-900/30 rounded flex items-start gap-2">
                           <span className="w-1.5 h-1.5 rounded-full bg-orange-600 mt-1 shrink-0 animate-pulse" />
                           <div>
                             <p className="text-orange-455 font-bold text-[9px] tracking-wider">FREIGHT SHIPPING PRICE CREEP</p>
@@ -718,7 +1044,7 @@ export default function RealAppLanding() {
 
                 {/* Simulated Console Controls */}
                 <div className="border-t border-zinc-900 pt-3 mt-3 flex items-center justify-between shrink-0 relative z-10">
-                  <span className="text-[9px] text-zinc-650">CYCLE_INTERVAL = 4.5s</span>
+                  <span className="text-[9px] text-zinc-655">CYCLE_INTERVAL = 4.5s</span>
                   <div className="flex items-center gap-1.5">
                     {stepsData.map((_, idx) => (
                       <button 
@@ -738,6 +1064,49 @@ export default function RealAppLanding() {
           </div>
         </section>
 
+        {/* Section: Major Features */}
+        <section id="features" className="max-w-5xl mx-auto px-6 pb-24 scroll-mt-20">
+          <div className="space-y-4 text-center max-w-3xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-zinc-900/60 border border-zinc-800 rounded text-[9px] font-mono text-zinc-400 tracking-widest uppercase">
+              <Sparkles size={10} className="text-orange-500" />
+              <span>Core Application Features</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-light text-white font-mono tracking-tight uppercase">
+              Everything You Need, None of the Complexity
+            </h2>
+            <p className="text-zinc-500 text-xs sm:text-sm font-sans max-w-xl mx-auto leading-relaxed normal-case">
+              We skipped the complicated financial jargon and confusing graphs. Here is how we make saving business money dead simple.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+            {features.map((feat, idx) => {
+              return (
+                <div 
+                  key={idx}
+                  className="bg-zinc-950/60 border border-zinc-900 rounded p-6 text-left relative overflow-hidden transition-all duration-300 hover:border-orange-500/30 group hover:shadow-lg hover:shadow-orange-500/5"
+                >
+                  <div className="absolute top-0 right-0 w-12 h-[1px] bg-gradient-to-r from-transparent to-orange-500/10 group-hover:to-orange-500/30 transition-all duration-300" />
+                  
+                  <div className="space-y-4">
+                    <div className="w-10 h-10 rounded bg-[#161b26] border border-zinc-850 flex items-center justify-center transition-colors duration-300 group-hover:border-orange-500/20">
+                      {feat.icon}
+                    </div>
+                    <div className="space-y-2 select-none">
+                      <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-white">
+                        {feat.title}
+                      </h4>
+                      <p className="text-[10px] text-zinc-550 font-sans normal-case leading-relaxed">
+                        {feat.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
         {/* Section: What is Operon? */}
         <section id="about" className="py-24 border-t border-zinc-900 max-w-5xl mx-auto px-6 scroll-mt-20">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -750,7 +1119,7 @@ export default function RealAppLanding() {
                 AUTOMATED INTELLIGENCE FOR SPREADSHEETS
               </h2>
               <p className="text-zinc-550 text-sm leading-relaxed font-sans">
-                Operon is your intelligence layer for business operations. It transforms raw transactions, ledger files, and invoice spreadsheets into clear, audit-grade action plans. 
+                Operon is your intelligence layer for business operations. It transforms raw transactions, ledger files, and invoice spreadsheets into clean, audit-grade action plans. 
               </p>
               <p className="text-zinc-550 text-sm leading-relaxed font-sans">
                 By running automated checks across your billing data, vendor payments, and inventory records, Operon acts as your virtual operations analyst. It maps custom fields dynamically, spots margin leakages, calculates exact health scores, and delivers recommendations to improve your bottom line.
@@ -831,6 +1200,68 @@ export default function RealAppLanding() {
           </div>
         </section>
 
+        {/* FAQ Section */}
+        <section id="faq" className="max-w-4xl mx-auto px-6 pb-24 scroll-mt-20">
+          <div className="space-y-4 text-center max-w-3xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-zinc-900/60 border border-zinc-800 rounded text-[9px] font-mono text-zinc-400 tracking-widest uppercase">
+              <MessageSquare size={10} className="text-orange-500" />
+              <span>Answers to common questions</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-light text-white font-mono tracking-tight uppercase">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-zinc-550 text-xs sm:text-sm font-sans max-w-xl mx-auto normal-case leading-relaxed">
+              Have questions about Operon? We have straightforward, simple answers. No finance degree required to understand us.
+            </p>
+          </div>
+
+          <div className="space-y-4 mt-8 relative z-10">
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div 
+                  key={idx}
+                  className="border border-zinc-900 bg-[#121620]/30 rounded overflow-hidden transition-all duration-300 hover:border-zinc-800"
+                >
+                  <button
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    className="w-full px-6 py-4 flex items-center justify-between text-left cursor-pointer select-none focus:outline-none"
+                  >
+                    <span className="text-xs font-bold text-white uppercase font-mono tracking-wide">
+                      {faq.q}
+                    </span>
+                    <ChevronDown 
+                      size={16} 
+                      className={`text-zinc-555 transition-transform duration-300 ${isOpen ? 'rotate-180 text-orange-500' : ''}`}
+                    />
+                  </button>
+                  
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial="collapsed"
+                        animate="open"
+                        exit="collapsed"
+                        variants={{
+                          open: { opacity: 1, height: "auto" },
+                          collapsed: { opacity: 0, height: 0 }
+                        }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                      >
+                        <div className="px-6 pb-4 border-t border-zinc-900/50 pt-3">
+                          <p className="text-xs text-zinc-400 font-sans leading-relaxed normal-case">
+                            {faq.a}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
         {/* Section: CTA Banner */}
         <section className="py-24 border-t border-zinc-900 relative overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-orange-500/5 rounded-full filter blur-[120px] pointer-events-none" />
@@ -858,7 +1289,7 @@ export default function RealAppLanding() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-900 bg-black py-12 relative z-10 text-[10px] font-mono text-zinc-550">
+      <footer className="border-t border-zinc-900 bg-black py-12 relative z-10 text-[10px] font-mono text-zinc-555">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             <div className="w-5 h-5 rounded bg-orange-600 flex items-center justify-center animate-pulse">
