@@ -25,8 +25,15 @@ export default function Home() {
 
   useEffect(() => {
     const fetchStage = async () => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1500); // 1.5s timeout
+      
       try {
-        const res = await fetch(`${API_BASE}/admin/settings`);
+        const res = await fetch(`${API_BASE}/admin/settings`, {
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
         if (res.ok) {
           const data = await res.json();
           const stage = data.app_stage === 'sandbox' ? 'development' : data.app_stage;
