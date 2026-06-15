@@ -31,7 +31,14 @@ export async function middleware(request: NextRequest) {
       ? "https://operon-vk6e.onrender.com" 
       : "http://127.0.0.1:8000";
       
-    const res = await fetch(`${backendUrl}/admin/settings`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1500); // 1.5s strict timeout
+    
+    const res = await fetch(`${backendUrl}/admin/settings`, {
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    
     if (res.ok) {
       const data = await res.json();
       if (data.app_stage === 'production') {
@@ -40,7 +47,8 @@ export async function middleware(request: NextRequest) {
       }
     }
   } catch (err) {
-    console.error("Middleware settings fetch failed, defaulting to development restrictions:", err);
+    console.error("Middleware settings fetch failed, allowing route to load:", err);
+    return NextResponse.next(); // Fallback to allowing access so we don't break page loading on spin-downs or slow backends
   }
 
   // App is in development mode. Allow root page (which will display waitlist)
