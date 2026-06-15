@@ -40,9 +40,15 @@ export default function AdminDashboard() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API_BASE}/admin/analytics`, {
-        headers: { "X-Admin-Token": currentToken }
-      });
+      const [res, settingsRes] = await Promise.all([
+        fetch(`${API_BASE}/admin/analytics`, {
+          headers: { "X-Admin-Token": currentToken }
+        }),
+        fetch(`${API_BASE}/admin/settings`, {
+          headers: { "X-Admin-Token": currentToken }
+        })
+      ]);
+
       if (!res.ok) {
         if (res.status === 401) {
           sessionStorage.removeItem("admin_token");
@@ -54,10 +60,6 @@ export default function AdminDashboard() {
       const json = await res.json();
       setData(json);
 
-      // Also fetch app settings
-      const settingsRes = await fetch(`${API_BASE}/admin/settings`, {
-        headers: { "X-Admin-Token": currentToken }
-      });
       if (settingsRes.ok) {
         const settingsJson = await settingsRes.json();
         const stage = settingsJson.app_stage === "sandbox" ? "development" : settingsJson.app_stage;

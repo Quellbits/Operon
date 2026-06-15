@@ -38,7 +38,7 @@ class OrganizationMember(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    organization_id = Column(Integer, ForeignKey("organizations.id"), index=True)
     role = Column(String, default=UserRole.VIEWER.value)
     
     user = relationship("User", back_populates="memberships")
@@ -54,7 +54,7 @@ class Upload(Base):
     __tablename__ = "uploads"
     
     id = Column(Integer, primary_key=True, index=True)
-    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    organization_id = Column(Integer, ForeignKey("organizations.id"), index=True)
     filename = Column(String)
     file_type = Column(String)
     status = Column(String, default=UploadStatus.UPLOADED.value)
@@ -69,7 +69,7 @@ class Transaction(Base):
     __tablename__ = "transactions"
     
     id = Column(Integer, primary_key=True, index=True)
-    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    organization_id = Column(Integer, ForeignKey("organizations.id"), index=True)
     upload_id = Column(Integer, ForeignKey("uploads.id"), nullable=True)
     date = Column(DateTime)
     customer = Column(String)
@@ -83,7 +83,7 @@ class Customer(Base):
     __tablename__ = "customers"
     
     id = Column(Integer, primary_key=True, index=True)
-    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    organization_id = Column(Integer, ForeignKey("organizations.id"), index=True)
     name = Column(String)
     first_seen = Column(DateTime)
     last_seen = Column(DateTime)
@@ -92,7 +92,7 @@ class Product(Base):
     __tablename__ = "products"
     
     id = Column(Integer, primary_key=True, index=True)
-    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    organization_id = Column(Integer, ForeignKey("organizations.id"), index=True)
     name = Column(String)
     category = Column(String)
 
@@ -100,7 +100,7 @@ class Expense(Base):
     __tablename__ = "expenses"
     
     id = Column(Integer, primary_key=True, index=True)
-    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    organization_id = Column(Integer, ForeignKey("organizations.id"), index=True)
     date = Column(DateTime)
     category = Column(String)
     amount = Column(Float)
@@ -109,7 +109,7 @@ class Metric(Base):
     __tablename__ = "metrics"
     
     id = Column(Integer, primary_key=True, index=True)
-    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    organization_id = Column(Integer, ForeignKey("organizations.id"), index=True)
     metric_name = Column(String)
     metric_value = Column(Float)
     period = Column(String) # e.g. "2023-Q1"
@@ -118,7 +118,7 @@ class Insight(Base):
     __tablename__ = "insights"
     
     id = Column(Integer, primary_key=True, index=True)
-    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    organization_id = Column(Integer, ForeignKey("organizations.id"), index=True)
     severity = Column(String) # low, medium, high, critical
     category = Column(String)
     title = Column(String)
@@ -129,7 +129,7 @@ class Report(Base):
     __tablename__ = "reports"
     
     id = Column(Integer, primary_key=True, index=True)
-    organization_id = Column(Integer, ForeignKey("organizations.id"))
+    organization_id = Column(Integer, ForeignKey("organizations.id"), index=True)
     generated_at = Column(DateTime, default=datetime.utcnow)
     report_type = Column(String)
     pdf_url = Column(String)

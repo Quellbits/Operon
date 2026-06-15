@@ -148,19 +148,20 @@ export default function DashboardOverviewPage() {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      // 1. Fetch dashboard overview
-      const res = await fetch(`${API_BASE}/analytics/overview`, {
-        headers: { "Authorization": `Bearer ${token}` }
-      });
+      // Fetch both dashboard overview and metrics in parallel
+      const [res, resMetrics] = await Promise.all([
+        fetch(`${API_BASE}/analytics/overview`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        }),
+        fetch(`${API_BASE}/analytics/metrics`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        })
+      ]);
+
       if (res.ok) {
         const json = await res.json();
         setData(json);
       }
-      
-      // 2. Fetch metrics
-      const resMetrics = await fetch(`${API_BASE}/analytics/metrics`, {
-        headers: { "Authorization": `Bearer ${token}` }
-      });
       if (resMetrics.ok) {
         const jsonMetrics = await resMetrics.json();
         setMetricsData(jsonMetrics);

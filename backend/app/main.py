@@ -38,6 +38,22 @@ def upgrade_db_columns():
             conn.execute(text("ALTER TABLE reports ADD COLUMN is_saved BOOLEAN DEFAULT 0;"))
         except Exception:
             pass
+        
+        # Create indexes for organization_id if they don't exist
+        for table, index_name in [
+            ("transactions", "idx_transactions_org"),
+            ("customers", "idx_customers_org"),
+            ("products", "idx_products_org"),
+            ("metrics", "idx_metrics_org"),
+            ("insights", "idx_insights_org"),
+            ("reports", "idx_reports_org"),
+            ("uploads", "idx_uploads_org"),
+            ("organization_members", "idx_org_members_org")
+        ]:
+            try:
+                conn.execute(text(f"CREATE INDEX IF NOT EXISTS {index_name} ON {table} (organization_id);"))
+            except Exception:
+                pass
 
 def seed_default_user():
     from .database import SessionLocal
@@ -85,6 +101,8 @@ seed_default_user()
 
 app = FastAPI(title="Operon Operations API")
  
+from fastapi.middleware.gzip import GZipMiddleware
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -92,6 +110,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 @app.middleware("http")
 async def log_api_latency(request: Request, call_next):

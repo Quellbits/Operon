@@ -6,6 +6,19 @@ from .organizations import get_current_user
 from datetime import datetime
 import pandas as pd
 import numpy as np
+from typing import Optional
+
+_metrics_cache = {}  # key: org_id, value: (cache_key, cached_data)
+
+def get_metrics_cache_key(org_id: int, db: Session):
+    tx_count = db.query(models.Transaction).filter(models.Transaction.organization_id == org_id).count()
+    latest_upload = db.query(models.Upload.id, models.Upload.status)\
+        .filter(models.Upload.organization_id == org_id)\
+        .order_by(models.Upload.id.desc()).first()
+    upload_val = f"{latest_upload[0]}-{latest_upload[1]}" if latest_upload else "no_uploads"
+    saved_reports_count = db.query(models.Report).filter(models.Report.organization_id == org_id, models.Report.is_saved == True).count()
+    return f"{tx_count}_{upload_val}_{saved_reports_count}"
+
 
 router = APIRouter(prefix="/analytics", tags=["analytics"])
 
@@ -215,22 +228,26 @@ def calculate_advanced_stats_for_df(df: pd.DataFrame):
         "kpis": kpis
     }
 
-def calculate_advanced_stats(org_id: int, db: Session):
-    txs = db.query(models.Transaction).filter(models.Transaction.organization_id == org_id).all()
-    if not txs or len(txs) < 3:
-        return None
+def calculate_advanced_stats(org_id: int, db: Session, df: Optional[pd.DataFrame] = None):
+    if df is None:
+        txs_data = db.query(
+            models.Transaction.id,
+            models.Transaction.date,
+            models.Transaction.product,
+            models.Transaction.customer,
+            models.Transaction.revenue,
+            models.Transaction.cost,
+            models.Transaction.quantity,
+            models.Transaction.location
+        ).filter(models.Transaction.organization_id == org_id).all()
+        if not txs_data or len(txs_data) < 3:
+            return None
+            
+        df = pd.DataFrame(txs_data, columns=["id", "date", "product", "customer", "revenue", "cost", "quantity", "location"])
+        df["revenue"] = df["revenue"].fillna(0.0)
+        df["cost"] = df["cost"].fillna(0.0)
+        df["quantity"] = df["quantity"].fillna(1.0)
         
-    df = pd.DataFrame([{
-        "id": tx.id,
-        "date": tx.date,
-        "product": tx.product,
-        "customer": tx.customer,
-        "revenue": tx.revenue or 0.0,
-        "cost": tx.cost or 0.0,
-        "quantity": tx.quantity or 1.0,
-        "location": tx.location
-    } for tx in txs])
-    
     return calculate_advanced_stats_for_df(df)
 
 @router.get("/overview")
@@ -301,10 +318,25 @@ def get_metrics_data(current_user: models.User = Depends(get_current_user), db: 
         raise HTTPException(status_code=400, detail="User is not associated with any organization")
     org_id = membership.organization_id
     
-    txs = db.query(models.Transaction).filter(models.Transaction.organization_id == org_id).all()
-    if not txs:
+    # Check Cache first
+    cache_key = get_metrics_cache_key(org_id, db)
+    if org_id in _metrics_cache and _metrics_cache[org_id][0] == cache_key:
+        return _metrics_cache[org_id][1]
+        
+    txs_data = db.query(
+        models.Transaction.id,
+        models.Transaction.date,
+        models.Transaction.product,
+        models.Transaction.customer,
+        models.Transaction.revenue,
+        models.Transaction.cost,
+        models.Transaction.quantity,
+        models.Transaction.location
+    ).filter(models.Transaction.organization_id == org_id).all()
+    
+    if not txs_data:
         # Return default mock values if no transactions are uploaded yet (for clean dashboard experience)
-        return {
+        res_mock = {
             "transaction_count": 125,
             "is_mock": True,
             "monthly_trend": [
@@ -371,20 +403,17 @@ def get_metrics_data(current_user: models.User = Depends(get_current_user), db: 
                 "cost_leakage_ratio": 0.18
             }
         }
+        return res_mock
         
-    # Build dataframe
-    df = pd.DataFrame([{
-        "date": tx.date,
-        "product": tx.product,
-        "revenue": tx.revenue,
-        "cost": tx.cost
-    } for tx in txs])
+    # Build dataframe directly from tuples
+    df = pd.DataFrame(txs_data, columns=["id", "date", "product", "customer", "revenue", "cost", "quantity", "location"])
     df["date"] = pd.to_datetime(df["date"])
-    df["month_str"] = df["date"].dt.strftime("%b")
-    df["month_year"] = df["date"].dt.strftime("%b %Y")
+    df["revenue"] = df["revenue"].fillna(0.0)
+    df["cost"] = df["cost"].fillna(0.0)
+    df["quantity"] = df["quantity"].fillna(1.0)
     
-    # Calculate advanced stats using our unified function
-    adv_data = calculate_advanced_stats(org_id, db)
+    # Calculate advanced stats using our unified function (passing pre-built df)
+    adv_data = calculate_advanced_stats(org_id, db, df=df)
     
     # Product distribution
     product_rev = df.groupby("product")["revenue"].sum().reset_index()
@@ -398,8 +427,6 @@ def get_metrics_data(current_user: models.User = Depends(get_current_user), db: 
     ]
     
     # Period performance
-    perf = df.groupby(["date", "month_year"]).agg({"revenue": "sum", "cost": "sum"}).reset_index().sort_values("date", ascending=False)
-    # Correct group-by for monthly performance sorting
     df_perf = df.copy()
     df_perf["month_dt"] = df_perf["date"].dt.to_period("M")
     perf_monthly = df_perf.groupby("month_dt").agg({"revenue": "sum", "cost": "sum"}).reset_index().sort_values("month_dt", ascending=False)
@@ -437,8 +464,8 @@ def get_metrics_data(current_user: models.User = Depends(get_current_user), db: 
             "status": status
         })
         
-    return {
-        "transaction_count": len(txs),
+    res_data = {
+        "transaction_count": len(txs_data),
         "is_mock": False,
         "monthly_trend": adv_data["monthly_trend"] if adv_data else [],
         "forecast_trend": adv_data["forecast_trend"] if adv_data else [],
@@ -448,4 +475,9 @@ def get_metrics_data(current_user: models.User = Depends(get_current_user), db: 
         "anomalies": adv_data["anomalies"] if adv_data else [],
         "kpis": adv_data["kpis"] if adv_data else {}
     }
+    
+    # Store in cache
+    _metrics_cache[org_id] = (cache_key, res_data)
+    
+    return res_data
 

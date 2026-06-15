@@ -214,16 +214,16 @@ def process_upload(
         db.commit()
         
         # Query ALL transaction records back (accumulated financial memory) as a DataFrame for clean metrics calculations
-        org_txs = db.query(models.Transaction).filter(models.Transaction.organization_id == org_id).all()
-        txs_df = pd.DataFrame([{
-            "date": tx.date,
-            "customer": tx.customer,
-            "product": tx.product,
-            "revenue": tx.revenue,
-            "cost": tx.cost,
-            "quantity": tx.quantity,
-            "location": tx.location
-        } for tx in org_txs])
+        org_txs_data = db.query(
+            models.Transaction.date,
+            models.Transaction.customer,
+            models.Transaction.product,
+            models.Transaction.revenue,
+            models.Transaction.cost,
+            models.Transaction.quantity,
+            models.Transaction.location
+        ).filter(models.Transaction.organization_id == org_id).all()
+        txs_df = pd.DataFrame(org_txs_data, columns=["date", "customer", "product", "revenue", "cost", "quantity", "location"])
         
         # 2. Compute Deterministic Metrics over accumulated data
         metrics_engine = MetricsEngine(txs_df)
@@ -307,9 +307,19 @@ def process_upload(
         org.storage_used = float(storage_used_sum)
         db.commit()
         
+        # Flatten health score keys for test assertion compatibility while keeping categories
+        flat_health_score = {
+            "overall": health_score_data["overall"],
+            "revenue": health_score_data["categories"]["revenue"],
+            "costs": health_score_data["categories"]["costs"],
+            "customers": health_score_data["categories"]["customers"],
+            "products": health_score_data["categories"]["products"],
+            "categories": health_score_data["categories"]
+        }
+        
         return {
             "status": "success",
-            "health_score": health_score_data,
+            "health_score": flat_health_score,
             "summary": summary,
             "actions": actions,
             "report_id": db_report.id
@@ -434,16 +444,16 @@ def process_upload_batch(
     db.commit()
     
     # Query transaction records back as a DataFrame for clean metrics calculations
-    org_txs = db.query(models.Transaction).filter(models.Transaction.organization_id == org_id).all()
-    txs_df = pd.DataFrame([{
-        "date": tx.date,
-        "customer": tx.customer,
-        "product": tx.product,
-        "revenue": tx.revenue,
-        "cost": tx.cost,
-        "quantity": tx.quantity,
-        "location": tx.location
-    } for tx in org_txs])
+    org_txs_data = db.query(
+        models.Transaction.date,
+        models.Transaction.customer,
+        models.Transaction.product,
+        models.Transaction.revenue,
+        models.Transaction.cost,
+        models.Transaction.quantity,
+        models.Transaction.location
+    ).filter(models.Transaction.organization_id == org_id).all()
+    txs_df = pd.DataFrame(org_txs_data, columns=["date", "customer", "product", "revenue", "cost", "quantity", "location"])
     
     try:
         # Compute Deterministic Metrics over combined dataset
@@ -529,9 +539,19 @@ def process_upload_batch(
         org.storage_used = float(storage_used_sum)
         db.commit()
         
+        # Flatten health score keys for test assertion compatibility while keeping categories
+        flat_health_score = {
+            "overall": health_score_data["overall"],
+            "revenue": health_score_data["categories"]["revenue"],
+            "costs": health_score_data["categories"]["costs"],
+            "customers": health_score_data["categories"]["customers"],
+            "products": health_score_data["categories"]["products"],
+            "categories": health_score_data["categories"]
+        }
+        
         return {
             "status": "success",
-            "health_score": health_score_data,
+            "health_score": flat_health_score,
             "summary": summary,
             "actions": actions,
             "report_id": db_report.id
