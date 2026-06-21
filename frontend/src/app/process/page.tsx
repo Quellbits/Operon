@@ -5,7 +5,7 @@ import { API_BASE } from '@/config';
 
  
 import React, { useState, useEffect, useRef } from 'react';
-import { Loader2, ArrowRight, Download, Terminal, MessageSquare, Send, CheckCircle2, Lock, ShieldAlert, TrendingUp, Sparkles, FileText, Target, Activity } from 'lucide-react';
+import { Loader2, ArrowRight, Download, Terminal, MessageSquare, Send, CheckCircle2, Lock, ShieldAlert, TrendingUp, Sparkles, FileText, Target, Activity, LayoutDashboard } from 'lucide-react';
 
 const parseMarkdown = (text: string) => {
   const parts = text.split(/(\*\*.*?\*\*)/g);
@@ -170,6 +170,11 @@ export default function ProcessPage() {
         });
 
         if (!response.ok) {
+          if (response.status === 401) {
+            localStorage.removeItem("token");
+            setShowSignup(true);
+            throw new Error("Session expired. Please log in or register to compile your report.");
+          }
           throw new Error("Operational pipeline failed.");
         }
 
@@ -333,7 +338,13 @@ export default function ProcessPage() {
         a.remove();
         window.URL.revokeObjectURL(url);
       } else {
-        alert("Failed to retrieve the PDF file from the server.");
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          setShowSignup(true);
+          alert("Your session expired. Please register or log in to download the PDF.");
+        } else {
+          alert("Failed to retrieve the PDF file from the server.");
+        }
       }
     } catch (err) {
       console.error("Download error:", err);
@@ -362,7 +373,13 @@ export default function ProcessPage() {
       if (res.ok) {
         setReportSaved(true);
       } else {
-        alert("Failed to save report to dashboard.");
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          setShowSignup(true);
+          alert("Your session expired. Please register or log in to save the report.");
+        } else {
+          alert("Failed to save report to dashboard.");
+        }
       }
     } catch (err) {
       console.error("Save error:", err);
@@ -371,6 +388,8 @@ export default function ProcessPage() {
       setSavingReport(false);
     }
   };
+
+  const cats = reportHealthScore?.categories ?? {};
 
   return (
     <>
@@ -389,8 +408,19 @@ export default function ProcessPage() {
             <span className="text-[8px] text-zinc-500 tracking-wider">PIPELINE_DRAFTING</span>
           </div>
         </div>
-        <div className="text-[10px] text-zinc-450">
-          FOCUS_QUERY = <span className="text-orange-400 font-bold">&ldquo;{query}&rdquo;</span>
+        <div className="flex items-center gap-4">
+          <div className="text-[10px] text-zinc-450 hidden sm:block">
+            FOCUS_QUERY = <span className="text-orange-400 font-bold">&ldquo;{query}&rdquo;</span>
+          </div>
+          {draftingProgress === 4 && (
+            <button
+              onClick={() => window.location.href = "/dashboard"}
+              className="border border-zinc-800 hover:border-zinc-700 bg-[#121620]/30 hover:bg-[#121620]/60 text-zinc-300 hover:text-white px-3 py-1.5 rounded text-[9px] font-mono font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <LayoutDashboard size={11} className="text-orange-500" />
+              GO_TO_DASHBOARD
+            </button>
+          )}
         </div>
       </header>
 
@@ -718,7 +748,10 @@ export default function ProcessPage() {
                         <div className="flex items-center gap-6">
                           <svg width="88" height="88" viewBox="0 0 88 88" className="shrink-0">
                             {(() => {
-                              const cats = reportHealthScore.categories ?? {};
+                              const hs = reportHealthScore;
+                              const overall = hs?.overall ?? 0;
+                              const scoreColor = overall >= 70 ? '#16a34a' : overall >= 40 ? '#d97706' : '#dc2626';
+                              const cats = hs.categories ?? {};
                               const slices = [
                                 { val: cats.revenue   ?? 0, max: 25, color: '#f97316' },
                                 { val: cats.customers ?? 0, max: 25, color: '#8b5cf6' },
@@ -888,6 +921,13 @@ export default function ProcessPage() {
                         }`}
                       >
                         {savingReport ? 'SAVING_REPORT...' : reportSaved ? '✓ REPORT_SAVED_TO_DASHBOARD' : 'SAVE_REPORT_TO_DASHBOARD'}
+                      </button>
+                      <button
+                        onClick={() => window.location.href = "/dashboard"}
+                        className="border border-zinc-800 hover:border-zinc-700 bg-zinc-950 text-zinc-300 hover:text-white font-bold text-[10px] px-4 py-2.5 rounded transition-all flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <LayoutDashboard size={12} className="text-orange-500" />
+                        GO_TO_DASHBOARD
                       </button>
                       <button
                         onClick={handleDownloadPDF}

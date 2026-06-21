@@ -342,3 +342,82 @@ Format requirements:
             f"• Pricing Floor Implementation: Anchor new product price quotes to the AOV baseline.\n\n"
             f"Execution of these targets is estimated to recover 5-12 percentage points of gross margin."
         )
+
+    def generate_unified_report(self, query: str) -> tuple[dict, int, int, int]:
+        """
+        Generate a cohesive operations audit narrative focused on the user query,
+        explaining complex concepts in layman-friendly terms, using a single LLM call.
+        Returns:
+            (report_dict, prompt_tokens, completion_tokens, total_tokens)
+        """
+        ctx = self._build_data_context()
+        if not self.api_available:
+            return {
+                "summary": self._fallback_summary(),
+                "pain_points": self._fallback_pain_points(),
+                "actions": self._fallback_actions(),
+                "conclusions": self._fallback_conclusions()
+            }, 0, 0, 0
+
+        system_prompt = (
+            "You are a senior operations specialist and COO advisor. Write a cohesive operations audit report narrative.\n"
+            "The narrative must be structured as a JSON object with exactly the following keys:\n"
+            "- \"summary\": string. A high-impact executive summary (1-2 paragraphs, followed by a bulleted list of 3-4 Critical Takeaways).\n"
+            "- \"pain_points\": array of strings. 4-5 specific operational pain points/issues identified in the data.\n"
+            "- \"actions\": array of strings. Exactly 6 specific, data-backed strategic actions/solutions.\n"
+            "- \"conclusions\": string. A short, crisp conclusions and operational outlook paragraph (with 3 Strategic Action Gates).\n\n"
+            "CRITICAL GUIDELINES:\n"
+            f"1. QUERY FOCUS: The user has entered the query: '{query}'. The entire report (summary, pain points, actions, conclusions) must revolve around assessing, answering, and solving this specific query using the provided dataset. Every section must directly analyze or provide recommendations through the lens of this query.\n"
+            "2. LAYMAN READABILITY: The report must be written in presentable, clear, and easy-to-understand layman's terms. Avoid statistical/academic jargon. If you must reference advanced metrics, translate them into intuitive analogies or plain English so a non-technical business owner immediately understands them:\n"
+            "   - Herfindahl-Hirschman Index (HHI) concentration risk -> explain it as 'customer dependence risk' (having too many eggs in one basket, risk of losing them).\n"
+            "   - Pearson correlation coefficients (demand elasticity, price sensitivity, cost leverage) -> explain them simply as customer price sensitivity (how much sales drop when prices rise) or cost-to-revenue tracking (whether costs scale up too fast as you grow, meaning you're not saving money on scale).\n"
+            "   - Z-score outliers/anomalies -> explain them as billing discrepancies, unexpected pricing errors, or invoicing outliers.\n"
+            "   - Gross margins/leakage ratios -> explain as profit kept after direct costs, and avoidable wasted/lost money.\n"
+            "3. FORMAT: Output ONLY a valid JSON object. Do not include markdown formatting or backticks outside the JSON itself."
+        )
+
+        try:
+            resp = self.client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"Generate the unified operations audit narrative for the query: '{query}' based on this dataset:\n{ctx}"}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.3,
+                max_tokens=1500
+            )
+            content = resp.choices[0].message.content.strip()
+            parsed = json.loads(content)
+            
+            # Ensure correct keys exist in parsed JSON
+            result = {
+                "summary": parsed.get("summary", ""),
+                "pain_points": parsed.get("pain_points", []),
+                "actions": parsed.get("actions", []),
+                "conclusions": parsed.get("conclusions", "")
+            }
+            # If keys are empty or list formatting is wrong, try to backfill
+            if not result["summary"]:
+                result["summary"] = self._fallback_summary()
+            if not result["pain_points"]:
+                result["pain_points"] = self._fallback_pain_points()
+            if not result["actions"]:
+                result["actions"] = self._fallback_actions()
+            if not result["conclusions"]:
+                result["conclusions"] = self._fallback_conclusions()
+
+            usage = getattr(resp, "usage", None)
+            prompt_tokens = usage.prompt_tokens if usage else 0
+            completion_tokens = usage.completion_tokens if usage else 0
+            total_tokens = usage.total_tokens if usage else 0
+
+            return result, prompt_tokens, completion_tokens, total_tokens
+        except Exception as e:
+            print(f"Error generating unified report: {e}")
+            return {
+                "summary": self._fallback_summary(),
+                "pain_points": self._fallback_pain_points(),
+                "actions": self._fallback_actions(),
+                "conclusions": self._fallback_conclusions()
+            }, 0, 0, 0

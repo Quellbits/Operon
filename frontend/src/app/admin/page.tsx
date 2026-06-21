@@ -323,7 +323,7 @@ export default function AdminDashboard() {
           </button>
         </div>
 
-        {loading && !data ? (
+        {!data && !error ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3 text-zinc-400">
             <Loader2 className="animate-spin text-orange-400" size={24} />
             <p className="text-xs uppercase tracking-wider">Gathering system data metrics...</p>
@@ -489,6 +489,95 @@ export default function AdminDashboard() {
               </div>
 
             </div>
+
+            {/* AI Token Usage Telemetry */}
+            <div className="bg-[#121620]/45 border border-zinc-900 rounded p-5 relative space-y-4">
+              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                <div className="space-y-0.5">
+                  <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-widest flex items-center gap-1.5">
+                    <Cpu size={12} className="text-orange-450" />
+                    AI_TOKEN_CONSUMPTION_MONITOR
+                  </h3>
+                  <p className="text-[9px] text-zinc-550">Token utilization and allocation quotas tracked across organization tiers.</p>
+                </div>
+                <div className="text-[9px] text-zinc-450 border border-zinc-850 px-2 py-1 rounded bg-[#0c0e14]">
+                  SYSTEM CAP: <span className="font-bold text-emerald-400">ONLINE</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Aggregated Totals */}
+                <div className="space-y-3">
+                  <div className="p-3.5 border border-zinc-850 bg-zinc-950/20 rounded flex justify-between items-center">
+                    <div>
+                      <span className="text-[7.5px] text-zinc-500 font-bold block uppercase">Total Tokens Used</span>
+                      <span className="text-base font-bold text-white font-mono block mt-1">
+                        {data?.token_usage?.total_total_tokens?.toLocaleString() || "0"}
+                      </span>
+                    </div>
+                    <div className="text-orange-500/20 bg-orange-500/5 p-2 rounded">
+                      <Zap size={14} className="text-orange-450" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="p-3 border border-zinc-850 bg-zinc-950/20 rounded">
+                      <span className="text-[7px] text-zinc-550 font-bold block uppercase">Prompt (Input)</span>
+                      <span className="text-xs font-bold text-zinc-300 font-mono block mt-0.5">
+                        {data?.token_usage?.total_prompt_tokens?.toLocaleString() || "0"}
+                      </span>
+                    </div>
+                    <div className="p-3 border border-zinc-850 bg-zinc-950/20 rounded">
+                      <span className="text-[7px] text-zinc-550 font-bold block uppercase">Completion (Output)</span>
+                      <span className="text-xs font-bold text-zinc-300 font-mono block mt-0.5">
+                        {data?.token_usage?.total_completion_tokens?.toLocaleString() || "0"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Plan allocation progress bars */}
+                <div className="lg:col-span-2 space-y-3">
+                  {[
+                    { key: "SANDBOX_INIT", label: "Sandbox Init", cap: 100000 },
+                    { key: "AUDIT_PROFESSIONAL", label: "Professional Plan", cap: 1000000 },
+                    { key: "ENTERPRISE_COMMAND", label: "Enterprise Plan", cap: 10000000 },
+                    { key: "QUANT_INTELLIGENCE", label: "Quant Intel Plan", cap: 50000000 }
+                  ].map((tier) => {
+                    const planUsage = data?.token_usage?.by_plan?.find((p: any) => p.plan === tier.key) || {
+                      total_tokens: 0,
+                      report_count: 0
+                    };
+                    const percent = Math.min(100, (planUsage.total_tokens / tier.cap) * 100);
+                    const isExceeded = planUsage.total_tokens >= tier.cap;
+
+                    return (
+                      <div key={tier.key} className="space-y-1 text-[9px]">
+                        <div className="flex justify-between items-baseline font-mono text-zinc-400">
+                          <span className="font-bold text-zinc-300">{tier.label} <span className="text-zinc-650">({planUsage.report_count} reports)</span></span>
+                          <span>
+                            <span className={isExceeded ? "text-red-400 font-bold" : "text-zinc-300"}>
+                              {planUsage.total_tokens?.toLocaleString()}
+                            </span>
+                            <span className="text-zinc-600"> / {tier.cap?.toLocaleString()} tokens</span>
+                          </span>
+                        </div>
+                        <div className="h-1.5 bg-[#0c0e14] border border-zinc-850 rounded-full overflow-hidden flex relative">
+                          <div 
+                            className={`h-full transition-all ${
+                              isExceeded ? "bg-red-500" : percent > 80 ? "bg-orange-500" : "bg-emerald-500"
+                            }`} 
+                            style={{ width: `${percent}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
 
             {/* Middle Section: Waitlist registrations and Billing transactions */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

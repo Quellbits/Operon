@@ -163,14 +163,34 @@ def build_context_block(context: Optional[dict], mode: str) -> str:
     return "\n".join(lines)
 
 
-async def stream_openai_response(messages_payload: list):
-    """Stream tokens from OpenAI GPT-4o."""
+async def stream_openai_response(
+    messages_payload: list,
+    custom_api_key: Optional[str] = None,
+    custom_base_url: Optional[str] = None,
+    custom_model_name: Optional[str] = None
+):
+    """Stream tokens from OpenAI or custom LLM endpoint."""
     try:
         from openai import AsyncOpenAI
-        client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        
+        # Determine API key, base URL, and model name
+        api_key = custom_api_key.strip() if custom_api_key else ""
+        if not api_key:
+            api_key = os.getenv("OPENAI_API_KEY", "")
+            
+        base_url = custom_base_url.strip() if custom_base_url else None
+        model = custom_model_name.strip() if custom_model_name else "gpt-4o"
+        
+        client_kwargs = {}
+        if api_key:
+            client_kwargs["api_key"] = api_key
+        if base_url:
+            client_kwargs["base_url"] = base_url
+            
+        client = AsyncOpenAI(**client_kwargs)
 
         stream = await client.chat.completions.create(
-            model="gpt-4o",
+            model=model,
             messages=messages_payload,
             stream=True,
             max_tokens=1024,
@@ -191,7 +211,7 @@ async def stream_openai_response(messages_payload: list):
     except Exception as e:
         error_msg = str(e)
         if "api_key" in error_msg.lower() or "authentication" in error_msg.lower() or "invalid" in error_msg.lower():
-            yield f"data: {json.dumps({'error': 'OPENAI_API_KEY is not configured. Please add it to backend/.env and restart the server.'})}\n\n"
+            yield f"data: {json.dumps({'error': 'Invalid API Key or authentication error. Please verify your credentials in System Settings.'})}\n\n"
         else:
             yield f"data: {json.dumps({'error': f'AI service error: {error_msg[:200]}'})}\n\n"
         yield "data: [DONE]\n\n"
@@ -342,20 +362,67 @@ async def chat_with_aria(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(database.get_db)
 ):
-    """Stream a GPT-4o response from ARIA the operations analyst."""
+    """Stream a response from ARIA or customized operations analyst."""
     api_key = os.getenv("OPENAI_API_KEY", "")
     
     # Fetch user & database context
     user = get_current_user_from_token(token, db)
     db_context_block = ""
+    custom_api_key = None
+    custom_base_url = None
+    custom_model_name = None
+    agent_name = "ARIA"
+    agent_persona = "ops_analyst"
+    agent_tone = "professional"
+    agent_instructions = ""
+    
     if user:
         db_context_block = get_historical_org_context(user, db)
+        custom_api_key = user.custom_api_key
+        custom_base_url = user.custom_base_url
+        custom_model_name = user.custom_model_name
+        agent_name = user.agent_name or "ARIA"
+        agent_persona = user.agent_persona or "ops_analyst"
+        agent_tone = user.agent_tone or "professional"
+        agent_instructions = user.agent_instructions or ""
     
     # Build the context injection
     context_block = build_context_block(request.context, request.mode or "dashboard")
     
     # Build system prompt with context
     system_content = ARIA_SYSTEM_PROMPT
+    
+    # Customize agent name
+    if agent_name != "ARIA":
+        system_content = system_content.replace("ARIA", agent_name)
+        
+    # Customize persona and tone instruction
+    persona_mapping = {
+        "ops_analyst": "Automated Revenue & Intelligence Analyst (Standard Operations)",
+        "rev_consultant": "Executive Revenue Consultant (Strategic growth focus)",
+        "cost_auditor": "Operations Cost Auditor (Deep leakage and anomalies focus)",
+        "layman_guide": "Layman Ops Guide (Simpler terminology and analogies focus)"
+    }
+    tone_mapping = {
+        "professional": "Concise, data-driven, and highly professional.",
+        "detailed": "Thorough, explanatory, and deep-dive detail-oriented.",
+        "direct": "Direct, action-first, and bulleted-only style.",
+        "conversational": "Friendly, conversational, and query-friendly."
+    }
+    
+    p_desc = persona_mapping.get(agent_persona, persona_mapping["ops_analyst"])
+    t_desc = tone_mapping.get(agent_tone, tone_mapping["professional"])
+    
+    customization_block = f"\n\n--- AGENT PERSONALIZATION CONFIG ---"
+    customization_block += f"\nActive Identity: {agent_name}"
+    customization_block += f"\nPersona Profile: {p_desc}"
+    customization_block += f"\nResponse Tone: {t_desc}"
+    if agent_instructions:
+        customization_block += f"\nCustom System Directives: {agent_instructions}"
+    customization_block += "\n--- END CONFIG ---"
+    
+    system_content += customization_block
+    
     if context_block:
         system_content += context_block
     if db_context_block:
@@ -370,14 +437,18 @@ async def chat_with_aria(
             "content": msg.content
         })
     
-    # If no API key, return a graceful demo response
-    if not api_key or api_key == "sk-your-openai-api-key-here":
+    # Decide if we have any API key configured
+    active_key = custom_api_key.strip() if custom_api_key else ""
+    if not active_key:
+        active_key = api_key
+        
+    if not active_key or active_key == "sk-your-openai-api-key-here":
         demo_response = (
-            "⚠️ **ARIA is not yet connected to OpenAI.**\n\n"
-            "To activate me, add your API key to `backend/.env`:\n"
+            f"⚠️ **{agent_name} is not yet connected to OpenAI.**\n\n"
+            "To activate me, please enter your OpenAI API Key in System Settings, or "
+            "add it to `backend/.env`:\n"
             "```\nOPENAI_API_KEY=sk-...\n```\n"
-            "Then restart the backend server. Once connected, I'll analyze your operational data "
-            "and deliver executive-grade insights in real time."
+            "Once connected, I will analyze your operational data and provide real-time custom insights."
         )
         async def demo_stream():
             for char in demo_response:
@@ -395,7 +466,12 @@ async def chat_with_aria(
         )
     
     return StreamingResponse(
-        stream_openai_response(messages_payload),
+        stream_openai_response(
+            messages_payload,
+            custom_api_key=custom_api_key,
+            custom_base_url=custom_base_url,
+            custom_model_name=custom_model_name
+        ),
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache",

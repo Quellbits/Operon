@@ -58,7 +58,7 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-[0.03] blur-3xl pointer-events-none bg-orange-500" />
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="animate-spin text-orange-500" size={24} />
-          <span className="text-[10px] tracking-widest uppercase text-zinc-655 font-bold">Initializing System Console...</span>
+          <span className="text-[10px] tracking-widest uppercase text-zinc-500 font-bold">Initializing System Console...</span>
         </div>
       </div>
     );

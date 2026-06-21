@@ -36,6 +36,9 @@ class ReportResponse(BaseModel):
     health_score: Optional[float] = None
     actions: Optional[List[str]] = None
     is_saved: Optional[bool] = None
+    prompt_tokens: Optional[int] = 0
+    completion_tokens: Optional[int] = 0
+    total_tokens: Optional[int] = 0
     class Config:
         from_attributes = True
 
@@ -60,6 +63,37 @@ class WebVitalsPayload(BaseModel):
     name: str  # e.g. "FCP", "LCP", "TTFB", etc.
     value: float
     path: str
+
+
+class UserUpdate(BaseModel):
+    full_name: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    agent_name: Optional[str] = None
+    agent_persona: Optional[str] = None
+    agent_tone: Optional[str] = None
+    agent_instructions: Optional[str] = None
+    custom_api_key: Optional[str] = None
+    custom_base_url: Optional[str] = None
+    custom_model_name: Optional[str] = None
+
+
+class UserSettingsResponse(BaseModel):
+    id: int
+    email: str
+    full_name: str
+    agent_name: str
+    agent_persona: str
+    agent_tone: str
+    agent_instructions: str
+    custom_api_key: str
+    custom_base_url: str
+    custom_model_name: str
+    plan: str
+    total_tokens_used: int
+    storage_used: float
+    storage_limit: float
+    token_cap: int
 
 
 

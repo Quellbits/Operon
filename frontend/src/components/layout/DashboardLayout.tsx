@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, FileUp, BarChart, AlertCircle, FileText, Menu, X, ArrowUpRight } from 'lucide-react';
+import { LayoutDashboard, FileUp, BarChart, AlertCircle, FileText, Menu, X, ArrowUpRight, ChevronLeft, ChevronRight, Settings } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '../Logo';
 import AIAgent from '../AIAgent';
@@ -13,10 +13,19 @@ interface DashboardLayoutProps {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [userPlan, setUserPlan] = useState<string>("SANDBOX_INIT");
   const [storageUsed, setStorageUsed] = useState<number>(0);
   const [storageLimit, setStorageLimit] = useState<number>(10);
+
+  const toggleCollapse = () => {
+    const nextState = !isCollapsed;
+    setIsCollapsed(nextState);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("sidebar_collapsed", String(nextState));
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -24,6 +33,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       const savedPlan = localStorage.getItem("user_plan");
       if (savedPlan) {
         setUserPlan(savedPlan);
+      }
+      const savedCollapsed = localStorage.getItem("sidebar_collapsed");
+      if (savedCollapsed === "true") {
+        setIsCollapsed(true);
       }
     }
     const seedAuth = async () => {
@@ -94,6 +107,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     { icon: <AlertCircle size={18} />, label: 'Insights', href: '/insights' },
     { icon: <BarChart size={18} />, label: 'Metrics', href: '/metrics' },
     { icon: <FileText size={18} />, label: 'Reports', href: '/reports' },
+    { icon: <Settings size={18} />, label: 'Settings', href: '/settings' },
   ];
 
   const getHeaderTitle = () => {
@@ -103,6 +117,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     if (path === "/insights") return "OPERATIONAL_INSIGHTS";
     if (path === "/metrics") return "OPERATIONAL_METRICS";
     if (path === "/reports") return "EXECUTIVE_REPORTS";
+    if (path === "/settings") return "SYSTEM_SETTINGS";
     return "OPERATIONS_OVERVIEW";
   };
 
@@ -136,28 +151,43 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       )}
 
       {/* Sidebar Panel */}
-      <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-zinc-950 border-r border-zinc-900 text-zinc-300 flex flex-col transform transition-transform duration-300 ease-in-out md:static md:translate-x-0 ${
+      <aside className={`fixed inset-y-0 left-0 z-40 bg-zinc-950 border-r border-zinc-900 text-zinc-300 flex flex-col transform transition-all duration-300 ease-in-out md:static md:translate-x-0 ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      } ${isCollapsed ? 'w-64 md:w-20' : 'w-64'}`}>
         {/* Logo and system status */}
-        <div className="p-6 border-b border-zinc-900 flex items-center justify-between shrink-0">
-          <div className="flex flex-col">
-            <h1 className="text-sm font-bold tracking-tight text-white flex items-center gap-2.5 font-mono">
+        <div className={`p-6 border-b border-zinc-900 flex items-center justify-between shrink-0 ${isCollapsed ? 'md:px-4 md:flex-col md:gap-3 md:justify-center' : ''}`}>
+          {!isCollapsed ? (
+            <div className="flex flex-col">
+              <h1 className="text-sm font-bold tracking-tight text-white flex items-center gap-2.5 font-mono">
+                <Logo size={20} />
+                OPERON
+              </h1>
+              <span className="text-[8px] text-zinc-500 font-mono tracking-widest pl-7 mt-0.5 uppercase">Operations Dashboard</span>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center">
               <Logo size={20} />
-              OPERON
-            </h1>
-            <span className="text-[8px] text-zinc-500 font-mono tracking-widest pl-7 mt-0.5 uppercase">Operations Dashboard</span>
-          </div>
+            </div>
+          )}
+          
           <button 
             className="p-1 text-zinc-500 hover:text-white md:hidden"
             onClick={() => setIsSidebarOpen(false)}
           >
             <X size={18} />
           </button>
+
+          <button 
+            onClick={toggleCollapse}
+            className="hidden md:flex p-1.5 text-zinc-500 hover:text-white hover:bg-zinc-900/60 rounded-lg transition-colors cursor-pointer"
+            title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          >
+            {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+          </button>
         </div>
         
         {/* Navigation links */}
-        <nav className="flex-1 px-4 py-6 space-y-1 font-mono text-[11px] uppercase tracking-wider">
+        <nav className={`flex-1 px-4 py-6 space-y-1 font-mono text-[11px] uppercase tracking-wider ${isCollapsed ? 'md:px-2' : ''}`}>
           {menuItems.map((item) => {
             const isActive = getActiveState(item.href);
             return (
@@ -165,43 +195,44 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 key={item.href} 
                 href={item.href}
                 onClick={() => setIsSidebarOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded transition-all ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
                   isActive 
-                		? 'bg-orange-500/15 text-orange-450 border border-orange-500/30 shadow-[0_0_15px_rgba(249,115,22,0.08)] font-bold' 
-                    : 'text-zinc-400 hover:text-white hover:bg-zinc-900/40 border border-transparent font-medium'
-                }`}
+                    ? 'bg-orange-500/10 text-white border border-orange-500/25 shadow-[0_0_15px_rgba(249,115,22,0.06)] font-bold' 
+                    : 'text-zinc-450 hover:text-white hover:bg-zinc-900/30 border border-transparent font-medium'
+                } ${isCollapsed ? 'md:px-0 md:justify-center' : ''}`}
+                title={isCollapsed ? item.label : undefined}
               >
-                <span className={isActive ? 'text-orange-400' : 'text-zinc-500'}>{item.icon}</span>
-                <span>{item.label}</span>
+                <span className={`transition-colors duration-200 ${isActive ? 'text-orange-500' : 'text-zinc-500 group-hover:text-zinc-300'}`}>{item.icon}</span>
+                <span className={isCollapsed ? 'md:hidden' : ''}>{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
         {/* User profile section */}
-        <div className="p-4 border-t border-zinc-900 bg-black/40 space-y-4">
+        <div className={`p-4 border-t border-zinc-900 bg-black/40 space-y-4 ${isCollapsed ? 'md:p-2' : ''}`}>
           {/* Storage Usage Progress */}
-          <div className="font-mono text-[9px] text-zinc-500 text-left space-y-1.5 px-1">
+          <div className={`font-mono text-[9px] text-zinc-500 text-left space-y-1.5 px-1 ${isCollapsed ? 'md:hidden' : ''}`}>
             <div className="flex justify-between font-bold">
               <span>STORAGE_CAPACITY</span>
               <span className="text-zinc-350">{storageUsed.toFixed(2)}MB / {storageLimit}MB</span>
             </div>
-            <div className="w-full bg-zinc-900 border border-zinc-750 h-2 rounded overflow-hidden relative">
+            <div className="w-full bg-zinc-900/50 border border-zinc-800/40 h-1.5 rounded-full overflow-hidden relative">
                 <div 
-                  className="bg-gradient-to-r from-orange-500 to-amber-600 h-full transition-all duration-500" 
+                  className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-400 h-full transition-all duration-500" 
                   style={{ width: `${Math.min((storageUsed / storageLimit) * 100, 100)}%` }} 
                 />
               </div>
-            <div className="text-[7px] text-zinc-650 tracking-wider">
+            <div className="text-[7px] text-zinc-600 tracking-wider">
               {Math.min((storageUsed / storageLimit) * 100, 100).toFixed(1)}% OF STORAGE ALLOCATION USED
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-2 rounded border border-zinc-900 bg-zinc-950/40 transition-colors font-mono">
-            <div className="w-8 h-8 rounded bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-300">
+          <div className={`flex items-center gap-3 p-2.5 rounded-lg border border-zinc-900 bg-zinc-950/40 transition-colors font-mono ${isCollapsed ? 'md:p-0 md:border-transparent md:bg-transparent md:justify-center' : ''}`} title={isCollapsed ? "Alex Rivera (STELLAR_CORP)" : undefined}>
+            <div className="w-8 h-8 rounded bg-zinc-900 border border-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-300 shrink-0">
               AR
             </div>
-            <div className="flex-1 overflow-hidden text-left">
+            <div className={`flex-1 overflow-hidden text-left ${isCollapsed ? 'md:hidden' : ''}`}>
               <p className="text-xs font-bold text-zinc-200 truncate">Alex Rivera</p>
               <p className="text-[9px] text-zinc-500 truncate uppercase">STELLAR_CORP</p>
             </div>
@@ -247,7 +278,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               SYS.HELP
             </button>
             <div className="h-3 w-px bg-zinc-900"></div>
-            <div className="text-orange-405 bg-orange-500/15 border border-orange-500/30 px-2.5 py-0.5 rounded font-bold uppercase">
+            <div className="text-orange-400 bg-orange-500/10 border border-orange-500/20 px-2.5 py-0.5 rounded-full font-bold uppercase text-[8px] tracking-widest">
               {userPlan}
             </div>
           </div>

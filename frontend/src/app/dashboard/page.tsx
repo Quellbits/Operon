@@ -158,6 +158,12 @@ export default function DashboardOverviewPage() {
         })
       ]);
 
+      if (res.status === 401 || resMetrics.status === 401) {
+        localStorage.removeItem("token");
+        window.location.href = "/signup";
+        return;
+      }
+
       if (res.ok) {
         const json = await res.json();
         setData(json);
@@ -361,6 +367,14 @@ export default function DashboardOverviewPage() {
     ForecastProfit: t.isForecast ? (t.revenue - t.cost) : null,
   }));
 
+  // Setup correlations variables
+  const correlations = metricsData?.correlations || {
+    qty_rev: 0.85,
+    price_qty: -0.65,
+    cost_rev: 0.90,
+    rev_profit: 0.72
+  };
+
   // Setup Pie Chart data
   const pieData = metricsData?.product_distribution || [];
 
@@ -369,37 +383,37 @@ export default function DashboardOverviewPage() {
       <div className="max-w-7xl mx-auto space-y-6 font-mono text-left relative selection:bg-orange-500/20 selection:text-orange-400">
         
         {/* Header Ribbon */}
-        <div className="bg-zinc-950 p-4 border border-zinc-900 rounded flex flex-wrap items-center justify-between gap-4 relative overflow-hidden">
+        <div className="bg-zinc-950/70 p-5 border border-zinc-900 rounded-xl flex flex-wrap items-center justify-between gap-4 relative overflow-hidden backdrop-blur-md">
           <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
           <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-zinc-800" />
           
           <div className="flex items-center gap-3">
-            <div className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse shadow-[0_0_8px_#f97316]" />
+            <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse shadow-[0_0_8px_#f97316]" />
             <div>
-              <h2 className="text-xs font-bold text-white uppercase tracking-wider">{activeDetails.title}</h2>
-              <p className="text-[10px] text-zinc-550 mt-0.5">Fortune 500 Enterprise Operations Console // Multi-ledger auditing enabled.</p>
+              <h2 className="text-[10px] font-bold text-white uppercase tracking-wider">{activeDetails.title}</h2>
+              <p className="text-[9px] text-zinc-500 mt-0.5">Fortune 500 Enterprise Operations Console // Multi-ledger auditing enabled.</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-6 text-[10px]">
+          <div className="flex items-center gap-6 text-[9px]">
             <div className="flex items-center gap-2">
               <span className="text-zinc-500">INDUSTRY_PROFILE:</span>
-              <span className="px-2 py-0.5 rounded border border-orange-500/30 bg-orange-500/10 text-orange-400 font-bold text-[9px]">
+              <span className="px-2 py-0.5 rounded border border-orange-500/20 bg-orange-500/10 text-orange-400 font-bold text-[8px] tracking-wider font-mono">
                 {domain}
               </span>
             </div>
 
             <div className="flex items-center gap-2">
               <span className="text-zinc-500">SYSTEM_STATUS:</span>
-              <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+              <span className="text-emerald-400 font-bold flex items-center gap-1.5 font-mono">
                 ACTIVE
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                <span className="inline-block w-1 h-1 rounded-full bg-emerald-400 animate-ping" />
               </span>
             </div>
             
             <button 
               onClick={fetchOverview}
-              className="bg-zinc-900 hover:bg-zinc-850 text-zinc-350 hover:text-white border border-zinc-850 px-3 py-1.5 rounded text-[9px] font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+              className="bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 px-3 py-1.5 rounded-lg text-[9px] font-bold transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
             >
               <RefreshCw size={11} />
               SYNC_REFRESH
@@ -413,15 +427,15 @@ export default function DashboardOverviewPage() {
           {/* Card 1: Health Index Dial */}
           <div 
             ref={customersCardRef}
-            className={`bg-zinc-950 p-5 border rounded relative flex items-center gap-4 min-h-[120px] transition-all duration-300 ${
-              activeFocusTopic === 'CUSTOMERS' ? 'border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)] scale-[1.02]' : 'border-zinc-900'
+            className={`bg-zinc-950/65 p-5 border rounded-xl relative flex items-center gap-4 min-h-[120px] transition-all duration-300 backdrop-blur-sm ${
+              activeFocusTopic === 'CUSTOMERS' ? 'border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.15)] scale-[1.02]' : 'border-zinc-900 hover:border-zinc-800'
             }`}
           >
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+            <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
             
             {/* Miniature Dial Arc */}
-            <div className="relative w-16 h-16 flex items-center justify-center shrink-0">
-              <svg width="64" height="64" viewBox="0 0 64 64" className="transform -rotate-90">
+            <div className="relative w-14 h-14 flex items-center justify-center shrink-0">
+              <svg width="56" height="56" viewBox="0 0 64 64" className="transform -rotate-90">
                 <circle cx="32" cy="32" r="28" stroke="#1c1917" strokeWidth="4.5" fill="none" />
                 <circle 
                   cx="32" 
@@ -435,69 +449,69 @@ export default function DashboardOverviewPage() {
                   fill="none" 
                 />
               </svg>
-              <span className="absolute text-sm font-extrabold text-white">{healthBreakdown.overall}</span>
+              <span className="absolute text-xs font-extrabold text-white font-mono">{healthBreakdown.overall}</span>
             </div>
             
             <div className="space-y-1">
               <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest block">{activeDetails.metric1}</span>
-              <h4 className="text-xs font-bold text-white uppercase">OPERATIONAL HEALTH</h4>
-              <span className="text-[9px] font-bold text-emerald-450 block">Target Threshold: Normal</span>
+              <h4 className="text-[10px] font-bold text-white uppercase tracking-wider">OPERATIONAL HEALTH</h4>
+              <span className="text-[8.5px] font-bold text-emerald-400 block font-mono">Status: Normal</span>
             </div>
           </div>
 
           {/* Card 2: Total Revenue */}
           <div 
             ref={revenueCardRef}
-            className={`bg-zinc-950 p-5 border rounded relative flex flex-col justify-between min-h-[120px] transition-all duration-300 ${
-              activeFocusTopic === 'REVENUE' ? 'border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)] scale-[1.02]' : 'border-zinc-900'
+            className={`bg-zinc-950/65 p-5 border rounded-xl relative flex flex-col justify-between min-h-[120px] transition-all duration-300 backdrop-blur-sm ${
+              activeFocusTopic === 'REVENUE' ? 'border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.15)] scale-[1.02]' : 'border-zinc-900 hover:border-zinc-800'
             }`}
           >
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+            <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
             <div className="flex justify-between items-start">
               <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">AUDITED_REVENUE_YIELD</span>
-              <DollarSign size={14} className="text-zinc-600" />
+              <DollarSign size={14} className="text-zinc-500" />
             </div>
             <div className="mt-2 space-y-0.5">
-              <h3 className="text-lg font-extrabold text-white tracking-tight">${totalRevenue.toLocaleString(undefined, { maximumFractionDigits: 0 })}</h3>
-              <p className="text-[9px] text-zinc-400">Total ledger transactions mapped.</p>
+              <h3 className="text-lg font-extrabold text-white tracking-tight font-mono">${totalRevenue.toLocaleString(undefined, { maximumFractionDigits: 0 })}</h3>
+              <p className="text-[9px] text-zinc-500 font-sans">Total ledger transactions mapped.</p>
             </div>
           </div>
 
           {/* Card 3: Identified Waste */}
           <div 
             ref={costsCardRef}
-            className={`bg-zinc-950 p-5 border rounded relative flex flex-col justify-between min-h-[120px] transition-all duration-300 ${
-              activeFocusTopic === 'COSTS' ? 'border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)] scale-[1.02]' : 'border-zinc-900'
+            className={`bg-zinc-950/65 p-5 border rounded-xl relative flex flex-col justify-between min-h-[120px] transition-all duration-300 backdrop-blur-sm ${
+              activeFocusTopic === 'COSTS' ? 'border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.15)] scale-[1.02]' : 'border-zinc-900 hover:border-zinc-800'
             }`}
           >
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+            <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
             <div className="flex justify-between items-start">
-              <span className="text-[8px] font-bold text-zinc-555 uppercase tracking-widest">IDENTIFIED_COST_LEAKAGE</span>
-              <AlertTriangle size={14} className="text-rose-500" />
+              <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">IDENTIFIED_COST_LEAKAGE</span>
+              <AlertTriangle size={14} className="text-rose-500 animate-pulse" />
             </div>
             <div className="mt-2 space-y-0.5">
-              <h3 className="text-lg font-extrabold text-rose-400 tracking-tight">${totalLeakageAmount.toLocaleString()}</h3>
-              <p className="text-[9px] text-zinc-500">{anomaliesList.length} critical Z-score outliers.</p>
+              <h3 className="text-lg font-extrabold text-rose-455 tracking-tight font-mono">${totalLeakageAmount.toLocaleString()}</h3>
+              <p className="text-[9px] text-zinc-500 font-sans">{anomaliesList.length} critical Z-score outliers.</p>
             </div>
           </div>
 
           {/* Card 4: Operations Efficiency KPIs */}
           <div 
             ref={concentrationCardRef}
-            className={`bg-zinc-950 p-5 border rounded relative flex flex-col justify-between min-h-[120px] transition-all duration-300 ${
-              activeFocusTopic === 'CONCENTRATION' ? 'border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)] scale-[1.02]' : 'border-zinc-900'
+            className={`bg-zinc-950/65 p-5 border rounded-xl relative flex flex-col justify-between min-h-[120px] transition-all duration-300 backdrop-blur-sm ${
+              activeFocusTopic === 'CONCENTRATION' ? 'border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.15)] scale-[1.02]' : 'border-zinc-900 hover:border-zinc-800'
             }`}
           >
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
-            <span className="text-[8px] font-bold text-zinc-555 uppercase tracking-widest">EFFICIENCY_METRIC_INDICES</span>
+            <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
+            <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest">EFFICIENCY_METRIC_INDICES</span>
             
             <div className="grid grid-cols-2 gap-4 mt-2 font-mono text-[9px]">
               <div>
-                <span className="text-zinc-600 uppercase block tracking-wider">Gross Margin</span>
+                <span className="text-zinc-500 uppercase block tracking-wider text-[8px]">Gross Margin</span>
                 <span className="text-white font-bold text-xs mt-0.5 block">{totalMarginPct}%</span>
               </div>
               <div className="border-l border-zinc-900 pl-4">
-                <span className="text-zinc-600 uppercase block tracking-wider">Leakage Ratio</span>
+                <span className="text-zinc-500 uppercase block tracking-wider text-[8px]">Leakage Ratio</span>
                 <span className={`font-bold text-xs mt-0.5 block ${ (metricsData?.kpis?.cost_leakage_ratio || 0) > 0.1 ? 'text-amber-500' : 'text-emerald-400' }`}>
                   {((metricsData?.kpis?.cost_leakage_ratio || 0) * 100).toFixed(1)}%
                 </span>
@@ -513,15 +527,15 @@ export default function DashboardOverviewPage() {
           {/* Trend & Projections Area/Line Chart (8 Cols) */}
           <div 
             ref={revenueCardRef}
-            className={`lg:col-span-8 bg-zinc-950 border p-5 rounded relative flex flex-col justify-between min-h-[340px] transition-all duration-300 ${
-              activeFocusTopic === 'REVENUE' ? 'border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)] scale-[1.01]' : 'border-zinc-900'
+            className={`lg:col-span-8 bg-zinc-950/65 border p-5 rounded-xl relative flex flex-col justify-between min-h-[340px] transition-all duration-300 backdrop-blur-sm ${
+              activeFocusTopic === 'REVENUE' ? 'border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.15)] scale-[1.01]' : 'border-zinc-900 hover:border-zinc-800'
             }`}
           >
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+            <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
             
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center gap-2">
-                <TrendingUp size={14} className="text-orange-455" />
+                <TrendingUp size={14} className="text-orange-400" />
                 <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-300">
                   {activeDetails.chartTitle}
                 </h3>
@@ -529,7 +543,7 @@ export default function DashboardOverviewPage() {
               
               <div className="flex items-center gap-3">
                 {isSmallDataset && (
-                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-orange-500/25 bg-orange-500/5 text-orange-400 text-[8px] font-mono font-bold uppercase">
+                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-orange-500/20 bg-orange-500/5 text-orange-400 text-[8px] font-mono font-bold uppercase">
                     <Lock size={10} />
                     Forecasting Locked
                   </span>
@@ -537,13 +551,13 @@ export default function DashboardOverviewPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => setChartView('both')}
-                    className={`px-2 py-0.5 rounded text-[8px] font-bold transition-all border ${chartView === 'both' ? 'bg-orange-500/10 border-orange-500/30 text-orange-400' : 'bg-zinc-900 border-zinc-850 text-zinc-500'}`}
+                    className={`px-2 py-0.5 rounded text-[8px] font-bold transition-all border cursor-pointer active:scale-95 ${chartView === 'both' ? 'bg-orange-500/10 border-orange-500/20 text-orange-400' : 'bg-zinc-900 border-zinc-800 text-zinc-500'}`}
                   >
                     REVENUE_VS_COST
                   </button>
                   <button
                     onClick={() => setChartView('profit')}
-                    className={`px-2 py-0.5 rounded text-[8px] font-bold transition-all border ${chartView === 'profit' ? 'bg-orange-500/10 border-orange-500/30 text-orange-400' : 'bg-zinc-900 border-zinc-850 text-zinc-500'}`}
+                    className={`px-2 py-0.5 rounded text-[8px] font-bold transition-all border cursor-pointer active:scale-95 ${chartView === 'profit' ? 'bg-orange-500/10 border-orange-500/20 text-orange-400' : 'bg-zinc-900 border-zinc-800 text-zinc-500'}`}
                   >
                     NET_PROFITABILITY
                   </button>
@@ -608,18 +622,18 @@ export default function DashboardOverviewPage() {
           {/* Product Distribution Pie Chart (4 Cols) */}
           <div 
             ref={concentrationCardRef}
-            className={`lg:col-span-4 bg-zinc-950 border p-5 rounded relative flex flex-col justify-between min-h-[340px] transition-all duration-300 ${
-              activeFocusTopic === 'CONCENTRATION' ? 'border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)] scale-[1.01]' : 'border-zinc-900'
+            className={`lg:col-span-4 bg-zinc-950/65 border p-5 rounded-xl relative flex flex-col justify-between min-h-[340px] transition-all duration-300 backdrop-blur-sm ${
+              activeFocusTopic === 'CONCENTRATION' ? 'border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.15)] scale-[1.01]' : 'border-zinc-900 hover:border-zinc-800'
             }`}
           >
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+            <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
             
             <div>
               <div className="flex items-center gap-1.5 mb-1">
                 <Layers size={13} className="text-orange-400" />
                 <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-300">PORTFOLIO_COST_DISTRIBUTION</h3>
               </div>
-              <span className="text-[8px] text-zinc-550 uppercase tracking-widest">Share breakdown of total transactions</span>
+              <span className="text-[8px] text-zinc-500 uppercase tracking-widest">Share breakdown of total transactions</span>
             </div>
 
             {/* Recharts Pie */}
@@ -627,13 +641,13 @@ export default function DashboardOverviewPage() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={70}
-                    paddingAngle={2}
-                    dataKey="value"
+                     data={pieData}
+                     cx="50%"
+                     cy="50%"
+                     innerRadius={50}
+                     outerRadius={70}
+                     paddingAngle={2}
+                     dataKey="value"
                   >
                     {pieData.map((entry: any, index: number) => (
                       <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
@@ -645,7 +659,7 @@ export default function DashboardOverviewPage() {
             </div>
 
             {/* Micro Legend list */}
-            <div className="grid grid-cols-2 gap-2 mt-2 pt-3 border-t border-zinc-900 text-[8.5px] font-mono text-zinc-555">
+            <div className="grid grid-cols-2 gap-2 mt-2 pt-3 border-t border-zinc-900 text-[8.5px] font-mono text-zinc-500">
               {pieData.slice(0, 4).map((entry: any, idx: number) => (
                 <div key={idx} className="flex items-center gap-1.5 truncate">
                   <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: CHART_COLORS[idx % CHART_COLORS.length] }} />
@@ -660,22 +674,22 @@ export default function DashboardOverviewPage() {
         {/* Row 2.5: Pearson Correlation Matrix */}
         <div 
           ref={correlationsRef} 
-          className={`bg-zinc-950 border rounded p-5 relative transition-all duration-300 ${
+          className={`bg-zinc-950/65 border rounded-xl p-5 relative transition-all duration-300 backdrop-blur-sm ${
             activeFocusTopic === 'SHIPPING'
-              ? 'border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)] scale-[1.01]' 
-              : 'border-zinc-900'
+              ? 'border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.15)] scale-[1.01]' 
+              : 'border-zinc-900 hover:border-zinc-800'
           }`}
         >
-          <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+          <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
           
           <div className="flex justify-between items-center mb-4 border-b border-zinc-900 pb-3">
             <div className="flex items-center gap-2">
-              <TrendingUp size={14} className="text-orange-455" />
+              <TrendingUp size={14} className="text-orange-400" />
               <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-300">
                 PREDICTIVE INTELLIGENCE & VARIABLE CORRELATIONS
               </h3>
             </div>
-            <div className="text-[8px] text-zinc-550 font-mono flex items-center gap-1.5 uppercase font-bold">
+            <div className="text-[8px] text-zinc-500 font-mono flex items-center gap-1.5 uppercase font-bold">
               <Info size={11} />
               Pearson Correlation Matrix (r Coefficient Model)
             </div>
@@ -683,8 +697,8 @@ export default function DashboardOverviewPage() {
 
           {isSmallDataset ? (
             /* Locked state notice */
-            <div className="flex flex-col items-center justify-center py-10 px-6 text-center border border-dashed border-zinc-850 rounded bg-black/40 animate-fade-in">
-              <div className="w-10 h-10 rounded-full bg-orange-500/10 border border-orange-500/30 flex items-center justify-center mb-3">
+            <div className="flex flex-col items-center justify-center py-10 px-6 text-center border border-dashed border-zinc-800 rounded-xl bg-black/40 animate-fade-in">
+              <div className="w-10 h-10 rounded-full bg-orange-500/10 border border-orange-500/35 flex items-center justify-center mb-3">
                 <Lock size={16} className="text-orange-500 animate-pulse" />
               </div>
               <h4 className="text-[11px] font-bold text-orange-400 uppercase tracking-widest">[!] STATISTICAL SIGNIFICANCE LIMIT REACHED</h4>
@@ -698,22 +712,22 @@ export default function DashboardOverviewPage() {
               {/* Card 1: Price Elasticity */}
               <div 
                 onClick={() => openCorrelationDetail('Price Elasticity', correlations.price_qty, 'Measures how unit price adjustments correlate with purchase quantities. A negative correlation indicates high price-elasticity, meaning price hikes suppress purchasing demand.')}
-                className="p-4 bg-zinc-900/25 border border-zinc-900 hover:border-zinc-800 rounded transition-all cursor-pointer hover:bg-zinc-900/40 relative group"
+                className="p-4 bg-zinc-900/35 border border-zinc-900/80 hover:border-zinc-800 hover:scale-[1.01] rounded-lg transition-all duration-300 cursor-pointer hover:bg-zinc-900/60 relative group backdrop-blur-sm"
               >
-                <span className="text-[7.5px] text-zinc-555 font-bold block uppercase tracking-wider">01. PRICE ELASTICITY</span>
+                <span className="text-[7.5px] text-zinc-500 font-bold block uppercase tracking-wider">01. PRICE ELASTICITY</span>
                 <h4 className="text-xs font-bold text-white uppercase mt-1">Price vs Quantity</h4>
-                <div className="flex items-baseline justify-between mt-3">
-                  <span className={`text-xl font-extrabold tracking-tight ${correlations.price_qty < 0 ? 'text-rose-455' : 'text-emerald-450'}`}>
+                <div className="flex items-baseline justify-between mt-3 font-mono">
+                  <span className={`text-xl font-extrabold tracking-tight ${correlations.price_qty < 0 ? 'text-rose-500' : 'text-emerald-400'}`}>
                     {correlations.price_qty > 0 ? '+' : ''}{correlations.price_qty.toFixed(2)}
                   </span>
-                  <span className="text-[8px] text-zinc-500 font-bold uppercase tracking-wider">
+                  <span className="text-[8px] text-zinc-550 font-bold uppercase tracking-wider">
                     {Math.abs(correlations.price_qty) > 0.5 ? 'Elastic' : 'Inelastic'}
                   </span>
                 </div>
                 <div className="mt-3.5 space-y-1">
                   <div className="w-full bg-zinc-950 h-1 rounded-full overflow-hidden relative">
                     <div 
-                      className={`h-full absolute top-0 rounded-full ${correlations.price_qty < 0 ? 'bg-rose-500' : 'bg-emerald-400'}`}
+                      className={`h-full absolute top-0 rounded-full ${correlations.price_qty < 0 ? 'bg-rose-500' : 'bg-emerald-450'}`}
                       style={{ 
                         width: `${Math.abs(correlations.price_qty) * 100}%`,
                         left: correlations.price_qty >= 0 ? '50%' : 'auto',
@@ -732,15 +746,15 @@ export default function DashboardOverviewPage() {
               {/* Card 2: Cost vs Revenue */}
               <div 
                 onClick={() => openCorrelationDetail('Supplier Cost vs Gross Revenue', correlations.cost_rev, 'Measures correlation between supplier transaction cost and top-line client revenue. A high positive correlation (close to +1.0) is standard in variable-cost operations, but deviation suggests cost creep.')}
-                className="p-4 bg-zinc-900/25 border border-zinc-900 hover:border-zinc-800 rounded transition-all cursor-pointer hover:bg-zinc-900/40 relative group"
+                className="p-4 bg-zinc-900/35 border border-zinc-900/80 hover:border-zinc-800 hover:scale-[1.01] rounded-lg transition-all duration-300 cursor-pointer hover:bg-zinc-900/60 relative group backdrop-blur-sm"
               >
-                <span className="text-[7.5px] text-zinc-555 font-bold block uppercase tracking-wider">02. SUPPLIER DRIFT</span>
+                <span className="text-[7.5px] text-zinc-500 font-bold block uppercase tracking-wider">02. SUPPLIER DRIFT</span>
                 <h4 className="text-xs font-bold text-white uppercase mt-1">Cost vs Revenue</h4>
-                <div className="flex items-baseline justify-between mt-3">
-                  <span className={`text-xl font-extrabold tracking-tight ${correlations.cost_rev > 0.8 ? 'text-emerald-450' : 'text-amber-500'}`}>
+                <div className="flex items-baseline justify-between mt-3 font-mono">
+                  <span className={`text-xl font-extrabold tracking-tight ${correlations.cost_rev > 0.8 ? 'text-emerald-400' : 'text-amber-500'}`}>
                     {correlations.cost_rev > 0 ? '+' : ''}{correlations.cost_rev.toFixed(2)}
                   </span>
-                  <span className="text-[8px] text-zinc-500 font-bold uppercase tracking-wider">
+                  <span className="text-[8px] text-zinc-550 font-bold uppercase tracking-wider">
                     {correlations.cost_rev > 0.8 ? 'Synced' : 'Drifting'}
                   </span>
                 </div>
@@ -766,15 +780,15 @@ export default function DashboardOverviewPage() {
               {/* Card 3: Quantity vs Revenue */}
               <div 
                 onClick={() => openCorrelationDetail('Volume vs Revenue scale', correlations.qty_rev, 'Measures how tightly revenue scaling is coupled with overall transaction quantities. Standard benchmark for physical/sales throughput operations.')}
-                className="p-4 bg-zinc-900/25 border border-zinc-900 hover:border-zinc-800 rounded transition-all cursor-pointer hover:bg-zinc-900/40 relative group"
+                className="p-4 bg-zinc-900/35 border border-zinc-900/80 hover:border-zinc-800 hover:scale-[1.01] rounded-lg transition-all duration-300 cursor-pointer hover:bg-zinc-900/60 relative group backdrop-blur-sm"
               >
-                <span className="text-[7.5px] text-zinc-555 font-bold block uppercase tracking-wider">03. TRANSACTION SCALE</span>
+                <span className="text-[7.5px] text-zinc-500 font-bold block uppercase tracking-wider">03. TRANSACTION SCALE</span>
                 <h4 className="text-xs font-bold text-white uppercase mt-1">Quantity vs Revenue</h4>
-                <div className="flex items-baseline justify-between mt-3">
-                  <span className="text-xl font-extrabold tracking-tight text-emerald-450">
+                <div className="flex items-baseline justify-between mt-3 font-mono">
+                  <span className="text-xl font-extrabold tracking-tight text-emerald-400">
                     {correlations.qty_rev > 0 ? '+' : ''}{correlations.qty_rev.toFixed(2)}
                   </span>
-                  <span className="text-[8px] text-zinc-500 font-bold uppercase tracking-wider">
+                  <span className="text-[8px] text-zinc-550 font-bold uppercase tracking-wider">
                     Volume Coupling
                   </span>
                 </div>
@@ -800,15 +814,15 @@ export default function DashboardOverviewPage() {
               {/* Card 4: Revenue vs Net Profit */}
               <div 
                 onClick={() => openCorrelationDetail('Margin Scalability', correlations.rev_profit, 'Measures the Pearson r coefficient between Gross Revenue and Net Profit. A coefficient lower than +0.80 suggests margin compression or cost leakages are draining gross yields.')}
-                className="p-4 bg-zinc-900/25 border border-zinc-900 hover:border-zinc-800 rounded transition-all cursor-pointer hover:bg-zinc-900/40 relative group"
+                className="p-4 bg-zinc-900/35 border border-zinc-900/80 hover:border-zinc-800 hover:scale-[1.01] rounded-lg transition-all duration-300 cursor-pointer hover:bg-zinc-900/60 relative group backdrop-blur-sm"
               >
-                <span className="text-[7.5px] text-zinc-555 font-bold block uppercase tracking-wider">04. MARGIN SCALABILITY</span>
+                <span className="text-[7.5px] text-zinc-500 font-bold block uppercase tracking-wider">04. MARGIN SCALABILITY</span>
                 <h4 className="text-xs font-bold text-white uppercase mt-1">Revenue vs Profit</h4>
-                <div className="flex items-baseline justify-between mt-3">
-                  <span className={`text-xl font-extrabold tracking-tight ${correlations.rev_profit > 0.8 ? 'text-emerald-450' : 'text-amber-500'}`}>
+                <div className="flex items-baseline justify-between mt-3 font-mono">
+                  <span className={`text-xl font-extrabold tracking-tight ${correlations.rev_profit > 0.8 ? 'text-emerald-400' : 'text-amber-500'}`}>
                     {correlations.rev_profit > 0 ? '+' : ''}{correlations.rev_profit.toFixed(2)}
                   </span>
-                  <span className="text-[8px] text-zinc-500 font-bold uppercase tracking-wider">
+                  <span className="text-[8px] text-zinc-550 font-bold uppercase tracking-wider">
                     {correlations.rev_profit > 0.8 ? 'Highly Scalable' : 'Margin Compression'}
                   </span>
                 </div>
@@ -839,19 +853,19 @@ export default function DashboardOverviewPage() {
           
           {/* Outliers & Z-Score Table (8 Cols) */}
           <div 
-            className={`lg:col-span-8 bg-zinc-950 border p-5 rounded relative flex flex-col justify-between min-h-[300px] transition-all duration-300 ${
-              activeFocusTopic === 'COSTS' ? 'border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)] scale-[1.01]' : 'border-zinc-900'
+            className={`lg:col-span-8 bg-zinc-950/65 border p-5 rounded-xl relative flex flex-col justify-between min-h-[300px] transition-all duration-300 backdrop-blur-sm ${
+              activeFocusTopic === 'COSTS' ? 'border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.15)] scale-[1.01]' : 'border-zinc-900 hover:border-zinc-800'
             }`}
           >
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+            <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
             
             <div className="space-y-4">
               <div className="flex justify-between items-center border-b border-zinc-900 pb-3">
                 <div className="flex items-center gap-1.5">
-                  <AlertOctagon size={14} className="text-orange-455" />
+                  <AlertOctagon size={14} className="text-orange-400" />
                   <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-300">Z-SCORE OUTLIER AUDITS</h3>
                 </div>
-                <span className="text-[8px] bg-rose-500/10 border border-rose-500/20 text-rose-455 font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                <span className="text-[8px] bg-rose-500/10 border border-rose-500/20 text-rose-500 font-bold px-2 py-0.5 rounded uppercase tracking-wider font-mono">
                   {anomaliesList.length} anomalies detected
                 </span>
               </div>
@@ -872,7 +886,7 @@ export default function DashboardOverviewPage() {
                       const isSelected = selectedInsight?.id === anom.id;
                       const severityColor = 
                         anom.severity === 'critical' ? 'text-rose-500 bg-rose-500/5 border-rose-500/20' :
-                        anom.severity === 'high' ? 'text-orange-455 bg-orange-500/5 border-orange-500/20' :
+                        anom.severity === 'high' ? 'text-orange-500 bg-orange-500/5 border-orange-500/20' :
                         'text-amber-500 bg-amber-500/5 border-amber-500/20';
 
                       return (
@@ -892,13 +906,13 @@ export default function DashboardOverviewPage() {
                               {anom.severity}
                             </span>
                           </td>
-                          <td className="py-2.5 text-right font-bold text-orange-455">${anom.impact.toLocaleString()}</td>
+                          <td className="py-2.5 text-right font-bold text-orange-500">${anom.impact.toLocaleString()}</td>
                         </tr>
                       );
                     })}
                     {anomaliesList.length === 0 && (
                       <tr>
-                        <td colSpan={5} className="py-12 text-center text-zinc-650 italic">
+                        <td colSpan={5} className="py-12 text-center text-zinc-600 italic">
                           No cost leakages or pricing anomalies identified in current dataset.
                         </td>
                       </tr>
@@ -908,7 +922,7 @@ export default function DashboardOverviewPage() {
               </div>
             </div>
             
-            <div className="text-[8px] text-zinc-555 italic mt-3">
+            <div className="text-[8px] text-zinc-500 italic mt-3">
               * Select any row above to decrypt and inspect transaction details in telemetry panel.
             </div>
           </div>
@@ -916,11 +930,11 @@ export default function DashboardOverviewPage() {
           {/* Telemetry Inspector (4 Cols) */}
           <div 
             ref={inspectorRef}
-            className={`lg:col-span-4 bg-zinc-950 border p-5 rounded relative flex flex-col justify-between min-h-[300px] transition-all duration-300 ${
-              activeFocusTopic === 'COSTS' ? 'border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)] scale-[1.01]' : 'border-zinc-900'
+            className={`lg:col-span-4 bg-zinc-950/65 border p-5 rounded-xl relative flex flex-col justify-between min-h-[300px] transition-all duration-300 backdrop-blur-sm ${
+              activeFocusTopic === 'COSTS' ? 'border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.15)] scale-[1.01]' : 'border-zinc-900 hover:border-zinc-800'
             }`}
           >
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+            <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
             
             <div className="flex items-center gap-1.5 border-b border-zinc-900 pb-3 mb-4">
               <Terminal size={14} className="text-orange-400" />
@@ -949,7 +963,7 @@ export default function DashboardOverviewPage() {
                     </div>
                     <div>
                       <span className="text-[8px] text-zinc-600 uppercase tracking-wider block">Leak impact</span>
-                      <span className="text-orange-455 font-bold block">${selectedInsight.impact.toLocaleString()}</span>
+                      <span className="text-orange-500 font-bold block">${selectedInsight.impact.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
@@ -957,7 +971,7 @@ export default function DashboardOverviewPage() {
                 <div className="pt-3 border-t border-zinc-900">
                   <button 
                     onClick={() => setShowAnomalyModal(true)}
-                    className="block w-full text-center py-2 bg-orange-500 hover:bg-orange-600 text-black text-[9px] font-bold tracking-wider rounded uppercase transition-colors"
+                    className="block w-full text-center py-2 bg-orange-500 hover:bg-orange-600 text-black text-[9px] font-bold tracking-wider rounded-lg uppercase transition-all active:scale-95 cursor-pointer"
                   >
                     POP INSPECTOR OVERLAY
                   </button>
@@ -965,8 +979,8 @@ export default function DashboardOverviewPage() {
               </div>
             ) : (
               <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
-                <AlertOctagon size={24} className="text-zinc-805 mb-2 animate-pulse" />
-                <p className="text-[9px] text-zinc-555 font-sans">No outlier node selected. Click any row from Z-Score Audits list to decrypt logs.</p>
+                <AlertOctagon size={24} className="text-zinc-700 mb-2 animate-pulse" />
+                <p className="text-[9px] text-zinc-500 font-sans">No outlier node selected. Click any row from Z-Score Audits list to decrypt logs.</p>
               </div>
             )}
           </div>
@@ -977,11 +991,11 @@ export default function DashboardOverviewPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* AI Perspective (2 Cols) */}
-          <div className="lg:col-span-2 bg-orange-500/5 border border-orange-500/20 p-5 rounded relative overflow-hidden group shadow-[0_0_20px_rgba(249,115,22,0.02)]">
-            <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-orange-500/35" />
-            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-orange-500/35" />
-            <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-orange-500/35" />
-            <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-orange-500/35" />
+          <div className="lg:col-span-2 bg-orange-500/[0.03] border border-orange-500/20 p-5 rounded-xl relative overflow-hidden group shadow-[0_0_20px_rgba(249,115,22,0.02)]">
+            <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-orange-500/30" />
+            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-orange-500/30" />
+            <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-orange-500/30" />
+            <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-orange-500/30" />
             
             <div className="flex items-center gap-2.5 mb-3">
               <ShieldCheck size={16} className="text-orange-400" />
@@ -993,31 +1007,31 @@ export default function DashboardOverviewPage() {
             </p>
             
             <div className="mt-4 flex flex-wrap gap-3 font-mono text-[9px]">
-              <Link href="/reports" className="bg-orange-500 hover:bg-orange-600 text-black px-4.5 py-2 rounded font-bold transition-all hover:scale-[1.02]">
+              <Link href="/reports" className="bg-orange-500 hover:bg-orange-600 text-black px-4.5 py-2.5 rounded-lg font-bold transition-all active:scale-95 shadow-md shadow-orange-500/10">
                 VIEW_EXECUTIVE_PDF_REPORTS
               </Link>
-              <Link href="/insights" className="bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white px-4.5 py-2 rounded font-bold transition-colors">
+              <Link href="/insights" className="bg-zinc-900 border border-zinc-800 text-zinc-350 hover:text-white px-4.5 py-2.5 rounded-lg font-bold transition-colors">
                 PROACTIVE_RECOMMENDATIONS
               </Link>
             </div>
           </div>
 
           {/* Action Checklist (1 Col) */}
-          <div className="bg-zinc-950 border border-zinc-900 p-5 rounded relative flex flex-col justify-between">
+          <div className="bg-zinc-950/65 border border-zinc-900 p-5 rounded-xl relative flex flex-col justify-between backdrop-blur-sm">
             <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
             <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t border-r border-zinc-800" />
             
             <div>
               <h3 className="text-[10px] font-bold text-zinc-300 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                <CheckCircle2 size={13} className="text-orange-455" />
+                <CheckCircle2 size={13} className="text-orange-400" />
                 RECOMMENDED_NEXT_ACTIONS
               </h3>
               
               <div className="space-y-2">
                 {(data?.actions || []).slice(0, 3).map((action: string, idx: number) => (
                   <div key={idx} className="flex items-start gap-2.5 p-2 bg-black/40 rounded border border-zinc-900 text-left">
-                    <span className="text-[9px] text-orange-400 font-bold shrink-0 mt-0.5">0{idx + 1}.</span>
-                    <span className="text-[10px] text-zinc-405 leading-normal font-sans normal-case">{action}</span>
+                    <span className="text-[9px] text-orange-400 font-bold shrink-0 mt-0.5 font-mono">0{idx + 1}.</span>
+                    <span className="text-[10px] text-zinc-300 leading-normal font-sans normal-case">{action}</span>
                   </div>
                 ))}
               </div>
@@ -1027,13 +1041,13 @@ export default function DashboardOverviewPage() {
         </div>
 
         {/* System Upload Ledger History Log (Bottom) */}
-        <div className="bg-zinc-950 border border-zinc-900 p-5 rounded relative">
-          <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+        <div className="bg-zinc-950/65 border border-zinc-900 p-5 rounded-xl relative backdrop-blur-sm">
+          <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
           
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-900 pb-3 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-900/60 pb-3 mb-4">
             <div>
               <h3 className="text-[10px] font-bold uppercase tracking-widest text-zinc-300">NORMALIZED_LEDGER_UPLOAD_LOGS</h3>
-              <p className="text-[8px] text-zinc-650 uppercase tracking-wider mt-0.5">Transaction datasets ingested into secure sandboxed organization profile</p>
+              <p className="text-[8px] text-zinc-500 uppercase tracking-wider mt-0.5">Transaction datasets ingested into secure sandboxed organization profile</p>
             </div>
             
             <Link 
@@ -1050,23 +1064,23 @@ export default function DashboardOverviewPage() {
               return (
                 <div 
                   key={idx}
-                  className="p-3 bg-black/30 border border-zinc-900 rounded flex flex-col justify-between h-20"
+                  className="p-3.5 bg-black/40 border border-zinc-900 rounded-lg flex flex-col justify-between h-20 transition-all hover:scale-[1.01] hover:border-zinc-800 duration-200"
                 >
                   <div className="flex justify-between items-start">
-                    <span className="text-[8px] text-zinc-600 font-bold">LOG_INDEX 0{idx + 1}</span>
-                    <span className="text-[8px] text-emerald-450 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded font-bold uppercase">
+                    <span className="text-[8px] text-zinc-500 font-bold font-mono">LOG_INDEX 0{idx + 1}</span>
+                    <span className="text-[8px] text-emerald-450 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded font-bold uppercase font-mono">
                       {up.status}
                     </span>
                   </div>
                   <div className="mt-1">
                     <p className="text-[10px] font-bold text-zinc-300 truncate">{up.name}</p>
-                    <p className="text-[8px] text-zinc-600 mt-0.5">Uploaded at {up.date}</p>
+                    <p className="text-[8px] text-zinc-500 mt-0.5 font-mono">Uploaded at {up.date}</p>
                   </div>
                 </div>
               );
             })}
             {(data?.uploads || []).length === 0 && (
-              <div className="col-span-3 text-center py-6 text-[9px] text-zinc-650 italic">
+              <div className="col-span-3 text-center py-6 text-[9px] text-zinc-500 italic">
                 No ledger sheets normalized. Staged at zero records.
               </div>
             )}
@@ -1076,15 +1090,15 @@ export default function DashboardOverviewPage() {
         {/* Anomaly Detail Pop-up Modal */}
         {showAnomalyModal && selectedInsight && (
           <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-zinc-950 border border-orange-500/40 rounded-lg max-w-lg w-full p-6 relative font-mono text-left shadow-[0_0_50px_rgba(249,115,22,0.15)] animate-fade-in">
-              <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-orange-500" />
-              <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-orange-500" />
-              <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-orange-500" />
-              <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-orange-500" />
+            <div className="bg-zinc-950 border border-orange-500/35 rounded-2xl max-w-lg w-full p-6 relative font-mono text-left shadow-[0_0_50px_rgba(249,115,22,0.15)] animate-fade-in">
+              <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-orange-500/50 rounded-tl-2xl" />
+              <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-orange-500/50 rounded-tr-2xl" />
+              <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-orange-500/50 rounded-bl-2xl" />
+              <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-orange-500/50 rounded-br-2xl" />
               
               <button 
                 onClick={() => setShowAnomalyModal(false)}
-                className="absolute top-4 right-4 text-zinc-555 hover:text-white cursor-pointer"
+                className="absolute top-4 right-4 text-zinc-500 hover:text-white cursor-pointer rounded-full p-1 hover:bg-zinc-900 transition-colors"
               >
                 <X size={16} />
               </button>
@@ -1095,23 +1109,23 @@ export default function DashboardOverviewPage() {
               </div>
               <h3 className="text-sm font-bold text-white uppercase">{selectedInsight.title}</h3>
               
-              <div className="my-4 p-4 bg-orange-500/5 border border-orange-500/20 rounded space-y-3">
+              <div className="my-4 p-4 bg-orange-500/5 border border-orange-500/20 rounded-xl space-y-3">
                 <div className="grid grid-cols-2 gap-4 text-[9.5px]">
                   <div>
-                    <span className="text-zinc-555 block uppercase font-bold text-[8px]">DECISION CORRIDOR</span>
+                    <span className="text-zinc-500 block uppercase font-bold text-[8px]">DECISION CORRIDOR</span>
                     <span className="text-white font-bold block truncate">{selectedInsight.product}</span>
                   </div>
                   <div>
-                    <span className="text-zinc-555 block uppercase font-bold text-[8px]">ACCOUNT NAME</span>
+                    <span className="text-zinc-500 block uppercase font-bold text-[8px]">ACCOUNT NAME</span>
                     <span className="text-white font-bold block truncate">{selectedInsight.customer}</span>
                   </div>
                   <div>
-                    <span className="text-zinc-555 block uppercase font-bold text-[8px]">IDENTIFIED DATE</span>
+                    <span className="text-zinc-500 block uppercase font-bold text-[8px]">IDENTIFIED DATE</span>
                     <span className="text-white font-bold block">{selectedInsight.date}</span>
                   </div>
                   <div>
-                    <span className="text-zinc-555 block uppercase font-bold text-[8px]">LEAKAGE IMPACT</span>
-                    <span className="text-orange-455 font-extrabold block text-xs">${selectedInsight.impact.toLocaleString()}</span>
+                    <span className="text-zinc-500 block uppercase font-bold text-[8px]">LEAKAGE IMPACT</span>
+                    <span className="text-orange-400 font-extrabold block text-xs">${selectedInsight.impact.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -1125,8 +1139,8 @@ export default function DashboardOverviewPage() {
                 </div>
                 
                 <div className="pt-2">
-                  <span className="text-[8px] text-zinc-550 uppercase tracking-wider block font-bold">RECOMMENDED REMEDIATION ACTIONS</span>
-                  <ul className="text-zinc-450 font-sans normal-case mt-1 list-disc list-inside space-y-1">
+                  <span className="text-[8px] text-zinc-500 uppercase tracking-wider block font-bold">RECOMMENDED REMEDIATION ACTIONS</span>
+                  <ul className="text-zinc-400 font-sans normal-case mt-1 list-disc list-inside space-y-1">
                     <li>Re-negotiate procurement rates for corridor &ldquo;{selectedInsight.product}&rdquo;.</li>
                     <li>Enforce contractual pricing brackets on next billing ledger cycles.</li>
                     <li>Perform Z-score variance analysis on vendor invoices.</li>
@@ -1141,13 +1155,13 @@ export default function DashboardOverviewPage() {
                     setShowAnomalyModal(false);
                     showToast(`Mitigation ticket generated for ${selectedInsight.customer}`);
                   }}
-                  className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-black text-[9px] font-extrabold tracking-wider rounded uppercase transition-colors cursor-pointer"
+                  className="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-black text-[9px] font-extrabold tracking-wider rounded-lg uppercase transition-all active:scale-95 cursor-pointer shadow-md shadow-orange-500/10"
                 >
                   EXECUTE MITIGATION PROCEDURE
                 </button>
                 <button 
                   onClick={() => setShowAnomalyModal(false)}
-                  className="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-850 text-zinc-350 hover:text-white border border-zinc-800 rounded text-[9px] font-bold cursor-pointer"
+                  className="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-350 hover:text-white border border-zinc-800 rounded-lg text-[9px] font-bold cursor-pointer transition-colors"
                 >
                   CLOSE
                 </button>
@@ -1159,10 +1173,10 @@ export default function DashboardOverviewPage() {
         {/* Correlation Detail Modal */}
         {selectedCorrelation && (
           <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-zinc-950 border border-zinc-800 rounded-lg max-w-md w-full p-6 relative font-mono text-left animate-fade-in">
+            <div className="bg-zinc-950 border border-zinc-805 rounded-2xl max-w-md w-full p-6 relative font-mono text-left shadow-2xl animate-fade-in">
               <button 
                 onClick={() => setSelectedCorrelation(null)}
-                className="absolute top-4 right-4 text-zinc-550 hover:text-white"
+                className="absolute top-4 right-4 text-zinc-500 hover:text-white cursor-pointer rounded-full p-1 hover:bg-zinc-900 transition-colors"
               >
                 <X size={16} />
               </button>
@@ -1170,10 +1184,10 @@ export default function DashboardOverviewPage() {
               <span className="text-[8px] text-orange-500 font-bold uppercase tracking-widest">VARIABLE CORRELATION DECRYPT</span>
               <h3 className="text-sm font-bold text-white mt-1 uppercase">{selectedCorrelation.title}</h3>
               
-              <div className="my-5 p-4 bg-zinc-900/50 border border-zinc-900 rounded flex items-center justify-between">
+              <div className="my-5 p-4 bg-zinc-900/40 border border-zinc-900 rounded-xl flex items-center justify-between">
                 <div>
                   <span className="text-[8px] text-zinc-500 block uppercase font-bold">PEARSON COEFFICIENT</span>
-                  <span className={`text-2xl font-extrabold tracking-tight ${selectedCorrelation.coefficient < 0 ? 'text-rose-455' : 'text-emerald-450'}`}>
+                  <span className={`text-2xl font-extrabold tracking-tight ${selectedCorrelation.coefficient < 0 ? 'text-rose-500' : 'text-emerald-400'}`}>
                     {selectedCorrelation.coefficient > 0 ? '+' : ''}{selectedCorrelation.coefficient.toFixed(2)}
                   </span>
                 </div>
@@ -1196,7 +1210,7 @@ export default function DashboardOverviewPage() {
               <div className="mt-6 pt-4 border-t border-zinc-900 flex justify-end">
                 <button 
                   onClick={() => setSelectedCorrelation(null)}
-                  className="px-4 py-2 bg-zinc-900 hover:bg-zinc-850 text-zinc-350 hover:text-white border border-zinc-800 rounded text-[9px] font-bold cursor-pointer"
+                  className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 rounded-lg text-[9px] font-bold cursor-pointer transition-colors"
                 >
                   CLOSE_DECRYPTOR
                 </button>
@@ -1207,7 +1221,7 @@ export default function DashboardOverviewPage() {
 
         {/* Floating Toast Notification */}
         {toastMessage && (
-          <div className="fixed bottom-6 left-6 z-50 bg-zinc-950 border border-orange-500 text-zinc-100 font-mono text-[9px] font-bold px-4 py-3 rounded-lg shadow-2xl flex items-center gap-2 animate-fade-in">
+          <div className="fixed bottom-6 left-6 z-50 bg-zinc-950 border border-orange-500 text-zinc-100 font-mono text-[9px] font-bold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 animate-fade-in">
             <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-ping" />
             <span className="uppercase">{toastMessage}</span>
           </div>

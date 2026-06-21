@@ -39,6 +39,24 @@ def upgrade_db_columns():
         except Exception:
             pass
         
+        # Check and add 'prompt_tokens' to reports
+        try:
+            conn.execute(text("ALTER TABLE reports ADD COLUMN prompt_tokens INTEGER DEFAULT 0;"))
+        except Exception:
+            pass
+            
+        # Check and add 'completion_tokens' to reports
+        try:
+            conn.execute(text("ALTER TABLE reports ADD COLUMN completion_tokens INTEGER DEFAULT 0;"))
+        except Exception:
+            pass
+            
+        # Check and add 'total_tokens' to reports
+        try:
+            conn.execute(text("ALTER TABLE reports ADD COLUMN total_tokens INTEGER DEFAULT 0;"))
+        except Exception:
+            pass
+        
         # Create indexes for organization_id if they don't exist
         for table, index_name in [
             ("transactions", "idx_transactions_org"),
@@ -52,6 +70,21 @@ def upgrade_db_columns():
         ]:
             try:
                 conn.execute(text(f"CREATE INDEX IF NOT EXISTS {index_name} ON {table} (organization_id);"))
+            except Exception:
+                pass
+
+        # Check and add agent and api key settings to users table
+        for col, col_type, default_val in [
+            ("agent_name", "VARCHAR", "'ARIA'"),
+            ("agent_persona", "VARCHAR", "'ops_analyst'"),
+            ("agent_tone", "VARCHAR", "'professional'"),
+            ("agent_instructions", "VARCHAR", "''"),
+            ("custom_api_key", "VARCHAR", "''"),
+            ("custom_base_url", "VARCHAR", "''"),
+            ("custom_model_name", "VARCHAR", "''")
+        ]:
+            try:
+                conn.execute(text(f"ALTER TABLE users ADD COLUMN {col} {col_type} DEFAULT {default_val};"))
             except Exception:
                 pass
 

@@ -19,6 +19,11 @@ export default function InsightsPage() {
         const res = await fetch(`${API_BASE}/analytics/overview`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "/signup";
+          return;
+        }
         if (res.ok) {
           const json = await res.json();
           setInsights(json.insights || []);
@@ -79,52 +84,57 @@ export default function InsightsPage() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-6xl mx-auto space-y-8 font-mono text-left">
+      <div className="max-w-6xl mx-auto space-y-8 font-sans text-left">
         
         {/* Title */}
-        <div className="border-b border-zinc-900 pb-4">
-          <h2 className="text-xl font-light text-white uppercase tracking-wider">OPERATIONAL_INTELLIGENCE</h2>
-          <p className="text-zinc-400 text-xs mt-1">Rules-based insights generated from your normalized business model to isolate P&L leakages.</p>
+        <div className="border-b border-zinc-800 pb-4 flex justify-between items-end">
+          <div>
+            <h2 className="text-2xl font-light text-white uppercase tracking-wider font-mono">OPERATIONAL_INTELLIGENCE</h2>
+            <p className="text-zinc-400 text-xs mt-1">Rules-based insights generated from your normalized business model to isolate P&L leakages.</p>
+          </div>
+          <div className="text-[10px] text-zinc-500 font-mono">
+            SYS.NODE_INSIGHTS // ENGINE_V1
+          </div>
         </div>
  
         <div className="space-y-6">
           {insights.map((insight, idx) => {
             const style = getSeverityStyle(insight.severity);
             return (
-              <div key={idx} className="bg-zinc-950 rounded border border-zinc-900 overflow-hidden flex flex-col md:flex-row relative">
+              <div key={idx} className="glass-panel rounded-xl overflow-hidden flex flex-col md:flex-row relative transition-all duration-300 hover:scale-[1.005] hover:border-zinc-700/60 shadow-lg">
                 {/* Side indicator strip */}
                 <div className={`w-1 md:w-1.5 shrink-0 ${
                   style.color === 'rose' ? 'bg-rose-500' : style.color === 'amber' ? 'bg-amber-500' : 'bg-orange-500'
                 }`}></div>
                 
                 {/* Corner markers */}
-                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-zinc-800" />
+                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-zinc-700" />
                 
                 <div className="p-6 sm:p-8 flex-1 flex flex-col md:flex-row gap-8">
                   <div className="flex-1 space-y-4">
-                    <div className="flex items-center gap-3 text-[9px]">
+                    <div className="flex items-center gap-3 text-[9px] font-mono">
                       <div className={`p-1.5 rounded border ${style.borderColor} flex items-center justify-center shrink-0`}>
                         {style.icon}
                       </div>
                       <span className="font-bold uppercase tracking-widest text-zinc-300">{insight.category}</span>
-                      <span className="text-zinc-700">•</span>
+                      <span className="text-zinc-650">•</span>
                       <span className="font-bold uppercase tracking-widest text-zinc-500">{insight.severity.toUpperCase()}_IMPACT</span>
                     </div>
-                    <h3 className="text-base font-bold text-zinc-200 uppercase">{insight.title}</h3>
-                    <p className="text-zinc-400 text-xs leading-relaxed font-sans normal-case">{insight.description}</p>
+                    <h3 className="text-lg font-bold text-zinc-100 uppercase font-mono">{insight.title}</h3>
+                    <p className="text-zinc-400 text-xs leading-relaxed normal-case font-light">{insight.description}</p>
                     {insight.impact && (
-                      <p className="text-[11px] text-zinc-300 font-sans italic normal-case">Impact Potential: {insight.impact}</p>
+                      <p className="text-[11px] text-zinc-300 font-mono italic normal-case">Impact Potential: {insight.impact}</p>
                     )}
                   </div>
                   
-                  <div className="md:w-64 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-zinc-900 pt-6 md:pt-0 md:pl-8">
-                     <p className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest mb-3 text-center md:text-left">RECOMMENDATION</p>
+                  <div className="md:w-64 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-zinc-800/80 pt-6 md:pt-0 md:pl-8">
+                     <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest mb-3 text-center md:text-left font-mono">RECOMMENDATION</p>
                      <p className="text-xs font-bold text-zinc-300 leading-relaxed mb-6 text-center md:text-left font-sans normal-case">
                        Proactively audit vendor bills and optimize category costs.
                      </p>
                      <button 
                        onClick={() => alert("Insight acknowledged and logged in system parameters.")}
-                       className={`w-full py-2.5 rounded font-mono font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md ${style.btnColor}`}
+                       className={`w-full py-2.5 rounded-lg font-mono font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer ${style.btnColor}`}
                      >
                         ACKNOWLEDGE_RISK <ArrowRight size={12} />
                      </button>
@@ -135,13 +145,13 @@ export default function InsightsPage() {
           })}
           
           {insights.length === 0 && (
-            <div className="bg-zinc-950 p-12 rounded border border-zinc-900 text-center text-zinc-400 space-y-4 relative">
-              <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-800" />
-              <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t border-r border-zinc-800" />
+            <div className="glass-panel p-12 rounded-xl text-center text-zinc-400 space-y-4 relative shadow-lg">
+              <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-zinc-700" />
+              <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t border-r border-zinc-700" />
               
-              <AlertCircle className="mx-auto text-zinc-700" size={36} />
-              <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">NO_INSIGHTS_GENERATED</h3>
-              <p className="max-w-md mx-auto text-xs text-zinc-400 font-sans normal-case">Upload operations data to calculate metrics and run the automated rules engine.</p>
+              <AlertCircle className="mx-auto text-zinc-600" size={36} />
+              <h3 className="text-sm font-bold text-zinc-300 uppercase tracking-wider font-mono">NO_INSIGHTS_GENERATED</h3>
+              <p className="max-w-md mx-auto text-xs text-zinc-450 normal-case font-light">Upload operations data to calculate metrics and run the automated rules engine.</p>
             </div>
           )}
         </div>

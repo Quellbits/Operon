@@ -21,11 +21,15 @@ def get_current_user_optional(
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
         if email is None:
-            return None
+            raise HTTPException(status_code=401, detail="Invalid token format")
         user = db.query(models.User).filter(models.User.email == email).first()
+        if user is None:
+            raise HTTPException(status_code=401, detail="User not found")
         return user
+    except HTTPException:
+        raise
     except Exception:
-        return None
+        raise HTTPException(status_code=401, detail="Token is invalid or has expired")
 
 from ..engine.normalization import Normalizer
 from ..engine.metrics import MetricsEngine
@@ -262,8 +266,9 @@ def process_upload(
         
         # 5. Generate AI Executive Summary & Actions
         ai_narrative = AINarrativeLayer(computed_metrics, detected_insights, health_score_data)
-        summary = ai_narrative.generate_executive_summary()
-        actions = ai_narrative.generate_action_plan()
+        report_narrative, prompt_tok, comp_tok, tot_tok = ai_narrative.generate_unified_report("Provide an overall operational audit summary of this organization's ledger.")
+        summary = report_narrative.get("summary", "")
+        actions = report_narrative.get("actions", [])
         
         # 6. Generate PDF Report via ReportLab
         os.makedirs("reports_pdf", exist_ok=True)
@@ -293,7 +298,10 @@ def process_upload(
             summary=summary,
             health_score=health_score_data["overall"],
             actions=actions,
-            is_saved=False
+            is_saved=False,
+            prompt_tokens=prompt_tok,
+            completion_tokens=comp_tok,
+            total_tokens=tot_tok
         )
         db.add(db_report)
         
@@ -493,8 +501,9 @@ def process_upload_batch(
         
         # AI Narrative
         ai_narrative = AINarrativeLayer(computed_metrics, detected_insights, health_score_data)
-        summary = ai_narrative.generate_executive_summary()
-        actions = ai_narrative.generate_action_plan()
+        report_narrative, prompt_tok, comp_tok, tot_tok = ai_narrative.generate_unified_report("Provide an overall operational audit summary of this organization's ledger.")
+        summary = report_narrative.get("summary", "")
+        actions = report_narrative.get("actions", [])
         
         # Generate PDF Report
         os.makedirs("reports_pdf", exist_ok=True)
@@ -524,7 +533,10 @@ def process_upload_batch(
             summary=summary,
             health_score=health_score_data["overall"],
             actions=actions,
-            is_saved=False
+            is_saved=False,
+            prompt_tokens=prompt_tok,
+            completion_tokens=comp_tok,
+            total_tokens=tot_tok
         )
         db.add(db_report)
         

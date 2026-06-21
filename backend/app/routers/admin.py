@@ -236,6 +236,35 @@ def get_admin_analytics(db: Session = Depends(database.get_db), _admin=Depends(v
     except Exception:
         memory_usage_mb = 0.0
 
+    # 5. Token Usage metrics
+    reports = db.query(models.Report).all()
+    total_prompt_tokens = sum(r.prompt_tokens or 0 for r in reports)
+    total_completion_tokens = sum(r.completion_tokens or 0 for r in reports)
+    total_total_tokens = sum(r.total_tokens or 0 for r in reports)
+    
+    # Token usage by plan
+    from sqlalchemy.sql import func
+    token_by_plan = db.query(
+        models.Organization.plan,
+        func.sum(models.Report.prompt_tokens).label("prompt"),
+        func.sum(models.Report.completion_tokens).label("completion"),
+        func.sum(models.Report.total_tokens).label("total"),
+        func.count(models.Report.id).label("count")
+    ).join(
+        models.Organization, models.Report.organization_id == models.Organization.id
+    ).group_by(models.Organization.plan).all()
+    
+    token_by_plan_list = [
+        {
+            "plan": row.plan,
+            "prompt_tokens": row.prompt or 0,
+            "completion_tokens": row.completion or 0,
+            "total_tokens": row.total or 0,
+            "report_count": row.count or 0
+        }
+        for row in token_by_plan
+    ]
+
     return {
         "total_signups": total_signups,
         "total_visitors": total_visitors,
@@ -253,6 +282,12 @@ def get_admin_analytics(db: Session = Depends(database.get_db), _admin=Depends(v
             "slowest_endpoints": slowest_endpoints,
             "vitals_averages": vitals_averages,
             "server_memory_mb": memory_usage_mb
+        },
+        "token_usage": {
+            "total_prompt_tokens": total_prompt_tokens,
+            "total_completion_tokens": total_completion_tokens,
+            "total_total_tokens": total_total_tokens,
+            "by_plan": token_by_plan_list
         }
     }
 

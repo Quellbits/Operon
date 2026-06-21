@@ -249,7 +249,7 @@ export default function AIAgent({ mode = 'dashboard', context }: AIAgentProps) {
     return text
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/`(.*?)`/g, '<code class="bg-zinc-805 px-1 rounded text-orange-300 text-[10px] font-bold">$1</code>')
+      .replace(/`(.*?)`/g, '<code class="bg-zinc-800 px-1 rounded text-orange-300 text-[10px] font-bold font-mono">$1</code>')
       .replace(/\n\n/g, '</p><p class="mt-2">')
       .replace(/\n/g, '<br/>')
       .replace(/^- (.*)/gm, '<span class="flex gap-1.5 mt-0.5"><span class="text-orange-400 shrink-0">•</span><span class="text-zinc-200">$1</span></span>');
@@ -263,7 +263,7 @@ export default function AIAgent({ mode = 'dashboard', context }: AIAgentProps) {
       <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
         {/* Tooltip label when closed */}
         {!isOpen && (
-          <div className="bg-zinc-900 border border-zinc-700 text-zinc-250 text-[10px] font-mono px-2.5 py-1 rounded-full tracking-wider animate-fade-in font-bold">
+          <div className="bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px] font-mono px-2.5 py-1 rounded-full tracking-wider animate-fade-in font-bold">
             ARIA · OPS ANALYST
           </div>
         )}
@@ -432,7 +432,7 @@ export default function AIAgent({ mode = 'dashboard', context }: AIAgentProps) {
                 <button
                   key={idx}
                   onClick={() => handleSuggestion(prompt)}
-                  className="w-full text-left text-[11px] text-zinc-250 hover:text-orange-400 bg-zinc-900/80 hover:bg-orange-500/5 border border-zinc-800 hover:border-orange-500/30 rounded-lg px-3 py-2 transition-all duration-200 font-sans font-medium"
+                  className="w-full text-left text-[11px] text-zinc-300 hover:text-orange-400 bg-zinc-900/80 hover:bg-orange-500/5 border border-zinc-800 hover:border-orange-500/30 rounded-lg px-3 py-2 transition-all duration-200 font-sans font-medium"
                 >
                   {prompt}
                 </button>

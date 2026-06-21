@@ -20,18 +20,20 @@ import os
 # ─────────────────────────────────────────────────────────────────────────────
 C_DARK       = HexColor("#0f172a")   # Near-black navy
 C_MID        = HexColor("#1e293b")   # Section header dark
-C_ORANGE     = HexColor("#c2410c")   # Corporate accent orange
-C_ORANGE_LT  = HexColor("#ea580c")   # Lighter orange
+C_INDIGO     = HexColor("#4f46e5")   # Corporate Indigo
+C_ORANGE     = HexColor("#4f46e5")   # Replaces orange with indigo
+C_ORANGE_LT  = HexColor("#6366f1")   # Lighter Indigo accent
 C_SLATE      = HexColor("#334155")   # Body text
 C_MUTED      = HexColor("#64748b")   # Captions / muted
 C_BORDER     = HexColor("#e2e8f0")   # Grid lines
 C_BG_ALT     = HexColor("#f8fafc")   # Alternate row bg
-C_GREEN      = HexColor("#16a34a")
-C_RED        = HexColor("#dc2626")
-C_AMBER      = HexColor("#d97706")
+C_GREEN      = HexColor("#10b981")   # Emerald Green
+C_RED        = HexColor("#f43f5e")   # Rose Red
+C_AMBER      = HexColor("#f59e0b")   # Amber warning
 C_WHITE      = colors.white
-C_COVER_BG   = HexColor("#0f172a")   # Cover page background
-C_COVER_LINE = HexColor("#c2410c")   # Cover accent stripe
+C_COVER_BG   = HexColor("#090d16")   # Dark carbon background
+C_COVER_LINE = HexColor("#4f46e5")   # Cover accent Indigo stripe
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -109,9 +111,9 @@ class KPICard(Flowable):
         c.setFillColor(HexColor("#ffffff"))
         c.setStrokeColor(C_BORDER)
         c.setLineWidth(0.5)
-        c.roundRect(0, 0, self.width, self.height, 4, fill=1, stroke=1)
+        c.roundRect(0, 0, self.width, self.height, 6, fill=1, stroke=1)
         # Top accent bar
-        c.setFillColor(C_ORANGE)
+        c.setFillColor(C_INDIGO)
         c.roundRect(0, self.height - 4, self.width, 4, 2, fill=1, stroke=0)
         # Label
         c.setFillColor(C_MUTED)
@@ -211,8 +213,8 @@ class InlineBarChart(Flowable):
         bar_w = min(bar_w, 28)
 
         # Background grid lines (4 horizontal)
-        c.setStrokeColor(HexColor("#f1f5f9"))
-        c.setLineWidth(0.4)
+        c.setStrokeColor(HexColor("#f8fafc"))
+        c.setLineWidth(0.3)
         for i in range(1, 5):
             y = axis_bottom + (chart_area_h * i / 4)
             c.line(0, y, self.width, y)
@@ -232,13 +234,15 @@ class InlineBarChart(Flowable):
                 x2 = None
 
             bar_h1 = max((val / max_val) * chart_area_h, 1) if max_val > 0 else 1
+            r1 = min(3.0, bar_h1 / 2)
             c.setFillColor(self.bar_color)
-            c.rect(x1, axis_bottom, bar_w, bar_h1, fill=1, stroke=0)
+            c.roundRect(x1, axis_bottom, bar_w, bar_h1, r1, fill=1, stroke=0)
 
             if has_two and val2 is not None and x2 is not None:
                 bar_h2 = max((val2 / max_val) * chart_area_h, 1) if max_val > 0 else 1
+                r2 = min(3.0, bar_h2 / 2)
                 c.setFillColor(self.bar_color2)
-                c.rect(x2, axis_bottom, bar_w, bar_h2, fill=1, stroke=0)
+                c.roundRect(x2, axis_bottom, bar_w, bar_h2, r2, fill=1, stroke=0)
 
             # X-axis label
             label = d.get("label", "")
@@ -261,19 +265,19 @@ class InlineBarChart(Flowable):
             c.drawRightString(-4, y_pos - 3, label)
 
         # X-axis baseline
-        c.setStrokeColor(HexColor("#cbd5e1"))
-        c.setLineWidth(0.6)
+        c.setStrokeColor(HexColor("#e2e8f0"))
+        c.setLineWidth(0.5)
         c.line(0, axis_bottom, self.width, axis_bottom)
 
         # Legend
         if self.show_legend and has_two:
             c.setFillColor(self.bar_color)
-            c.rect(0, 2, 9, 7, fill=1, stroke=0)
+            c.roundRect(0, 2, 9, 7, 1.5, fill=1, stroke=0)
             c.setFillColor(C_MID)
             c.setFont("Helvetica", 6.5)
             c.drawString(12, 2, "Revenue")
             c.setFillColor(self.bar_color2)
-            c.rect(65, 2, 9, 7, fill=1, stroke=0)
+            c.roundRect(65, 2, 9, 7, 1.5, fill=1, stroke=0)
             c.drawString(77, 2, self.label2)
 
         c.restoreState()
@@ -348,46 +352,69 @@ class MiniTrendLine(Flowable):
 # ─────────────────────────────────────────────────────────────────────────────
 
 def draw_cover_page(canvas, doc):
-    """Draws a dark, branded cover page with blueprint grid texture."""
+    """Draws a dark, branded cover page with premium glowing indigo circles."""
     W, H = letter
     canvas.saveState()
 
-    # Dark background
+    # Dark carbon background
     canvas.setFillColor(C_COVER_BG)
     canvas.rect(0, 0, W, H, fill=1, stroke=0)
 
-    # Subtle grid overlay (matching web blueprint grids)
-    canvas.setStrokeColor(HexColor("#161d2d"))
-    canvas.setLineWidth(0.4)
+    # Natively draw abstract glows using transparency settings
+    canvas.setFillAlpha(0.22)
+    canvas.setFillColor(HexColor("#1e1b4b")) # Deep Indigo glow top-right
+    canvas.circle(W, H, 260, fill=1, stroke=0)
+    
+    canvas.setFillAlpha(0.12)
+    canvas.setFillColor(HexColor("#4f46e5")) # Lighter Indigo glow top-right
+    canvas.circle(W, H, 140, fill=1, stroke=0)
+    
+    canvas.setFillAlpha(0.15)
+    canvas.setFillColor(HexColor("#312e81")) # Deep Indigo glow bottom-left
+    canvas.circle(0, 0, 200, fill=1, stroke=0)
+    
+    # Restore full opacity
+    canvas.setFillAlpha(1.0)
+
+    # Subtle grid overlay (matching web blueprint grids but extremely faint)
+    canvas.setStrokeColor(HexColor("#111827"))
+    canvas.setLineWidth(0.3)
     grid_size = 36
     for x in range(0, int(W), grid_size):
         canvas.line(x, 0, x, H)
     for y in range(0, int(H), grid_size):
         canvas.line(0, y, W, y)
 
-    # Orange accent stripe (left)
+    # Elegant double accent bar on the left border (thick Indigo, thin Indigo-light)
     canvas.setFillColor(C_COVER_LINE)
-    canvas.rect(0, 0, 6, H, fill=1, stroke=0)
+    canvas.rect(0, 0, 5, H, fill=1, stroke=0)
+    canvas.setFillColor(HexColor("#6366f1"))
+    canvas.rect(5, 0, 1.5, H, fill=1, stroke=0)
 
-    # Top right logo area placeholder
-    canvas.setFillColor(HexColor("#1e293b"))
-    canvas.roundRect(W - 120, H - 60, 108, 44, 4, fill=1, stroke=0)
-    canvas.setFont("Helvetica-Bold", 13)
-    canvas.setFillColor(C_COVER_LINE)
-    canvas.drawString(W - 108, H - 36, "OPERON")
-    canvas.setFont("Helvetica", 7)
-    canvas.setFillColor(HexColor("#94a3b8"))
-    canvas.drawString(W - 108, H - 48, "COO Intelligence Platform")
+    # Branded top-right logo box (clean, sharp border and micro text)
+    logo_w, logo_h = 110, 40
+    logo_x, logo_y = W - 110 - 54, H - 40 - 54
+    canvas.setFillColor(HexColor("#0f172a"))
+    canvas.setStrokeColor(HexColor("#1f2937"))
+    canvas.setLineWidth(0.8)
+    canvas.roundRect(logo_x, logo_y, logo_w, logo_h, 4, fill=1, stroke=1)
+    
+    canvas.setFont("Helvetica-Bold", 11)
+    canvas.setFillColor(C_WHITE)
+    canvas.drawString(logo_x + 10, logo_y + 22, "OPERON")
+    canvas.setFont("Helvetica-Bold", 6.5)
+    canvas.setFillColor(HexColor("#6366f1"))
+    canvas.drawString(logo_x + 10, logo_y + 10, "COO INTEL PLATFORM")
 
-    # Decorative lines
-    canvas.setStrokeColor(HexColor("#334155"))
+    # Decorative dividing thin accent rule on the page
+    canvas.setStrokeColor(HexColor("#1f2937"))
     canvas.setLineWidth(0.5)
-    canvas.line(54, H - 80, W - 54, H - 80)
+    canvas.line(54, H - 120, W - 54, H - 120)
 
-    # Report type label
-    canvas.setFont("Helvetica-Bold", 9)
-    canvas.setFillColor(C_COVER_LINE)
-    canvas.drawString(54, H - 110, "OPERATIONS AUDIT REPORT")
+    # Upper category tag
+    canvas.setFont("Helvetica-Bold", 8)
+    canvas.setFillColor(HexColor("#6366f1"))
+    canvas.drawString(54, H - 110, "SYSTEMIC PERFORMANCE AUDIT REPORT")
 
     canvas.restoreState()
 
@@ -404,7 +431,7 @@ def draw_inner_page(canvas, doc):
 
     # Header left: org brand
     canvas.setFont("Helvetica-Bold", 7)
-    canvas.setFillColor(C_ORANGE)
+    canvas.setFillColor(C_INDIGO)
     canvas.drawString(54, H - 46, "OPERON")
     canvas.setFont("Helvetica", 7)
     canvas.setFillColor(C_MUTED)
@@ -541,67 +568,97 @@ class ReportingEngine:
 
     # ── cover page (blank except decorations drawn by callback) ────────────
 
+    def _build_section_header(self, title: str, styles: dict):
+        """Builds a beautiful custom section header with an Indigo vertical accent bar and light gray background."""
+        header_style = ParagraphStyle(
+            "SectionHeaderStyle",
+            parent=styles["h1"],
+            spaceBefore=0,
+            spaceAfter=0,
+            textColor=C_MID
+        )
+        bar_table = Table(
+            [[ "", Paragraph(title.upper(), header_style) ]],
+            colWidths=[4, 500]
+        )
+        bar_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (0, 0), C_INDIGO), # Indigo accent bar
+            ('BACKGROUND', (1, 0), (1, 0), HexColor("#f8fafc")), # Light grey background
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+            ('TOPPADDING', (0, 0), (-1, -1), 6),
+            ('LEFTPADDING', (1, 0), (1, 0), 10),
+            ('RIGHTPADDING', (1, 0), (1, 0), 6),
+        ]))
+        return KeepTogether([Spacer(1, 14), bar_table, Spacer(1, 8)])
+
     def _build_cover(self, styles):
         els = []
-        # Huge whitespace to push content to cover position
-        # (cover decorations drawn by draw_cover_page callback)
-        els.append(Spacer(1, 140))
+        # Push content down past the logo/header line
+        els.append(Spacer(1, 150))
 
-        # Report title (white text on dark bg via cover page callback)
+        # Title
         title_style = ParagraphStyle(
             "CoverTitle",
-            fontName="Helvetica-Bold", fontSize=24, leading=28,
+            fontName="Helvetica-Bold", fontSize=26, leading=30,
             textColor=C_WHITE, spaceAfter=8
         )
-        subtitle_style = ParagraphStyle(
+        # Subtitle
+        sub_style = ParagraphStyle(
             "CoverSub",
-            fontName="Helvetica", fontSize=11, leading=15,
-            textColor=HexColor("#94a3b8"), spaceAfter=6
+            fontName="Helvetica", fontSize=10.5, leading=14,
+            textColor=HexColor("#94a3b8"), spaceAfter=18
         )
+        # Organization
         org_style = ParagraphStyle(
             "CoverOrg",
-            fontName="Helvetica-Bold", fontSize=13, leading=17,
-            textColor=C_ORANGE_LT, spaceAfter=30
-        )
-        meta_style = ParagraphStyle(
-            "CoverMeta",
-            fontName="Helvetica", fontSize=9, leading=13,
-            textColor=HexColor("#64748b"), spaceAfter=4
+            fontName="Helvetica-Bold", fontSize=12, leading=16,
+            textColor=HexColor("#6366f1"), spaceAfter=35
         )
 
-        els.append(Paragraph(self.report_title, title_style))
-        els.append(Spacer(1, 6))
-        els.append(Paragraph(self.org_name, org_style))
-        els.append(HRule(width=504, color=HexColor("#334155"), thickness=0.5))
-        els.append(Spacer(1, 16))
+        els.append(Paragraph(self.report_title.upper(), title_style))
+        els.append(Paragraph("Systematic operations audit and performance risk analytics dashboard.", sub_style))
+        els.append(Paragraph(f"AUDIT SPECIFICATION FOR:  {self.org_name.upper()}", org_style))
+        
+        # Divider line
+        els.append(HRule(width=504, color=HexColor("#1f2937"), thickness=0.8))
+        els.append(Spacer(1, 20))
 
         # Cover metadata table
         score_label = (
-            "CRITICAL" if self.score < 40 else
-            "NEEDS IMPROVEMENT" if self.score < 60 else
-            "GOOD" if self.score < 80 else "EXCELLENT"
+            "CRITICAL EXPOSURE" if self.score < 40 else
+            "MARGIN COMPRESSION RISK" if self.score < 60 else
+            "STABLE PARAMETERS" if self.score < 80 else "OPTIMAL EFFICIENCY"
         )
+        score_color = "#f43f5e" if self.score < 40 else "#ea580c" if self.score < 60 else "#10b981"
+        
         cover_rows = [
-            ["REPORT DATE", self.generated_at],
-            ["CLASSIFICATION", "Confidential — Executive Distribution Only"],
-            ["HEALTH SCORE", f"{self.score:.1f}/100   [{score_label}]"],
-            ["AUTHORED BY", "Operon COO Intelligence Engine (AI-Assisted Analysis)"],
+            ["REPORT GENERATION DATE", self.generated_at],
+            ["SECURITY CLASSIFICATION", "CONFIDENTIAL // INTERNAL EXECUTIVE DISTRIBUTION ONLY"],
+            ["COMPOSITE HEALTH SCORE", f"{self.score:.1f} / 100   (<font color='{score_color}'><b>{score_label}</b></font>)"],
+            ["SYSTEM AUDITOR ENGINE", "OPERON COGNITIVE PLATFORM (v2.1 EXECUTIVE AGENT)"],
         ]
         if self.query:
-            cover_rows.append(["QUERY SCOPE", self.query[:80] + ("..." if len(self.query) > 80 else "")])
+            truncated_query = self.query[:80] + ("..." if len(self.query) > 80 else "")
+            cover_rows.append(["INPUT BUSINESS QUERY", truncated_query.upper()])
 
-        lbl_st = ParagraphStyle("cl", fontName="Helvetica-Bold", fontSize=8, textColor=HexColor("#475569"))
-        val_st = ParagraphStyle("cv", fontName="Helvetica", fontSize=8, textColor=HexColor("#94a3b8"))
+        lbl_st = ParagraphStyle("cl", fontName="Helvetica-Bold", fontSize=7.5, textColor=HexColor("#4f46e5"))
+        val_st = ParagraphStyle("cv", fontName="Helvetica-Bold", fontSize=8, textColor=HexColor("#e2e8f0"))
+        
         rows = [[Paragraph(r[0], lbl_st), Paragraph(r[1], val_st)] for r in cover_rows]
-        t = Table(rows, colWidths=[130, 374])
+        t = Table(rows, colWidths=[150, 354])
         t.setStyle(TableStyle([
-            ("BACKGROUND", (0, 0), (-1, -1), HexColor("#1e293b")),
-            ("TOPPADDING",    (0, 0), (-1, -1), 5),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-            ("LEFTPADDING",   (0, 0), (-1, -1), 8),
-            ("GRID",          (0, 0), (-1, -1), 0.3, HexColor("#334155")),
+            ("BACKGROUND", (0, 0), (-1, -1), HexColor("#0c1017")),
+            ("TOPPADDING",    (0, 0), (-1, -1), 8),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
+            ("LEFTPADDING",   (0, 0), (-1, -1), 12),
+            ("RIGHTPADDING",  (0, 0), (-1, -1), 12),
+            ("ALIGN",         (0, 0), (-1, -1), "LEFT"),
+            ("VALIGN",        (0, 0), (-1, -1), "MIDDLE"),
+            ("GRID",          (0, 0), (-1, -1), 0.5, HexColor("#1f2937")),
         ]))
-        els.append(t)
+        
+        els.append(KeepTogether([t]))
         els.append(PageBreak())
         return els
 
@@ -1128,6 +1185,8 @@ class ReportingEngine:
 
     # ── MAIN GENERATE ──────────────────────────────────────────────────────
 
+    # ── MAIN GENERATE ──────────────────────────────────────────────────────
+
     def generate_pdf(self, output_path: str):
         doc = SimpleDocTemplate(
             output_path,
@@ -1144,8 +1203,7 @@ class ReportingEngine:
         els += self._build_cover(styles)
 
         # ── SECTION 1: KPI SNAPSHOT ──────────────────────────────────────
-        els.append(Paragraph("Section 1 — Executive KPI Snapshot", styles["h1"]))
-        els.append(HRule())
+        els.append(self._build_section_header("Section 1 — Executive KPI Snapshot", styles))
         els.append(Paragraph(
             "The following Key Performance Indicators were derived mathematically from the full filtered transaction ledger. "
             "Values represent the aggregate position for the review period covered by this audit.",
@@ -1172,72 +1230,79 @@ class ReportingEngine:
         els.append(Spacer(1, 10))
 
         # ── SECTION 2: EXECUTIVE SUMMARY ────────────────────────────────
-        els.append(Paragraph("Section 2 — Executive Summary", styles["h1"]))
-        els += self._build_summary_section(styles)[1:]  # skip duplicate h1
+        els.append(self._build_section_header("Section 2 — Executive Summary", styles))
+        els += self._build_summary_section(styles)[2:]  # skip duplicate h1 & hrule
 
         # ── SECTION 3: CHARTS ────────────────────────────────────────────
         monthly_chart = self._build_monthly_chart()
         if monthly_chart:
-            els.append(Paragraph("Section 3 — Revenue & Cost Visualisation", styles["h1"]))
-            els.append(HRule())
-            els.append(Spacer(1, 8))
-            els.append(monthly_chart)
-            els.append(Paragraph(
-                "Figure 1: Monthly Revenue (orange) vs Operating Cost (dark) for the trailing 12-month period. "
-                "The vertical gap between bars represents gross margin generation per period.",
-                styles["caption"]
-            ))
-            els.append(Spacer(1, 12))
-
+            chart_els = [
+                self._build_section_header("Section 3 — Revenue & Cost Visualisation", styles),
+                monthly_chart,
+                Paragraph(
+                    "Figure 1: Monthly Revenue (indigo) vs Operating Cost (dark) for the trailing 12-month period. "
+                    "The vertical gap between bars represents gross margin generation per period.",
+                    styles["caption"]
+                ),
+                Spacer(1, 10)
+            ]
             spark = self._build_revenue_sparkline()
             if spark:
-                els.append(spark)
-                els.append(Paragraph(
-                    "Figure 2: Revenue trend sparkline — trajectory and directional momentum across the review window.",
-                    styles["caption"]
-                ))
+                chart_els += [
+                    spark,
+                    Paragraph(
+                        "Figure 2: Revenue trend sparkline — trajectory and directional momentum across the review window.",
+                        styles["caption"]
+                    )
+                ]
+            els.append(KeepTogether(chart_els))
             els.append(Spacer(1, 12))
 
         # Forecast chart
         fc_chart = self._build_forecast_chart()
         if fc_chart:
-            els.append(Paragraph("Section 4 — Forward-Looking Revenue Forecast", styles["h1"]))
-            els.append(HRule())
-            els.append(Paragraph(
-                "The 6-month forward projections below are generated using ordinary least squares (OLS) linear regression "
-                "fitted to the historical monthly revenue and cost series. These projections assume continuation of "
-                "current structural trends and do not account for extraordinary market events.",
-                styles["normal"]
-            ))
-            els.append(Spacer(1, 8))
-            els.append(fc_chart)
-            els.append(Paragraph(
-                "Figure 3: 6-month linear regression forecast — projected revenue (green) vs estimated cost (red). "
-                "Widening gaps indicate margin expansion; converging bars signal compression risk.",
-                styles["caption"]
-            ))
+            fc_els = [
+                self._build_section_header("Section 4 — Forward-Looking Revenue Forecast", styles),
+                Paragraph(
+                    "The 6-month forward projections below are generated using ordinary least squares (OLS) linear regression "
+                    "fitted to the historical monthly revenue and cost series. These projections assume continuation of "
+                    "current structural trends and do not account for extraordinary market events.",
+                    styles["normal"]
+                ),
+                Spacer(1, 8),
+                fc_chart,
+                Paragraph(
+                    "Figure 3: 6-month linear regression forecast — projected revenue (green) vs estimated cost (red). "
+                    "Widening gaps indicate margin expansion; converging bars signal compression risk.",
+                    styles["caption"]
+                )
+            ]
+            els.append(KeepTogether(fc_els))
             els.append(Spacer(1, 10))
             els += self._build_projections_table(styles)
             els.append(Spacer(1, 10))
 
         # ── SECTION 5: PAIN POINTS ───────────────────────────────────────
         if self.pain_points:
-            els.append(Paragraph("Section 5 — Identified Operational Pain Points", styles["h1"]))
-            els.append(HRule())
+            pain_els = [
+                self._build_section_header("Section 5 — Identified Operational Pain Points", styles)
+            ]
             for i, pt in enumerate(self.pain_points, 1):
-                els.append(Paragraph(f"<b>{i}.</b>&nbsp;&nbsp;{pt}", styles["bullet"]))
+                pain_els.append(Paragraph(f"<b>{i}.</b>&nbsp;&nbsp;{pt}", styles["bullet"]))
+            els.append(KeepTogether(pain_els))
             els.append(Spacer(1, 10))
 
         # ── SECTION 6: HEALTH SCORE BREAKDOWN ───────────────────────────
         if cat_scores:
-            els.append(Paragraph("Section 6 — Health Score Component Breakdown", styles["h1"]))
-            els.append(HRule())
-            els += self._build_health_score_breakdown(styles)[1:]
+            health_els = [
+                self._build_section_header("Section 6 — Health Score Component Breakdown", styles)
+            ]
+            health_els += self._build_health_score_breakdown(styles)[1:]
+            els.append(KeepTogether(health_els))
             els.append(Spacer(1, 10))
 
         # ── SECTION 7: ADVANCED ANALYTICS ───────────────────────────────
-        els.append(Paragraph("Section 7 — Advanced Quantitative Analysis", styles["h1"]))
-        els.append(HRule())
+        els.append(self._build_section_header("Section 7 — Advanced Quantitative Analysis", styles))
         els.append(Paragraph(
             "This section presents the full suite of statistical computations performed against the filtered ledger. "
             "All calculations are executed in Python using NumPy and SciPy; the AI is used exclusively for "
@@ -1247,33 +1312,49 @@ class ReportingEngine:
         els.append(Spacer(1, 8))
 
         # KPI Detail
-        els += self._build_kpi_detail_table(styles)
+        els.append(KeepTogether([
+            Paragraph("<b>KPI Calculation Detail</b>", styles["h2"]),
+            Spacer(1, 4)
+        ] + self._build_kpi_detail_table(styles)))
         els.append(Spacer(1, 10))
 
         # Monthly Breakdown Table
-        els += self._build_monthly_breakdown_table(styles)
+        els.append(KeepTogether([
+            Paragraph("<b>Historical Monthly Breakdown</b>", styles["h2"]),
+            Spacer(1, 4)
+        ] + self._build_monthly_breakdown_table(styles)))
         els.append(Spacer(1, 10))
 
         # Correlation Table
-        els += self._build_correlation_table(styles)
+        els.append(KeepTogether([
+            Paragraph("<b>Pearson Correlation Analysis</b>", styles["h2"]),
+            Spacer(1, 4)
+        ] + self._build_correlation_table(styles)))
         els.append(Spacer(1, 10))
 
         # Anomaly Table
-        els += self._build_anomaly_table(styles)
+        els.append(KeepTogether([
+            Paragraph("<b>Statistical Transaction Anomalies</b>", styles["h2"]),
+            Spacer(1, 4)
+        ] + self._build_anomaly_table(styles)))
         els.append(Spacer(1, 10))
 
         # ── SECTION 8: STRATEGIC RECOMMENDATIONS ────────────────────────
         if self.actions:
-            els.append(Paragraph("Section 8 — Strategic Recommendations & Action Plan", styles["h1"]))
-            els.append(HRule())
-            els += self._build_actions(styles)[1:]
+            rec_els = [
+                self._build_section_header("Section 8 — Strategic Recommendations & Action Plan", styles)
+            ]
+            rec_els += self._build_actions(styles)[2:]  # skip duplicate h1 & hrule
+            els.append(KeepTogether(rec_els))
             els.append(Spacer(1, 8))
 
         # ── SECTION 9: CONCLUSIONS ───────────────────────────────────────
         if self.conclusions:
-            els.append(Paragraph("Section 9 — Conclusions & Strategic Outlook", styles["h1"]))
-            els.append(HRule())
-            els += self._build_conclusions(styles)[1:]
+            conclusion_els = [
+                self._build_section_header("Section 9 — Conclusions & Strategic Outlook", styles)
+            ]
+            conclusion_els += self._build_conclusions(styles)[2:]  # skip duplicate h1 & hrule
+            els.append(KeepTogether(conclusion_els))
 
         # ── DISCLAIMER FOOTER ─────────────────────────────────────────────
         els.append(Spacer(1, 20))

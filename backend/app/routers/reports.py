@@ -239,10 +239,11 @@ def generate_custom_report(
         health_score=health_score_detail,
         advanced_stats=stats
     )
-    summary     = narrative.generate_executive_summary()
-    pain_points = narrative.generate_pain_points()
-    actions     = narrative.generate_action_plan()
-    conclusions = narrative.generate_conclusions()
+    report_narrative, prompt_tok, comp_tok, tot_tok = narrative.generate_unified_report(req.query)
+    summary     = report_narrative.get("summary", "")
+    pain_points = report_narrative.get("pain_points", [])
+    actions     = report_narrative.get("actions", [])
+    conclusions = report_narrative.get("conclusions", "")
 
     # ── 8. Generate PDF ──────────────────────────────────────────────────
     os.makedirs("reports_pdf", exist_ok=True)
@@ -275,7 +276,10 @@ def generate_custom_report(
         summary=(summary[:500] if summary else ""),
         health_score=health_score,
         actions=actions,
-        is_saved=True
+        is_saved=True,
+        prompt_tokens=prompt_tok,
+        completion_tokens=comp_tok,
+        total_tokens=tot_tok
     )
     db.add(db_report)
     db.commit()

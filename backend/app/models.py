@@ -31,6 +31,17 @@ class User(Base):
     hashed_password = Column(String)
     full_name = Column(String)
     
+    # Custom agent settings
+    agent_name = Column(String, default="ARIA")
+    agent_persona = Column(String, default="ops_analyst")
+    agent_tone = Column(String, default="professional")
+    agent_instructions = Column(String, default="")
+    
+    # Custom model settings
+    custom_api_key = Column(String, default="")
+    custom_base_url = Column(String, default="")
+    custom_model_name = Column(String, default="")
+    
     memberships = relationship("OrganizationMember", back_populates="user")
 
 class OrganizationMember(Base):
@@ -137,6 +148,10 @@ class Report(Base):
     health_score = Column(Float, nullable=True)
     actions = Column(JSON, nullable=True)
     is_saved = Column(Boolean, default=False)
+    prompt_tokens = Column(Integer, default=0, nullable=True)
+    completion_tokens = Column(Integer, default=0, nullable=True)
+    total_tokens = Column(Integer, default=0, nullable=True)
+
 
 class WaitlistEmail(Base):
     __tablename__ = "waitlist_emails"

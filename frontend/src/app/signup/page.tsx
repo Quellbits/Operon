@@ -26,10 +26,10 @@ function SignupForm() {
   const [step, setStep] = useState(1); // 1 = Enter Email, 2 = Enter Details (Name, Password)
 
   useEffect(() => {
-    if (APP_STAGE !== "production") {
-      setIsLogin(true);
+    if (redirectTo === "checkout") {
+      setIsLogin(false);
     }
-  }, []);
+  }, [redirectTo]);
   
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
@@ -88,6 +88,25 @@ function SignupForm() {
 
       if (redirectTo === "checkout") {
         router.push(`/checkout?tier=${encodeURIComponent(tierParam)}&price=${encodeURIComponent(priceParam)}`);
+      } else if (redirectTo === "dashboard" && tierParam === "SANDBOX_INIT") {
+        const syncFreePlan = async () => {
+          try {
+            await fetch(`${API_BASE}/organizations/plan`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+              },
+              body: JSON.stringify({ plan: tierParam })
+            });
+          } catch (err) {
+            console.error("Failed to sync free plan", err);
+          }
+          localStorage.setItem("user_plan", tierParam);
+          localStorage.setItem("user_plan_price", priceParam);
+          window.location.href = "/dashboard";
+        };
+        syncFreePlan();
       } else {
         router.push(`/process?uploadIds=${uploadIds}&query=${encodeURIComponent(queryParam)}&sample=${sampleParam}`);
       }
@@ -133,6 +152,22 @@ function SignupForm() {
         // Redirect accordingly
         if (redirectTo === "checkout") {
           window.location.href = `/checkout?tier=${encodeURIComponent(tierParam)}&price=${encodeURIComponent(priceParam)}`;
+        } else if (redirectTo === "dashboard" && tierParam === "SANDBOX_INIT") {
+          try {
+            await fetch(`${API_BASE}/organizations/plan`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${data.access_token}`
+              },
+              body: JSON.stringify({ plan: tierParam })
+            });
+          } catch (err) {
+            console.error("Failed to sync free plan to backend", err);
+          }
+          localStorage.setItem("user_plan", tierParam);
+          localStorage.setItem("user_plan_price", priceParam);
+          window.location.href = "/dashboard";
         } else {
           window.location.href = `/process?uploadIds=${uploadIds}&query=${encodeURIComponent(queryParam)}&sample=${sampleParam}`;
         }
@@ -177,6 +212,22 @@ function SignupForm() {
         // Redirect accordingly
         if (redirectTo === "checkout") {
           window.location.href = `/checkout?tier=${encodeURIComponent(tierParam)}&price=${encodeURIComponent(priceParam)}`;
+        } else if (redirectTo === "dashboard" && tierParam === "SANDBOX_INIT") {
+          try {
+            await fetch(`${API_BASE}/organizations/plan`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${loginData.access_token}`
+              },
+              body: JSON.stringify({ plan: tierParam })
+            });
+          } catch (err) {
+            console.error("Failed to sync free plan to backend", err);
+          }
+          localStorage.setItem("user_plan", tierParam);
+          localStorage.setItem("user_plan_price", priceParam);
+          window.location.href = "/dashboard";
         } else {
           window.location.href = `/process?uploadIds=${uploadIds}&query=${encodeURIComponent(queryParam)}&sample=${sampleParam}`;
         }
@@ -188,7 +239,6 @@ function SignupForm() {
   };
 
   const toggleMode = () => {
-    if (APP_STAGE !== "production") return;
     setIsLogin(!isLogin);
     setStep(1);
     setError("");
@@ -428,29 +478,23 @@ function SignupForm() {
           )}
 
           {/* Toggle login/signup mode */}
-          {APP_STAGE === "production" ? (
-            <div className="text-center pt-2">
-              <button 
-                type="button"
-                onClick={toggleMode}
-                className="text-[10px] text-zinc-500 hover:text-zinc-300 transition-colors font-mono uppercase tracking-wider underline cursor-pointer"
-              >
-                {isLogin ? (
-                  <>Don&apos;t have an account? <span className="font-bold text-orange-400">Sign up</span></>
-                ) : (
-                  <>Already have an account? <span className="font-bold text-orange-400">Log in</span></>
-                )}
-              </button>
-            </div>
-          ) : (
-            <div className="text-center pt-2 text-[9px] text-zinc-650 font-mono uppercase tracking-wider">
-              Registration is disabled during sandbox stage.
-            </div>
-          )}
+          <div className="text-center pt-2">
+            <button 
+              type="button"
+              onClick={toggleMode}
+              className="text-[10px] text-zinc-500 hover:text-zinc-300 transition-colors font-mono uppercase tracking-wider underline cursor-pointer"
+            >
+              {isLogin ? (
+                <>Don&apos;t have an account? <span className="font-bold text-orange-400">Sign up</span></>
+              ) : (
+                <>Already have an account? <span className="font-bold text-orange-400">Log in</span></>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Footer */}
-        <div className="text-[9px] text-zinc-650 text-center font-mono uppercase tracking-wider">
+        <div className="text-[9px] text-zinc-500 text-center font-mono uppercase tracking-wider">
           By signing up, you agree to our{" "}
           <a href="#" className="underline hover:text-zinc-400">Terms of Service</a>{" "}
           and{" "}

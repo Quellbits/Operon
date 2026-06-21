@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Check, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 import Logo from '../../components/Logo';
 
 export default function PricingPage() {
   const [activeTier, setActiveTier] = useState<number>(1); // default to Audit Professional
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // Coordinates data for grid lines
   const vLines = ['10%', '25%', '40%', '55%', '70%', '85%'];
@@ -73,17 +74,47 @@ export default function PricingPage() {
     }
   ];
 
-  const handleSelectPlan = (tier: typeof tiers[0]) => {
+  const handleSelectPlan = async (tier: typeof tiers[0]) => {
     const token = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
     const finalTier = encodeURIComponent(tier.name);
     const finalPrice = encodeURIComponent(tier.price);
 
-    if (token) {
-      // Already logged in, go directly to checkout page
-      window.location.href = `/checkout?tier=${finalTier}&price=${finalPrice}`;
+    if (tier.name === "SANDBOX_INIT") {
+      if (token) {
+        // Logged in: Sync free plan directly to backend
+        try {
+          const response = await fetch(`${API_BASE}/organizations/plan`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ plan: tier.name })
+          });
+          if (response.ok) {
+            localStorage.setItem("user_plan", tier.name);
+            localStorage.setItem("user_plan_price", tier.price);
+            window.location.href = "/dashboard";
+          } else {
+            console.error("Failed to sync free plan, response not ok");
+            window.location.href = "/dashboard";
+          }
+        } catch (err) {
+          console.error("Failed to sync free plan to backend", err);
+          window.location.href = "/dashboard";
+        }
+      } else {
+        // Not logged in: Go to signup/login but redirect to dashboard upon completion
+        window.location.href = `/signup?redirect_to=dashboard&tier=${finalTier}&price=${finalPrice}`;
+      }
     } else {
-      // Not logged in, go to signup page first and pass redirect destination
-      window.location.href = `/signup?redirect_to=checkout&tier=${finalTier}&price=${finalPrice}`;
+      if (token) {
+        // Logged in: Go directly to checkout page for paid plans
+        window.location.href = `/checkout?tier=${finalTier}&price=${finalPrice}`;
+      } else {
+        // Not logged in: Go to signup page first and pass redirect destination as checkout
+        window.location.href = `/signup?redirect_to=checkout&tier=${finalTier}&price=${finalPrice}`;
+      }
     }
   };
 
@@ -166,17 +197,17 @@ export default function PricingPage() {
         </div>
 
         {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-stretch">
           {tiers.map((tier, idx) => {
             const isSelected = activeTier === idx;
             return (
               <div 
                 key={idx}
                 onClick={() => setActiveTier(idx)}
-                className={`bg-zinc-950 border rounded p-5 flex flex-col justify-between cursor-pointer transition-all duration-300 relative group text-left ${
+                className={`bg-zinc-950/45 border p-6 flex flex-col justify-between cursor-pointer transition-all duration-300 relative group text-left backdrop-blur-md rounded-xl ${
                   isSelected 
-                    ? 'border-orange-500 shadow-[0_0_30px_rgba(249,115,22,0.08)] bg-zinc-950/80 scale-[1.01]' 
-                    : 'border-zinc-900 bg-zinc-950/30 hover:border-zinc-700'
+                    ? 'border-orange-500 shadow-[0_0_35px_rgba(249,115,22,0.12)] bg-zinc-950/85 scale-[1.02] z-10' 
+                    : 'border-zinc-900 hover:border-zinc-800 hover:scale-[1.01] hover:bg-zinc-950/60'
                 }`}
               >
                 {/* Corner markers */}
@@ -221,10 +252,10 @@ export default function PricingPage() {
                       e.stopPropagation();
                       handleSelectPlan(tier);
                     }}
-                    className={`w-full py-2.5 rounded font-mono font-bold text-[10px] transition-all flex items-center justify-center gap-1.5 ${
+                    className={`w-full py-3 rounded-lg font-mono font-bold text-[10px] transition-all flex items-center justify-center gap-1.5 active:scale-[0.98] cursor-pointer ${
                       isSelected 
-                        ? 'bg-orange-500 hover:bg-orange-600 text-black shadow-md shadow-orange-500/15' 
-                        : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800'
+                        ? 'bg-orange-500 hover:bg-orange-600 text-black shadow-lg shadow-orange-500/20' 
+                        : 'bg-zinc-900 hover:bg-zinc-800 text-zinc-355 border border-zinc-800 hover:text-white'
                     }`}
                   >
                     {tier.cta} <ArrowRight size={10} />
@@ -236,31 +267,54 @@ export default function PricingPage() {
         </div>
 
         {/* Additional Specs Accordion FAQ */}
-        <section className="pt-16 border-t border-zinc-900 max-w-4xl mx-auto space-y-8">
+        <section className="pt-16 border-t border-zinc-900 max-w-2xl mx-auto space-y-8">
           <div className="text-center">
             <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest">TARIFFS_SPECIFICATIONS_FAQ</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-zinc-950/40 p-5 rounded border border-zinc-900 text-left space-y-2 relative">
-              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
-              <h4 className="text-xs font-bold text-zinc-300 uppercase flex items-center gap-2">
-                Can I cancel my node plan at any time?
-              </h4>
-              <p className="text-[11px] text-zinc-400 leading-relaxed font-sans normal-case">
-                Yes. Operon subscriptions operate on a month-to-month period. You can downgrade, upgrade, or cancel billing parameters at any point within the organization console settings.
-              </p>
-            </div>
-
-            <div className="bg-zinc-950/40 p-5 rounded border border-zinc-900 text-left space-y-2 relative">
-              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
-              <h4 className="text-xs font-bold text-zinc-300 uppercase flex items-center gap-2">
-                Are there limits on file row volumes?
-              </h4>
-              <p className="text-[11px] text-zinc-400 leading-relaxed font-sans normal-case">
-                Sandbox Init supports spreadsheets containing up to 10,000 transaction rows. Audit Professional extends rows parsing capacity up to 500,000 transaction rows per file batch.
-              </p>
-            </div>
+          <div className="space-y-3">
+            {[
+              {
+                q: "Can I cancel my node plan at any time?",
+                a: "Yes. Operon subscriptions operate on a month-to-month period. You can downgrade, upgrade, or cancel billing parameters at any point within the organization console settings."
+              },
+              {
+                q: "Are there limits on file row volumes?",
+                a: "Sandbox Init supports spreadsheets containing up to 10,000 transaction rows. Audit Professional extends rows parsing capacity up to 500,000 transaction rows per file batch."
+              },
+              {
+                q: "Do you offer custom enterprise pricing?",
+                a: "Yes. For organizations with high throughput requirements or custom schema integrations, we offer custom deploy pipelines, dedicated virtual machines, and specialized SLA support terms."
+              },
+              {
+                q: "How secure is my transactional data?",
+                a: "Security is built into our core framework. Transactional ledgers are stored under isolated database constraints with active field hashes. We enforce TLS 1.3 and full database encryption."
+              }
+            ].map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div 
+                  key={idx}
+                  className="bg-zinc-950/40 rounded border border-zinc-900 overflow-hidden transition-all duration-300 relative"
+                >
+                  <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-zinc-800" />
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    className="w-full px-5 py-4 flex items-center justify-between text-left font-mono font-bold text-[10px] text-zinc-300 hover:text-white uppercase transition-colors select-none focus:outline-none"
+                  >
+                    <span>{faq.q}</span>
+                    {isOpen ? <ChevronUp size={14} className="text-orange-500" /> : <ChevronDown size={14} className="text-zinc-650" />}
+                  </button>
+                  
+                  {isOpen && (
+                    <div className="px-5 pb-4 text-[11px] text-zinc-400 leading-relaxed font-sans normal-case border-t border-zinc-900/60 pt-3 animate-fade-in">
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
 
