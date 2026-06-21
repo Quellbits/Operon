@@ -12,81 +12,59 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 def upgrade_db_columns():
     from sqlalchemy import text
-    with engine.begin() as conn:
-        # Check and add 'plan' to organizations
+    
+    # List of basic alter column statements
+    alter_statements = [
+        "ALTER TABLE organizations ADD COLUMN plan VARCHAR DEFAULT 'SANDBOX_INIT';",
+        "ALTER TABLE organizations ADD COLUMN storage_used FLOAT DEFAULT 0.0;",
+        "ALTER TABLE uploads ADD COLUMN file_size FLOAT DEFAULT 0.0;",
+        "ALTER TABLE transactions ADD COLUMN upload_id INTEGER REFERENCES uploads(id);",
+        "ALTER TABLE reports ADD COLUMN is_saved BOOLEAN DEFAULT FALSE;",
+        "ALTER TABLE reports ADD COLUMN prompt_tokens INTEGER DEFAULT 0;",
+        "ALTER TABLE reports ADD COLUMN completion_tokens INTEGER DEFAULT 0;",
+        "ALTER TABLE reports ADD COLUMN total_tokens INTEGER DEFAULT 0;"
+    ]
+    
+    # Execute alter statements individually in separate transactions
+    for stmt in alter_statements:
         try:
-            conn.execute(text("ALTER TABLE organizations ADD COLUMN plan VARCHAR DEFAULT 'SANDBOX_INIT';"))
-        except Exception:
-            pass
-        # Check and add 'storage_used' to organizations
-        try:
-            conn.execute(text("ALTER TABLE organizations ADD COLUMN storage_used FLOAT DEFAULT 0.0;"))
-        except Exception:
-            pass
-        # Check and add 'file_size' to uploads
-        try:
-            conn.execute(text("ALTER TABLE uploads ADD COLUMN file_size FLOAT DEFAULT 0.0;"))
-        except Exception:
-            pass
-        # Check and add 'upload_id' to transactions
-        try:
-            conn.execute(text("ALTER TABLE transactions ADD COLUMN upload_id INTEGER REFERENCES uploads(id);"))
-        except Exception:
-            pass
-        # Check and add 'is_saved' to reports
-        try:
-            conn.execute(text("ALTER TABLE reports ADD COLUMN is_saved BOOLEAN DEFAULT 0;"))
-        except Exception:
-            pass
-        
-        # Check and add 'prompt_tokens' to reports
-        try:
-            conn.execute(text("ALTER TABLE reports ADD COLUMN prompt_tokens INTEGER DEFAULT 0;"))
+            with engine.begin() as conn:
+                conn.execute(text(stmt))
         except Exception:
             pass
             
-        # Check and add 'completion_tokens' to reports
+    # Create indexes individually in separate transactions
+    for table, index_name in [
+        ("transactions", "idx_transactions_org"),
+        ("customers", "idx_customers_org"),
+        ("products", "idx_products_org"),
+        ("metrics", "idx_metrics_org"),
+        ("insights", "idx_insights_org"),
+        ("reports", "idx_reports_org"),
+        ("uploads", "idx_uploads_org"),
+        ("organization_members", "idx_org_members_org")
+    ]:
         try:
-            conn.execute(text("ALTER TABLE reports ADD COLUMN completion_tokens INTEGER DEFAULT 0;"))
-        except Exception:
-            pass
-            
-        # Check and add 'total_tokens' to reports
-        try:
-            conn.execute(text("ALTER TABLE reports ADD COLUMN total_tokens INTEGER DEFAULT 0;"))
-        except Exception:
-            pass
-        
-        # Create indexes for organization_id if they don't exist
-        for table, index_name in [
-            ("transactions", "idx_transactions_org"),
-            ("customers", "idx_customers_org"),
-            ("products", "idx_products_org"),
-            ("metrics", "idx_metrics_org"),
-            ("insights", "idx_insights_org"),
-            ("reports", "idx_reports_org"),
-            ("uploads", "idx_uploads_org"),
-            ("organization_members", "idx_org_members_org")
-        ]:
-            try:
+            with engine.begin() as conn:
                 conn.execute(text(f"CREATE INDEX IF NOT EXISTS {index_name} ON {table} (organization_id);"))
-            except Exception:
-                pass
+        except Exception:
+            pass
 
-        # Check and add agent and api key settings to users table
-        for col, col_type, default_val in [
-            ("agent_name", "VARCHAR", "'ARIA'"),
-            ("agent_persona", "VARCHAR", "'ops_analyst'"),
-            ("agent_tone", "VARCHAR", "'professional'"),
-            ("agent_instructions", "VARCHAR", "''"),
-            ("custom_api_key", "VARCHAR", "''"),
-            ("custom_base_url", "VARCHAR", "''"),
-            ("custom_model_name", "VARCHAR", "''")
-        ]:
-            try:
+    # Check and add agent and api key settings to users table individually in separate transactions
+    for col, col_type, default_val in [
+        ("agent_name", "VARCHAR", "'ARIA'"),
+        ("agent_persona", "VARCHAR", "'ops_analyst'"),
+        ("agent_tone", "VARCHAR", "'professional'"),
+        ("agent_instructions", "VARCHAR", "''"),
+        ("custom_api_key", "VARCHAR", "''"),
+        ("custom_base_url", "VARCHAR", "''"),
+        ("custom_model_name", "VARCHAR", "''")
+    ]:
+        try:
+            with engine.begin() as conn:
                 conn.execute(text(f"ALTER TABLE users ADD COLUMN {col} {col_type} DEFAULT {default_val};"))
-            except Exception:
-                pass
+        except Exception:
+            pass
 
 def seed_default_user():
     from .database import SessionLocal
